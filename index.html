@@ -1,0 +1,344 @@
+```html
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title id="pageTitle">Fantasy</title>
+
+    <meta
+        id="metaDescription"
+        name="description"
+        content="">
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="assets/css/base/reset.css">
+    <link rel="stylesheet" href="assets/css/base/variables.css">
+    <link rel="stylesheet" href="assets/css/base/typography.css">
+    <link rel="stylesheet" href="assets/css/base/animations.css">
+
+    <link rel="stylesheet" href="assets/css/layout/header.css">
+    <link rel="stylesheet" href="assets/css/layout/navigation.css">
+    <link rel="stylesheet" href="assets/css/layout/hero.css">
+    <link rel="stylesheet" href="assets/css/layout/section.css">
+    <link rel="stylesheet" href="assets/css/layout/footer.css">
+
+    <link rel="stylesheet" href="assets/css/components/button.css">
+    <link rel="stylesheet" href="assets/css/components/card.css">
+    <link rel="stylesheet" href="assets/css/components/modal.css">
+
+    <link rel="stylesheet" href="assets/css/pages/home.css">
+
+    <link rel="stylesheet" href="assets/css/responsive/mobile.css">
+
+</head>
+
+<body>
+
+<!-- ===========================
+     Header
+=========================== -->
+
+<header class="header">
+
+    <div class="logo">
+
+        <span
+            class="logo-main"
+            id="shopName">
+
+            Fantasy
+
+        </span>
+
+        <span class="logo-sub">
+
+            Luxury Lounge
+
+        </span>
+
+    </div>
+
+    <nav class="nav">
+
+        <ul>
+
+            <li><a href="#about">ABOUT</a></li>
+
+            <li><a href="#gallery">GALLERY</a></li>
+
+            <li><a href="#system">SYSTEM</a></li>
+
+            <li><a href="#news">NEWS</a></li>
+
+            <li><a href="#access">ACCESS</a></li>
+
+        </ul>
+
+    </nav>
+
+    <button
+        id="menuButton"
+        class="menu-button"
+        aria-label="メニューを開く">
+
+        ☰
+
+    </button>
+
+</header>
+
+<main>
+
+<!-- ===========================
+     Hero
+=========================== -->
+
+<section class="hero">
+
+    <div
+        class="hero-slider"
+        id="heroSlider">
+
+    </div>
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+        <h1
+            class="hero-title"
+            id="heroTitle">
+
+            Fantasy
+
+        </h1>
+
+        <p
+            class="hero-text"
+            id="heroCatch">
+
+            特別な夜をあなたへ
+
+        </p>
+
+        <a
+            href="#about"
+            class="btn">
+
+            店舗紹介
+
+        </a>
+
+    </div>
+
+</section>
+
+<!-- ===========================
+     ABOUT
+=========================== -->
+
+<section
+    id="about"
+    class="section">
+
+    <div class="container">
+
+        <h2>
+
+            ABOUT
+
+        </h2>
+
+        <p id="shopDescription"></p>
+
+    </div>
+
+</section>
+
+<!-- ===========================
+     Gallery
+=========================== -->
+
+<section
+    id="gallery"
+    class="section">
+
+    <div class="container">
+
+        <h2>
+
+            GALLERY
+
+        </h2>
+
+        <div
+            class="gallery-grid"
+            id="galleryGrid">
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===========================
+     System
+=========================== -->
+
+<section
+    id="system"
+    class="section">
+
+    <div class="container">
+
+        <h2>
+
+            SYSTEM
+
+        </h2>
+
+        <div class="system-wrapper">
+
+            <article class="system-card">
+
+                <h3>
+
+                    ボトルキープのお客様
+
+                </h3>
+
+                <div id="systemKeep"></div>
+
+            </article>
+
+            <article class="system-card">
+
+                <h3>
+
+                    ボトルキープなしのお客様
+
+                </h3>
+
+                <div id="systemNoKeep"></div>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===========================
+     News
+=========================== -->
+
+<section
+    id="news"
+    class="section">
+
+    <div class="container">
+
+        <h2>
+
+            NEWS
+
+        </h2>
+
+        <div id="newsList"></div>
+
+    </div>
+
+</section>
+
+<!-- ===========================
+     Access
+=========================== -->
+
+<section
+    id="access"
+    class="section">
+
+    <div class="container">
+
+        <h2>
+
+            ACCESS
+
+        </h2>
+
+        <div class="access-box">
+
+            <p id="shopAddress"></p>
+
+            <p id="shopPhone"></p>
+
+            <div id="snsLinks"></div>
+
+        </div>
+
+        <div id="googleMap"></div>
+
+    </div>
+
+</section>
+
+</main>
+
+<!-- ===========================
+     Footer
+=========================== -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div
+            class="footer-logo"
+            id="footerShopName">
+
+            Fantasy
+
+        </div>
+
+        <p>
+
+            ©
+
+            <span id="copyrightYear"></span>
+
+            Fantasy CMS
+
+        </p>
+
+    </div>
+
+</footer>
+
+<!-- JavaScript -->
+
+<script src="assets/js/api/api.js"></script>
+
+<script src="assets/js/utils/helper.js"></script>
+
+<script src="assets/js/modules/hero.js"></script>
+
+<script src="assets/js/modules/gallery.js"></script>
+
+<script src="assets/js/modules/news.js"></script>
+
+<script src="assets/js/modules/system.js"></script>
+
+<script type="module" src="assets/js/main.js"></script>
+
+</body>
+
+</html>
+```
