@@ -4,72 +4,16 @@
 ========================================== */
 
 
-import { openModal } from "../components/modal.js";
+import {
+    fetchAPI
+}
+from "../api/api.js";
 
 
-
-/*
-    仮データ
-
-    後でGASへ変更
-
-    const galleryItems =
-    await fetchAPI("/gallery");
-
-*/
-
-const galleryItems = [
-
-
-    {
-        id:1,
-
-        title:"Main Floor",
-
-        description:
-        "落ち着いた雰囲気のメインフロア",
-
-        image:
-        "assets/images/gallery/gallery01.jpg",
-
-        sort:1
-
-    },
-
-
-    {
-        id:2,
-
-        title:"VIP Room",
-
-        description:
-        "特別なお客様のためのVIP空間",
-
-        image:
-        "assets/images/gallery/gallery02.jpg",
-
-        sort:2
-
-    },
-
-
-    {
-        id:3,
-
-        title:"Counter",
-
-        description:
-        "会話を楽しめるカウンター席",
-
-        image:
-        "assets/images/gallery/gallery03.jpg",
-
-        sort:3
-
-    }
-
-
-];
+import {
+    CONFIG
+}
+from "../config/config.js";
 
 
 
@@ -77,10 +21,57 @@ const galleryItems = [
  * Gallery 初期化
  */
 
-export function initGallery(){
+export async function initGallery(){
 
 
-    renderGallery();
+    const result =
+
+        await fetchAPI(
+            "gallery"
+        );
+
+
+
+    if(
+        !result ||
+        result.status !== "success"
+    ){
+
+        console.error(
+            "Gallery API Error"
+        );
+
+        return;
+
+    }
+
+
+
+    const gallery =
+
+        result.data
+
+        .filter(
+            item =>
+            item.status === "公開"
+        )
+
+        .sort(
+            (a,b)=>
+            Number(a.sort) -
+            Number(b.sort)
+        )
+
+        .slice(
+            0,
+            CONFIG.GALLERY_LIMIT
+        );
+
+
+
+    renderGallery(
+        gallery
+    );
 
 
 }
@@ -91,51 +82,52 @@ export function initGallery(){
  * Gallery表示
  */
 
-function renderGallery(){
+function renderGallery(items){
 
 
-    const container =
+    const grid =
+
         document.getElementById(
             "galleryGrid"
         );
 
 
-    if(!container) return;
+
+    if(!grid){
+
+        return;
+
+    }
 
 
 
-    container.innerHTML = "";
+    grid.innerHTML = "";
 
 
 
-    galleryItems
-
-        .sort(
-            (a,b)=>
-            a.sort-b.sort
-        )
-
-        .forEach(item => {
+    items.forEach(
+        item=>{
 
 
+            const card =
 
-            const article =
                 document.createElement(
                     "article"
                 );
 
 
-            article.className =
-                "gallery-item fade-up";
+
+            card.className =
+                "gallery-card";
 
 
 
-            article.innerHTML = `
+            card.innerHTML = `
 
 
                 <img
 
-                    src="${item.image}"
+                    src="${item.image_url}"
 
                     alt="${item.title}"
 
@@ -144,8 +136,7 @@ function renderGallery(){
                 >
 
 
-
-                <div class="gallery-overlay">
+                <div class="gallery-info">
 
 
                     <h3>
@@ -157,7 +148,7 @@ function renderGallery(){
 
                     <p>
 
-                        ${item.description}
+                        ${item.description || ""}
 
                     </p>
 
@@ -169,25 +160,13 @@ function renderGallery(){
 
 
 
-            article.addEventListener(
-                "click",
-                ()=>{
-
-
-                    openModal(item);
-
-
-                }
+            grid.appendChild(
+                card
             );
 
 
-
-            container.appendChild(
-                article
-            );
-
-
-        });
+        }
+    );
 
 
 }

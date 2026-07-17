@@ -24,7 +24,7 @@ import { initAccess } from "./modules/access.js";
 
 document.addEventListener(
 "DOMContentLoaded",
-()=>{
+async ()=>{
 
 
     initMenu();
@@ -33,22 +33,22 @@ document.addEventListener(
     initScroll();
 
 
-    initHero();
+    await initHero();
 
 
     initModal();
 
 
-    initGallery();
+    await initGallery();
 
 
-    initNews();
+    await initNews();
 
 
-    initSystem();
+    await initSystem();
 
 
-    initAccess();
+    await initAccess();
 
 
 });

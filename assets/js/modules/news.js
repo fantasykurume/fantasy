@@ -4,63 +4,16 @@
 ========================================== */
 
 
-import { openModal } from "../components/modal.js";
+import {
+    fetchAPI
+}
+from "../api/api.js";
 
 
-
-/*
-    仮データ
-
-    後でGAS接続
-
-    const newsItems =
-    await fetchAPI("/news");
-
-*/
-
-
-const newsItems = [
-
-
-    {
-        id:1,
-
-        date:"2026.07.17",
-
-        title:
-        "Grand Openのお知らせ",
-
-        description:
-        "Fantasyが新しくオープンしました。",
-
-        content:
-        "皆様に愛される店舗を目指して営業してまいります。",
-
-        sort:1
-
-    },
-
-
-    {
-        id:2,
-
-        date:"2026.07.20",
-
-        title:
-        "イベント開催のお知らせ",
-
-        description:
-        "特別イベントを開催いたします。",
-
-        content:
-        "豪華なイベントを予定しております。",
-
-        sort:2
-
-    }
-
-
-];
+import {
+    CONFIG
+}
+from "../config/config.js";
 
 
 
@@ -68,10 +21,57 @@ const newsItems = [
  * News 初期化
  */
 
-export function initNews(){
+export async function initNews(){
 
 
-    renderNews();
+    const result =
+
+        await fetchAPI(
+            "news"
+        );
+
+
+
+    if(
+        !result ||
+        result.status !== "success"
+    ){
+
+        console.error(
+            "News API Error"
+        );
+
+        return;
+
+    }
+
+
+
+    const news =
+
+        result.data
+
+        .filter(
+            item =>
+            item.status === "公開"
+        )
+
+        .sort(
+            (a,b)=>
+            Number(a.sort) -
+            Number(b.sort)
+        )
+
+        .slice(
+            0,
+            CONFIG.NEWS_LIMIT
+        );
+
+
+
+    renderNews(
+        news
+    );
 
 
 }
@@ -82,113 +82,105 @@ export function initNews(){
  * News表示
  */
 
-function renderNews(){
+function renderNews(items){
 
 
-    const container =
+    const list =
+
         document.getElementById(
             "newsList"
         );
 
 
-    if(!container) return;
+
+    if(!list){
+
+        return;
+
+    }
 
 
 
-    container.innerHTML="";
+    list.innerHTML = "";
 
 
 
-    newsItems
-
-    .sort(
-        (a,b)=>
-        a.sort-b.sort
-    )
+    items.forEach(
+        item=>{
 
 
-    .forEach(item=>{
+            const article =
+
+                document.createElement(
+                    "article"
+                );
 
 
-        const article =
-            document.createElement(
-                "article"
+
+            article.className =
+                "news-card";
+
+
+
+            article.innerHTML = `
+
+
+                ${
+                    item.image_url
+
+                    ?
+
+                    `<img
+                    src="${item.image_url}"
+                    alt="${item.title}"
+                    loading="lazy">`
+
+                    :
+
+                    ""
+
+                }
+
+
+
+                <div class="news-content">
+
+
+                    <time>
+
+                        ${item.date}
+
+                    </time>
+
+
+                    <h3>
+
+                        ${item.title}
+
+                    </h3>
+
+
+                    <p>
+
+                        ${item.description || ""}
+
+                    </p>
+
+
+                </div>
+
+
+            `;
+
+
+
+            list.appendChild(
+                article
             );
 
 
-
-        article.className =
-            "news-card fade-up";
-
-
-
-        article.innerHTML = `
-
-
-            <time>
-
-                ${item.date}
-
-            </time>
-
-
-            <h3>
-
-                ${item.title}
-
-            </h3>
-
-
-            <p>
-
-                ${item.description}
-
-            </p>
-
-
-            <button>
-
-                詳細を見る
-
-            </button>
-
-
-        `;
-
-
-
-        article
-        .querySelector("button")
-        .addEventListener(
-            "click",
-            ()=>{
-
-
-                openModal({
-
-                    image:
-                    "assets/images/common/logo.jpg",
-
-                    title:
-                    item.title,
-
-                    description:
-                    item.content
-
-                });
-
-
-            }
-        );
-
-
-
-        container.appendChild(
-            article
-        );
-
-
-    });
+        }
+    );
 
 
 }
