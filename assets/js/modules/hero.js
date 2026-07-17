@@ -1,113 +1,282 @@
 /* ==========================================
-   Hero Slider
-   ========================================== */
+   Fantasy CMS
+   Hero Module
+========================================== */
 
-const slides = [
 
-    {
-        image: "assets/images/hero/hero01.jpg",
-        title: "Fantasy",
-        catch: "特別な夜をあなたへ"
-    },
+import {
+    fetchAPI
+}
+from "../api/api.js";
 
-    {
-        image: "assets/images/hero/hero02.jpg",
-        title: "Luxury Lounge",
-        catch: "上質な時間と最高のおもてなし"
-    },
 
-    {
-        image: "assets/images/hero/hero03.jpg",
-        title: "Elegant Space",
-        catch: "心に残るひとときを"
+import {
+    CONFIG
+}
+from "../config/config.js";
+
+
+
+let heroTimer = null;
+
+
+
+/**
+ * Hero 初期化
+ */
+
+export async function initHero(){
+
+
+    const result =
+
+        await fetchAPI(
+            "shop"
+        );
+
+
+
+    if(
+        !result ||
+        result.status !== "success"
+    ){
+
+        console.error(
+            "Hero API Error"
+        );
+
+        return;
+
     }
 
-];
 
-const SLIDE_INTERVAL = 8000;
 
-let currentIndex = 0;
+    const shop =
 
-export function initHero() {
+        result.data[0];
 
-    const slider = document.getElementById("heroSlider");
 
-    const title = document.getElementById("heroTitle");
 
-    const text = document.getElementById("heroCatch");
+    renderHeroText(shop);
 
-    if (!slider || !title || !text) return;
 
-    createSlides(slider);
+    renderHeroImages(shop);
 
-    showSlide(title, text);
-
-    setInterval(() => {
-
-        currentIndex++;
-
-        if (currentIndex >= slides.length) {
-
-            currentIndex = 0;
-
-        }
-
-        showSlide(title, text);
-
-    }, SLIDE_INTERVAL);
 
 }
 
-function createSlides(slider) {
+
+
+/**
+ * タイトル・キャッチ表示
+ */
+
+function renderHeroText(shop){
+
+
+    const title =
+
+        document.getElementById(
+            "heroTitle"
+        );
+
+
+    const catchCopy =
+
+        document.getElementById(
+            "heroCatch"
+        );
+
+
+
+    if(title){
+
+        title.textContent =
+            shop.shop_name || "";
+
+    }
+
+
+
+    if(catchCopy){
+
+        catchCopy.textContent =
+            shop.catch_copy || "";
+
+    }
+
+
+}
+
+
+
+/**
+ * Hero画像表示
+ */
+
+function renderHeroImages(shop){
+
+
+    const slider =
+
+        document.getElementById(
+            "heroSlider"
+        );
+
+
+
+    if(!slider){
+
+        return;
+
+    }
+
+
+
+    const images = [
+
+        shop.hero_image_1,
+
+        shop.hero_image_2,
+
+        shop.hero_image_3
+
+    ]
+
+    .filter(
+        image => image
+    );
+
+
+
+    if(
+        images.length === 0
+    ){
+
+        return;
+
+    }
+
+
 
     slider.innerHTML = "";
 
-    slides.forEach((slide, index) => {
 
-        const image = document.createElement("img");
 
-        image.src = slide.image;
+    images.forEach(
+        (image,index)=>{
 
-        image.alt = slide.title;
 
-        image.loading = "eager";
+            const div =
+                document.createElement(
+                    "div"
+                );
 
-        if (index === 0) {
 
-            image.classList.add("active");
+            div.className =
+                "hero-slide";
+
+
+
+            div.style.backgroundImage =
+
+                `url(${image})`;
+
+
+
+            if(index === 0){
+
+                div.classList.add(
+                    "active"
+                );
+
+            }
+
+
+
+            slider.appendChild(
+                div
+            );
+
 
         }
+    );
 
-        slider.appendChild(image);
 
-    });
+
+    startSlider();
 
 }
 
-function showSlide(title, text) {
 
-    const images = document.querySelectorAll(".hero-slider img");
 
-    images.forEach(image => {
+/**
+ * スライダー
+ */
 
-        image.classList.remove("active");
+function startSlider(){
 
-    });
 
-    images[currentIndex].classList.add("active");
+    const slides =
 
-    title.classList.remove("hero-fade");
+        document.querySelectorAll(
+            ".hero-slide"
+        );
 
-    text.classList.remove("hero-fade");
 
-    void title.offsetWidth;
 
-    title.classList.add("hero-fade");
+    if(
+        slides.length <= 1
+    ){
 
-    text.classList.add("hero-fade");
+        return;
 
-    title.textContent = slides[currentIndex].title;
+    }
 
-    text.textContent = slides[currentIndex].catch;
+
+
+    let current = 0;
+
+
+
+    heroTimer =
+
+        setInterval(()=>{
+
+
+            slides[current]
+            .classList.remove(
+                "active"
+            );
+
+
+
+            current++;
+
+
+
+            if(
+                current >= slides.length
+            ){
+
+                current = 0;
+
+            }
+
+
+
+            slides[current]
+            .classList.add(
+                "active"
+            );
+
+
+
+        },
+
+        CONFIG.HERO_INTERVAL
+
+    );
+
 
 }
