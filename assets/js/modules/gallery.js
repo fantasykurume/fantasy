@@ -1,175 +1,291 @@
 /* ==========================================
    Fantasy CMS
-   Gallery Module
+   Modal Component
 ========================================== */
 
-import {
-    fetchAPI
-}
-from "../api/api.js";
+let modal = null;
 
-import {
-    CONFIG
-}
-from "../config/config.js";
+let currentItems = [];
 
-import {
-    openModal
-}
-from "../components/modal.js";
+let currentIndex = 0;
 
 
 /**
- * Gallery 初期化
+ * 初期化
  */
+export function initModal(){
 
-export async function initGallery(){
+    createModal();
 
-
-    const result =
-
-        await fetchAPI(
-            "gallery"
-        );
-
-
-    if(
-        !result ||
-        result.status !== "success"
-    ){
-
-        console.error(
-            "Gallery API Error"
-        );
-
-        return;
-
-    }
-
-
-    const gallery =
-
-        result.data
-
-        .filter(
-            item =>
-            item.status === "公開"
-        )
-
-        .sort(
-            (a,b)=>
-            Number(a.sort) -
-            Number(b.sort)
-        )
-
-        .slice(
-            0,
-            CONFIG.GALLERY_LIMIT
-        );
-
-
-    renderGallery(
-        gallery
-    );
+    bindEvents();
 
 }
 
 
 /**
- * Gallery表示
+ * Modal生成
  */
+function createModal(){
 
-function renderGallery(items){
+    if(document.getElementById("globalModal")){
 
-
-    const grid =
-
-        document.getElementById(
-            "galleryGrid"
-        );
-
-
-    if(!grid){
+        modal = document.getElementById("globalModal");
 
         return;
 
     }
 
+    modal = document.createElement("div");
 
-    grid.innerHTML = "";
+    modal.id = "globalModal";
 
+    modal.className = "modal";
 
-    items.forEach(
-        item=>{
+    modal.innerHTML = `
 
+        <div class="modal-content">
 
-            const card =
+            <button
+                class="modal-close">
 
-                document.createElement(
-                    "article"
-                );
+                ×
 
+            </button>
 
-            card.className =
-                "gallery-card";
+            <button
+                class="modal-prev">
 
+                ❮
 
-            card.innerHTML = `
+            </button>
 
-                <img
-                    src="${item.image_url}"
-                    alt="${item.title}"
-                    loading="lazy"
-                >
+            <button
+                class="modal-next">
 
-                <div class="gallery-info">
+                ❯
 
-                    <h3>
+            </button>
 
-                        ${item.title}
+            <div class="modal-body">
 
-                    </h3>
+                <div class="modal-image">
 
-                    <p>
+                    <img
+                        id="modalImage"
+                        src=""
+                        alt="">
 
-                        ${item.description || ""}
+                </div>
+
+                <div class="modal-info">
+
+                    <h2
+                        id="modalTitle"
+                        class="modal-title">
+
+                    </h2>
+
+                    <p
+                        id="modalDescription"
+                        class="modal-description">
 
                     </p>
 
                 </div>
 
-            `;
+            </div>
+
+        </div>
+
+    `;
+
+    document.body.appendChild(
+        modal
+    );
+
+}
 
 
-            /* モーダル表示 */
+/**
+ * イベント
+ */
+function bindEvents(){
 
-            card.addEventListener(
-                "click",
-                ()=>{
+    document.addEventListener(
 
-                    openModal({
+        "click",
 
-                        image:
-                            item.image_url,
+        event=>{
 
-                        title:
-                            item.title,
+            if(
+                !modal ||
+                !modal.classList.contains("active")
+            ){
 
-                        description:
-                            item.description || ""
+                return;
 
-                    });
+            }
 
-                }
-            );
+            if(
 
+                event.target.classList.contains("modal") ||
 
-            grid.appendChild(
-                card
-            );
+                event.target.classList.contains("modal-close")
 
+            ){
+
+                closeModal();
+
+            }
+
+            if(
+                event.target.classList.contains("modal-prev")
+            ){
+
+                prevImage();
+
+            }
+
+            if(
+                event.target.classList.contains("modal-next")
+            ){
+
+                nextImage();
+
+            }
 
         }
+
     );
+
+
+    document.addEventListener(
+
+        "keydown",
+
+        event=>{
+
+            if(
+                !modal ||
+                !modal.classList.contains("active")
+            ){
+
+                return;
+
+            }
+
+            switch(event.key){
+
+                case "Escape":
+
+                    closeModal();
+
+                    break;
+
+                case "ArrowLeft":
+
+                    prevImage();
+
+                    break;
+
+                case "ArrowRight":
+
+                    nextImage();
+
+                    break;
+
+            }
+
+        }
+
+    );
+
+}
+
+
+/**
+ * 開く
+ */
+export function openModal(items,index=0){
+
+    currentItems = items;
+
+    currentIndex = index;
+
+    render();
+
+    modal.classList.add("active");
+
+    document.body.style.overflow="hidden";
+
+}
+
+
+/**
+ * 描画
+ */
+function render(){
+
+    const item = currentItems[currentIndex];
+
+    document.getElementById("modalImage").src =
+        item.image_url;
+
+    document.getElementById("modalImage").alt =
+        item.title;
+
+    document.getElementById("modalTitle").textContent =
+        item.title;
+
+    document.getElementById("modalDescription").textContent =
+        item.description || "";
+
+}
+
+
+/**
+ * 前
+ */
+function prevImage(){
+
+    currentIndex--;
+
+    if(currentIndex<0){
+
+        currentIndex=currentItems.length-1;
+
+    }
+
+    render();
+
+}
+
+
+/**
+ * 次
+ */
+function nextImage(){
+
+    currentIndex++;
+
+    if(currentIndex>=currentItems.length){
+
+        currentIndex=0;
+
+    }
+
+    render();
+
+}
+
+
+/**
+ * 閉じる
+ */
+export function closeModal(){
+
+    modal.classList.remove("active");
+
+    document.body.style.overflow="";
 
 }
