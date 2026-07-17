@@ -3,18 +3,20 @@
    Gallery Module
 ========================================== */
 
-
 import {
     fetchAPI
 }
 from "../api/api.js";
-
 
 import {
     CONFIG
 }
 from "../config/config.js";
 
+import {
+    openModal
+}
+from "../components/modal.js";
 
 
 /**
@@ -31,7 +33,6 @@ export async function initGallery(){
         );
 
 
-
     if(
         !result ||
         result.status !== "success"
@@ -44,7 +45,6 @@ export async function initGallery(){
         return;
 
     }
-
 
 
     const gallery =
@@ -68,14 +68,11 @@ export async function initGallery(){
         );
 
 
-
     renderGallery(
         gallery
     );
 
-
 }
-
 
 
 /**
@@ -92,7 +89,6 @@ function renderGallery(items){
         );
 
 
-
     if(!grid){
 
         return;
@@ -100,9 +96,7 @@ function renderGallery(items){
     }
 
 
-
     grid.innerHTML = "";
-
 
 
     items.forEach(
@@ -116,28 +110,19 @@ function renderGallery(items){
                 );
 
 
-
             card.className =
                 "gallery-card";
 
 
-
             card.innerHTML = `
 
-
                 <img
-
                     src="${item.image_url}"
-
                     alt="${item.title}"
-
                     loading="lazy"
-
                 >
 
-
                 <div class="gallery-info">
-
 
                     <h3>
 
@@ -145,19 +130,38 @@ function renderGallery(items){
 
                     </h3>
 
-
                     <p>
 
                         ${item.description || ""}
 
                     </p>
 
-
                 </div>
-
 
             `;
 
+
+            /* モーダル表示 */
+
+            card.addEventListener(
+                "click",
+                ()=>{
+
+                    openModal({
+
+                        image:
+                            item.image_url,
+
+                        title:
+                            item.title,
+
+                        description:
+                            item.description || ""
+
+                    });
+
+                }
+            );
 
 
             grid.appendChild(
@@ -167,6 +171,5 @@ function renderGallery(items){
 
         }
     );
-
 
 }
