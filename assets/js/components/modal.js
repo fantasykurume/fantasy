@@ -208,7 +208,7 @@ function bindEvents(){
  */
 export function openModal(items,index=0){
 
-    console.log("openModal", items, index);
+    console.log("modal =", modal);
    
     currentItems = items;
 
