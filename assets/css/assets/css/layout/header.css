@@ -1,0 +1,68 @@
+/* ==========================================
+   Header
+   ========================================== */
+
+.header {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: var(--header-height);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 48px;
+
+    z-index: 1000;
+
+    transition: all .35s ease;
+
+}
+
+.header.scrolled{
+
+    background:rgba(17,17,17,.82);
+
+    backdrop-filter:blur(16px);
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.logo{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+}
+
+.logo-main{
+
+    font-size:2rem;
+
+    color:var(--color-gold);
+
+    font-weight:700;
+
+    letter-spacing:.15em;
+
+}
+
+.logo-sub{
+
+    font-size:.8rem;
+
+    color:var(--color-text-sub);
+
+    text-transform:uppercase;
+
+    letter-spacing:.25em;
+
+}
