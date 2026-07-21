@@ -61,6 +61,8 @@ function renderGallery(items) {
 
         card.addEventListener("click", () => {
 
+            console.log("Gallery Click");
+
             openModal(items, index);
 
         });
