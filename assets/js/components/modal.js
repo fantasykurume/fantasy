@@ -230,7 +230,11 @@ export function openModal(items,index=0){
  */
 function render(){
 
+    console.log("render");
+
     const item = currentItems[currentIndex];
+
+    console.log(item);
 
     document.getElementById("modalImage").src =
         item.image_url;
