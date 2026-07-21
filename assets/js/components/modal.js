@@ -208,6 +208,8 @@ function bindEvents(){
  */
 export function openModal(items,index=0){
 
+    console.log("openModal", items, index);
+   
     currentItems = items;
 
     currentIndex = index;
