@@ -32,6 +32,8 @@ export async function initGallery() {
  */
 function renderGallery(items) {
 
+    console.log("renderGallery", items);
+   
     const grid = document.getElementById("galleryGrid");
 
     if (!grid) return;
