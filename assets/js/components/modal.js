@@ -4,33 +4,20 @@
 ========================================== */
 
 let modal = null;
-
 let currentItems = [];
-
 let currentIndex = 0;
 
-
-/**
- * 初期化
- */
-export function initModal(){
+export function initModal() {
 
     createModal();
 
-    bindEvents();
-
 }
 
+function createModal() {
 
-/**
- * Modal生成
- */
-function createModal(){
-
-    if(document.getElementById("globalModal")){
+    if (document.getElementById("globalModal")) {
 
         modal = document.getElementById("globalModal");
-
         return;
 
     }
@@ -38,60 +25,29 @@ function createModal(){
     modal = document.createElement("div");
 
     modal.id = "globalModal";
-
     modal.className = "modal";
 
     modal.innerHTML = `
 
         <div class="modal-content">
 
-            <button
-                class="modal-close">
+            <button class="modal-close">×</button>
 
-                ×
+            <button class="modal-prev">❮</button>
 
-            </button>
+            <button class="modal-next">❯</button>
 
-            <button
-                class="modal-prev">
+            <img
+                id="modalImage"
+                class="modal-image"
+                src=""
+                alt="">
 
-                ❮
+            <div class="modal-info">
 
-            </button>
+                <h2 id="modalTitle"></h2>
 
-            <button
-                class="modal-next">
-
-                ❯
-
-            </button>
-
-            <div class="modal-body">
-
-                <div class="modal-image">
-
-                    <img
-                        id="modalImage"
-                        src=""
-                        alt="">
-
-                </div>
-
-                <div class="modal-info">
-
-                    <h2
-                        id="modalTitle"
-                        class="modal-title">
-
-                    </h2>
-
-                    <p
-                        id="modalDescription"
-                        class="modal-description">
-
-                    </p>
-
-                </div>
+                <p id="modalDescription"></p>
 
             </div>
 
@@ -99,148 +55,93 @@ function createModal(){
 
     `;
 
-    document.body.appendChild(
-        modal
-    );
+    document.body.appendChild(modal);
 
-}
+    /* 閉じる */
 
+    modal.querySelector(".modal-close")
+        .addEventListener("click", closeModal);
 
-/**
- * イベント
- */
-function bindEvents(){
+    modal.addEventListener("click", e => {
 
-    document.addEventListener(
+        if (e.target === modal) {
 
-        "click",
+            closeModal();
 
-        event=>{
+        }
 
-            if(
-                !modal ||
-                !modal.classList.contains("active")
-            ){
+    });
 
-                return;
+    /* 前へ */
 
-            }
+    modal.querySelector(".modal-prev")
+        .addEventListener("click", e => {
 
-            if(
+            e.stopPropagation();
 
-                event.target.classList.contains("modal") ||
+            prev();
 
-                event.target.classList.contains("modal-close")
+        });
 
-            ){
+    /* 次へ */
+
+    modal.querySelector(".modal-next")
+        .addEventListener("click", e => {
+
+            e.stopPropagation();
+
+            next();
+
+        });
+
+    /* キーボード */
+
+    document.addEventListener("keydown", e => {
+
+        if (!modal.classList.contains("active")) return;
+
+        switch (e.key) {
+
+            case "Escape":
 
                 closeModal();
+                break;
 
-            }
+            case "ArrowLeft":
 
-            if(
-                event.target.classList.contains("modal-prev")
-            ){
+                prev();
+                break;
 
-                prevImage();
+            case "ArrowRight":
 
-            }
-
-            if(
-                event.target.classList.contains("modal-next")
-            ){
-
-                nextImage();
-
-            }
+                next();
+                break;
 
         }
 
-    );
-
-
-    document.addEventListener(
-
-        "keydown",
-
-        event=>{
-
-            if(
-                !modal ||
-                !modal.classList.contains("active")
-            ){
-
-                return;
-
-            }
-
-            switch(event.key){
-
-                case "Escape":
-
-                    closeModal();
-
-                    break;
-
-                case "ArrowLeft":
-
-                    prevImage();
-
-                    break;
-
-                case "ArrowRight":
-
-                    nextImage();
-
-                    break;
-
-            }
-
-        }
-
-    );
+    });
 
 }
 
+export function openModal(items, index = 0) {
 
-/**
- * 開く
- */
-export function openModal(items,index=0){
-
-    console.log("modal =", modal);
-   
     currentItems = items;
-
     currentIndex = index;
 
     render();
 
     modal.classList.add("active");
 
-    document.body.classList.add(
-        "modal-open"
-    );
+    document.body.style.overflow = "hidden";
 
 }
 
-
-/**
- * 描画
- */
-function render(){
-
-    console.log("render");
+function render() {
 
     const item = currentItems[currentIndex];
 
-    console.log(item);
-
     document.getElementById("modalImage").src =
         item.image_url;
-
-    document.getElementById("modalImage").alt =
-        item.title;
 
     document.getElementById("modalTitle").textContent =
         item.title;
@@ -250,17 +151,13 @@ function render(){
 
 }
 
-
-/**
- * 前
- */
-function prevImage(){
+function prev() {
 
     currentIndex--;
 
-    if(currentIndex<0){
+    if (currentIndex < 0) {
 
-        currentIndex=currentItems.length-1;
+        currentIndex = currentItems.length - 1;
 
     }
 
@@ -268,17 +165,13 @@ function prevImage(){
 
 }
 
-
-/**
- * 次
- */
-function nextImage(){
+function next() {
 
     currentIndex++;
 
-    if(currentIndex>=currentItems.length){
+    if (currentIndex >= currentItems.length) {
 
-        currentIndex=0;
+        currentIndex = 0;
 
     }
 
@@ -286,16 +179,10 @@ function nextImage(){
 
 }
 
-
-/**
- * 閉じる
- */
-export function closeModal(){
+export function closeModal() {
 
     modal.classList.remove("active");
 
-    document.body.classList.remove(
-        "modal-open"
-    );
+    document.body.style.overflow = "";
 
 }

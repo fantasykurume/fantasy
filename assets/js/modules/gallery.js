@@ -7,33 +7,32 @@ import { fetchAPI } from "../api/api.js";
 import { CONFIG } from "../config/config.js";
 import { openModal } from "../components/modal.js";
 
-/**
- * Gallery 初期化
- */
 export async function initGallery() {
 
     const result = await fetchAPI("gallery");
 
     if (!result || result.status !== "success") {
+
         console.error("Gallery API Error");
+
         return;
+
     }
 
-    const gallery = result.data
+    const items = result.data
+
         .filter(item => item.status === "公開")
+
         .sort((a, b) => Number(a.sort) - Number(b.sort))
+
         .slice(0, CONFIG.GALLERY_LIMIT);
 
-    renderGallery(gallery);
+    renderGallery(items);
+
 }
 
-/**
- * Gallery表示
- */
 function renderGallery(items) {
 
-    console.log("renderGallery", items);
-   
     const grid = document.getElementById("galleryGrid");
 
     if (!grid) return;
@@ -47,10 +46,12 @@ function renderGallery(items) {
         card.className = "gallery-card";
 
         card.innerHTML = `
+
             <img
                 src="${item.image_url}"
                 alt="${item.title}"
-                loading="lazy">
+                loading="lazy"
+            >
 
             <div class="gallery-info">
 
@@ -59,11 +60,10 @@ function renderGallery(items) {
                 <p>${item.description || ""}</p>
 
             </div>
+
         `;
 
         card.addEventListener("click", () => {
-
-            console.log("Gallery Click");
 
             openModal(items, index);
 
