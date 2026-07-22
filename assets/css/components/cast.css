@@ -1,35 +1,136 @@
+/* ==========================================
+   CAST
+========================================== */
+
+
 .cast-grid{
-
-    display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-
-    gap:30px;
-
-}
-
-.cast-card{
-
-    text-align:center;
-
-}
-
-.cast-card img{
 
     width:100%;
 
-    aspect-ratio:3/4;
+}
 
-    object-fit:cover;
 
-    border-radius:12px;
+.cast-card{
+
+    border-bottom:1px solid rgba(255,255,255,0.15);
 
 }
 
-.cast-card h3{
 
-    margin-top:15px;
+/* 名前ボタン */
 
-    color:var(--color-gold);
+.cast-name{
+
+    width:100%;
+
+    padding:22px 10px;
+
+    background:none;
+
+    border:none;
+
+    color:inherit;
+
+    font-size:1.2rem;
+
+    letter-spacing:0.15em;
+
+    text-align:left;
+
+    cursor:pointer;
+
+    position:relative;
+
+}
+
+
+/* 矢印 */
+
+.cast-name::after{
+
+    content:"＋";
+
+    position:absolute;
+
+    right:10px;
+
+    font-size:1.3rem;
+
+    transition:.3s;
+
+}
+
+
+.cast-name.active::after{
+
+    content:"−";
+
+}
+
+
+
+/* 写真 */
+
+.cast-photo{
+
+    max-height:0;
+
+    overflow:hidden;
+
+    opacity:0;
+
+    transition:
+
+        max-height .6s ease,
+
+        opacity .5s ease;
+
+}
+
+
+
+/* 開いた状態 */
+
+.cast-photo.open{
+
+    max-height:800px;
+
+    opacity:1;
+
+}
+
+
+
+/* 画像 */
+
+.cast-photo img{
+
+    display:block;
+
+    width:100%;
+
+    max-width:500px;
+
+    margin:10px auto 25px;
+
+    border-radius:8px;
+
+}
+
+
+
+/* PC */
+
+@media(min-width:768px){
+
+
+    .cast-name{
+
+        font-size:1.3rem;
+
+        padding:25px 20px;
+
+    }
+
 
 }

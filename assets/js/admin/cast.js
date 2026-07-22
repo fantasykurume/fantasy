@@ -1,0 +1,635 @@
+/* ==========================================
+   Cast Admin
+========================================== */
+
+import { CONFIG } from "../config/config.js";
+import { openUpload } from "./upload.js";
+
+
+let editId = null;
+
+
+
+/* ==========================================
+   初期化
+========================================== */
+
+export async function initCastAdmin(){
+
+
+    document.querySelector(".content").innerHTML = `
+
+
+    <h2>CAST管理</h2>
+
+
+    <button id="addCast">
+
+        ＋CAST追加
+
+    </button>
+
+
+    <hr>
+
+
+    <div id="castList">
+
+        読み込み中...
+
+    </div>
+
+
+
+    <div id="castForm"
+    style="display:none;">
+
+
+        <h3>
+
+        CAST追加・編集
+
+        </h3>
+
+
+        <input
+        id="castName"
+        placeholder="名前">
+
+
+        <br><br>
+
+
+        <button id="uploadButton">
+
+        📷画像アップロード
+
+        </button>
+
+
+        <br><br>
+
+
+        <input
+        id="castImage"
+        readonly
+        placeholder="画像URL">
+
+
+        <br><br>
+
+
+        <img
+        id="previewImage"
+        style="
+        max-width:300px;
+        display:none;
+        ">
+
+
+        <br><br>
+
+
+        表示順
+
+
+        <input
+        id="castSort"
+        type="number"
+        value="1">
+
+
+        <br><br>
+
+
+        <select id="castStatus">
+
+            <option value="公開">
+                公開
+            </option>
+
+            <option value="非公開">
+                非公開
+            </option>
+
+        </select>
+
+
+        <br><br>
+
+
+        <button id="saveCast">
+
+            保存
+
+        </button>
+
+
+    </div>
+
+
+    `;
+
+
+
+    registerEvents();
+
+
+    loadCast();
+
+}
+
+
+
+/* ==========================================
+   Events
+========================================== */
+
+function registerEvents(){
+
+
+    document
+    .getElementById("addCast")
+    .addEventListener(
+        "click",
+        showForm
+    );
+
+
+
+    document
+    .getElementById("uploadButton")
+    .addEventListener(
+        "click",
+        uploadImage
+    );
+
+
+
+    document
+    .getElementById("saveCast")
+    .addEventListener(
+        "click",
+        saveCast
+    );
+
+
+}
+
+
+
+/* ==========================================
+   Form
+========================================== */
+
+function showForm(){
+
+
+    editId=null;
+
+
+    resetForm();
+
+
+    document
+    .getElementById("castForm")
+    .style.display="block";
+
+
+}
+
+
+
+/* ==========================================
+   Upload
+========================================== */
+
+function uploadImage(){
+
+
+    openUpload(url=>{
+
+
+        document
+        .getElementById("castImage")
+        .value=url;
+
+
+
+        const img =
+        document.getElementById("previewImage");
+
+
+        img.src=url;
+
+
+        img.style.display="block";
+
+
+    });
+
+
+}
+
+
+
+/* ==========================================
+   Load
+========================================== */
+
+async function loadCast(){
+
+
+    const response =
+    await fetch(
+
+        `${CONFIG.API_URL}?action=cast`
+
+    );
+
+
+    const result =
+    await response.json();
+
+
+
+    renderCast(result.data || []);
+
+
+}
+
+
+
+/* ==========================================
+   Render
+========================================== */
+
+function renderCast(items){
+
+
+    const list =
+    document.getElementById("castList");
+
+
+    list.innerHTML="";
+
+
+
+    items.forEach(item=>{
+
+
+        list.innerHTML += `
+
+
+        <div class="gallery-row">
+
+
+            <img
+            src="${item.image_url}"
+            class="thumb">
+
+
+
+            <div>
+
+
+                <h3>
+
+                ${item.name}
+
+                </h3>
+
+
+                <p>
+
+                表示順:${item.sort}
+
+                </p>
+
+
+            </div>
+
+
+
+            <button
+            class="edit"
+            data-id="${item.id}">
+
+                編集
+
+            </button>
+
+
+
+            <button
+            class="delete"
+            data-id="${item.id}">
+
+                削除
+
+            </button>
+
+
+
+        </div>
+
+
+        `;
+
+
+    });
+
+
+
+    registerRowEvents();
+
+
+}
+
+
+
+/* ==========================================
+   Row Events
+========================================== */
+
+function registerRowEvents(){
+
+
+    document
+    .querySelectorAll(".edit")
+    .forEach(btn=>{
+
+
+        btn.onclick=()=>{
+
+            editCast(btn.dataset.id);
+
+        };
+
+
+    });
+
+
+
+    document
+    .querySelectorAll(".delete")
+    .forEach(btn=>{
+
+
+        btn.onclick=()=>{
+
+            deleteCast(btn.dataset.id);
+
+        };
+
+
+    });
+
+
+}
+
+
+
+/* ==========================================
+   Edit
+========================================== */
+
+async function editCast(id){
+
+
+    const response =
+    await fetch(
+
+        `${CONFIG.API_URL}?action=cast`
+
+    );
+
+
+    const result =
+    await response.json();
+
+
+
+    const item =
+    result.data.find(
+        x=>Number(x.id)===Number(id)
+    );
+
+
+
+    if(!item)return;
+
+
+
+    editId=id;
+
+
+    document
+    .getElementById("castForm")
+    .style.display="block";
+
+
+
+    document
+    .getElementById("castName")
+    .value=item.name;
+
+
+
+    document
+    .getElementById("castImage")
+    .value=item.image_url;
+
+
+
+    document
+    .getElementById("castSort")
+    .value=item.sort;
+
+
+
+    const img =
+    document.getElementById("previewImage");
+
+
+    img.src=item.image_url;
+
+
+    img.style.display="block";
+
+
+}
+
+
+
+/* ==========================================
+   Save
+========================================== */
+
+async function saveCast(){
+
+
+    const form =
+    new FormData();
+
+
+
+    if(editId){
+
+        form.append(
+            "action",
+            "updateCast"
+        );
+
+
+        form.append(
+            "id",
+            editId
+        );
+
+
+    }else{
+
+
+        form.append(
+            "action",
+            "saveCast"
+        );
+
+
+    }
+
+
+
+    form.append(
+        "name",
+        document.getElementById("castName").value
+    );
+
+
+    form.append(
+        "image_url",
+        document.getElementById("castImage").value
+    );
+
+
+    form.append(
+        "sort",
+        document.getElementById("castSort").value
+    );
+
+
+
+    await fetch(
+
+        CONFIG.API_URL,
+
+        {
+            method:"POST",
+            body:form
+        }
+
+    );
+
+
+
+    alert("保存しました");
+
+
+    resetForm();
+
+
+    loadCast();
+
+
+}
+
+
+
+/* ==========================================
+   Delete
+========================================== */
+
+async function deleteCast(id){
+
+
+    if(!confirm("削除しますか？"))
+    return;
+
+
+
+    const form =
+    new FormData();
+
+
+
+    form.append(
+        "action",
+        "deleteCast"
+    );
+
+
+    form.append(
+        "id",
+        id
+    );
+
+
+
+    await fetch(
+
+        CONFIG.API_URL,
+
+        {
+            method:"POST",
+            body:form
+        }
+
+    );
+
+
+
+    loadCast();
+
+
+}
+
+
+
+/* ==========================================
+   Reset
+========================================== */
+
+function resetForm(){
+
+
+    document
+    .getElementById("castName")
+    .value="";
+
+
+    document
+    .getElementById("castImage")
+    .value="";
+
+
+    document
+    .getElementById("castSort")
+    .value=1;
+
+
+    const img =
+    document.getElementById("previewImage");
+
+
+    img.src="";
+
+    img.style.display="none";
+
+
+    document
+    .getElementById("castForm")
+    .style.display="none";
+
+
+}

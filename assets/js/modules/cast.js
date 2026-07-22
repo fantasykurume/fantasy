@@ -76,7 +76,20 @@ export async function initCast(){
                     button.nextElementSibling;
 
 
-                photo.classList.toggle("open");
+                button.addEventListener(
+    "click",
+    ()=>{
+
+        const photo =
+            button.nextElementSibling;
+
+
+        photo.classList.toggle("open");
+
+        button.classList.toggle("active");
+
+    }
+);
 
 
             }
