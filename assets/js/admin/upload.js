@@ -1,105 +1,46 @@
-import { CONFIG } from "../config/config.js";
+export function openUpload(callback){
 
-export async function initGalleryAdmin(){
+    cloudinary.openUploadWidget(
 
-    document.querySelector(".content").innerHTML = `
+        {
 
-        <h2>Gallery管理</h2>
+            cloudName: "pr4dm1pw",
 
-        <button id="addGallery">
+            uploadPreset: "fantasy_gallery",
 
-            ＋画像追加
+            sources: [
 
-        </button>
+                "local",
 
-        <hr style="margin:20px 0;">
+                "camera"
 
-        <div id="galleryList">
+            ],
 
-            読み込み中...
+            multiple:false
 
-        </div>
+        },
 
-    `;
+        (error,result)=>{
 
-    loadGallery();
+            if(error){
 
-}
+                console.error(error);
 
-async function loadGallery(){
+                return;
 
-    const list = document.getElementById("galleryList");
+            }
 
-    try{
+            if(
+                result &&
+                result.event==="success"
+            ){
 
-        const response = await fetch(
+                callback(result.info.secure_url);
 
-            `${CONFIG.API_URL}?action=gallery`
-
-        );
-
-        const result = await response.json();
-
-        if(result.status!=="success"){
-
-            list.innerHTML="取得できません";
-
-            return;
+            }
 
         }
 
-        renderGallery(result.data);
-
-    }catch(e){
-
-        console.error(e);
-
-        list.innerHTML="通信エラー";
-
-    }
-
-}
-
-function renderGallery(items){
-
-    const list=document.getElementById("galleryList");
-
-    list.innerHTML="";
-
-    items.forEach(item=>{
-
-        list.innerHTML+=`
-
-        <div class="gallery-row">
-
-            <img
-                src="${item.image_url}"
-                class="thumb">
-
-            <div class="gallery-info">
-
-                <h3>${item.title}</h3>
-
-                <p>${item.description}</p>
-
-            </div>
-
-            <button class="edit">
-
-                編集
-
-            </button>
-
-            <button class="delete">
-
-                削除
-
-            </button>
-
-        </div>
-
-        `;
-
-    });
+    );
 
 }

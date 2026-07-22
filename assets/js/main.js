@@ -20,7 +20,7 @@ import { initSystem } from "./modules/system.js";
 
 import { initAccess } from "./modules/access.js";
 
-
+import { initCast } from "./modules/cast.js";
 
 document.addEventListener(
 "DOMContentLoaded",
@@ -50,5 +50,6 @@ async ()=>{
 
     await initAccess();
 
+    await initCast();
 
 });

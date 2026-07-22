@@ -30,6 +30,10 @@ export async function initGalleryAdmin(){
     .getElementById("galleryForm")
     .style.display="block";
 
+    document
+    .getElementById("saveGallery")
+    .addEventListener("click",saveGallery);
+
     });
 
     loadGallery();
@@ -243,5 +247,66 @@ function renderGallery(items){
         `;
 
     });
+
+}
+
+async function saveGallery(){
+
+    const title =
+        document.getElementById("galleryTitle").value;
+
+    const description =
+        document.getElementById("galleryDescription").value;
+
+    const image_url =
+        document.getElementById("galleryImage").value;
+
+    const category =
+        document.getElementById("galleryCategory").value;
+
+    const sort =
+        document.getElementById("gallerySort").value;
+
+    const form = new FormData();
+
+    form.append("action","saveGallery");
+
+    form.append("title",title);
+
+    form.append("description",description);
+
+    form.append("image_url",image_url);
+
+    form.append("category",category);
+
+    form.append("sort",sort);
+
+    const response = await fetch(
+
+        CONFIG.API_URL,
+
+        {
+
+            method:"POST",
+
+            body:form
+
+        }
+
+    );
+
+    const result = await response.json();
+
+    if(result.status==="success"){
+
+        alert("保存しました");
+
+        loadGallery();
+
+    }else{
+
+        alert("保存に失敗しました");
+
+    }
 
 }

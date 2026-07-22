@@ -1,0 +1,35 @@
+.cast-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:30px;
+
+}
+
+.cast-card{
+
+    text-align:center;
+
+}
+
+.cast-card img{
+
+    width:100%;
+
+    aspect-ratio:3/4;
+
+    object-fit:cover;
+
+    border-radius:12px;
+
+}
+
+.cast-card h3{
+
+    margin-top:15px;
+
+    color:var(--color-gold);
+
+}
