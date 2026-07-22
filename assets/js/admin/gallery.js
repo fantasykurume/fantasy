@@ -1,4 +1,5 @@
 import { CONFIG } from "../config/config.js";
+import { openUpload } from "./upload.js";
 
 export async function initGalleryAdmin(){
 
@@ -20,21 +21,115 @@ export async function initGalleryAdmin(){
 
         </div>
 
+        <div
+            id="galleryForm"
+            style="display:none;margin-top:30px;">
+
+            <h3>Gallery追加</h3>
+
+            <input
+                id="galleryTitle"
+                type="text"
+                placeholder="タイトル">
+
+            <br><br>
+
+            <textarea
+                id="galleryDescription"
+                placeholder="説明"></textarea>
+
+            <br><br>
+
+            <select id="galleryCategory">
+
+                <option value="interior">
+                    interior
+                </option>
+
+                <option value="food">
+                    food
+                </option>
+
+                <option value="event">
+                    event
+                </option>
+
+            </select>
+
+            <br><br>
+
+            <input
+                id="gallerySort"
+                type="number"
+                value="1">
+
+            <br><br>
+
+            <button id="uploadButton">
+
+                📷画像アップロード
+
+            </button>
+
+            <br><br>
+
+            <input
+                id="galleryImage"
+                readonly
+                placeholder="画像URL">
+
+            <br><br>
+
+            <img
+                id="previewImage"
+                style="
+                    max-width:300px;
+                    display:block;
+                ">
+
+            <br>
+
+            <button id="saveGallery">
+
+                保存
+
+            </button>
+
+        </div>
+
     `;
 
     document
-     .getElementById("addGallery")
-     .addEventListener("click",()=>{
+        .getElementById("addGallery")
+        .addEventListener("click",()=>{
+
+            document
+                .getElementById("galleryForm")
+                .style.display="block";
+
+        });
 
     document
-    .getElementById("galleryForm")
-    .style.display="block";
+        .getElementById("uploadButton")
+        .addEventListener("click",()=>{
+
+            openUpload(url=>{
+
+                document
+                    .getElementById("galleryImage")
+                    .value=url;
+
+                document
+                    .getElementById("previewImage")
+                    .src=url;
+
+            });
+
+        });
 
     document
-    .getElementById("saveGallery")
-    .addEventListener("click",saveGallery);
-
-    });
+        .getElementById("saveGallery")
+        .addEventListener("click",saveGallery);
 
     loadGallery();
 
@@ -42,17 +137,20 @@ export async function initGalleryAdmin(){
 
 async function loadGallery(){
 
-    const list = document.getElementById("galleryList");
+    const list =
+        document.getElementById("galleryList");
 
     try{
 
-        const response = await fetch(
+        const response =
+            await fetch(
 
-            `${CONFIG.API_URL}?action=gallery`
+                `${CONFIG.API_URL}?action=gallery`
 
-        );
+            );
 
-        const result = await response.json();
+        const result =
+            await response.json();
 
         if(result.status!=="success"){
 
@@ -76,173 +174,44 @@ async function loadGallery(){
 
 function renderGallery(items){
 
-    const list=document.getElementById("galleryList");
+    const list =
+        document.getElementById("galleryList");
 
-    list.innerHTML="";
+    list.innerHTML = "";
 
     items.forEach(item=>{
 
-        list.innerHTML+=`
+        list.innerHTML += `
 
-        <div class="gallery-row">
+            <div class="gallery-row">
 
-            <img
-                src="${item.image_url}"
-                class="thumb">
+                <img
+                    src="${item.image_url}"
+                    class="thumb">
 
-            <div class="gallery-info">
+                <div class="gallery-info">
 
-                <h3>${item.title}</h3>
+                    <h3>${item.title}</h3>
 
-                <p>${item.description}</p>
+                    <p>${item.description}</p>
+
+                </div>
+
+                <button
+                    class="edit">
+
+                    編集
+
+                </button>
+
+                <button
+                    class="delete">
+
+                    削除
+
+                </button>
 
             </div>
-
-            <button class="edit">
-
-                編集
-
-            </button>
-
-            <button class="delete">
-
-                削除
-
-            </button>
-            
-          <button id="addGallery">
-
-    ＋画像追加
-
-</button>
-
-<div id="galleryForm" style="display:none;">
-
-    <h3>Gallery追加</h3>
-
-    <input
-        id="galleryTitle"
-        type="text"
-        placeholder="タイトル">
-
-    <textarea
-        id="galleryDescription"
-        placeholder="説明"></textarea>
-
-    <select id="galleryCategory">
-
-        <option value="interior">
-            interior
-        </option>
-
-        <option value="food">
-            food
-        </option>
-
-        <option value="event">
-            event
-        </option>
-
-    </select>
-
-    <input
-        id="gallerySort"
-        type="number"
-        value="1">
-
-    <button id="uploadButton">
-
-        📷画像アップロード
-
-    </button>
-
-    <input
-        id="galleryImage"
-        readonly
-        placeholder="画像URL">
-
-    <img
-        id="previewImage"
-        style="
-            max-width:300px;
-            display:block;
-            margin-top:15px;
-        ">
-
-    <button id="saveGallery">
-
-        保存
-
-    </button>
-
-</div><button id="addGallery">
-
-    ＋画像追加
-
-</button>
-
-<div id="galleryForm" style="display:none;">
-
-    <h3>Gallery追加</h3>
-
-    <input
-        id="galleryTitle"
-        type="text"
-        placeholder="タイトル">
-
-    <textarea
-        id="galleryDescription"
-        placeholder="説明"></textarea>
-
-    <select id="galleryCategory">
-
-        <option value="interior">
-            interior
-        </option>
-
-        <option value="food">
-            food
-        </option>
-
-        <option value="event">
-            event
-        </option>
-
-    </select>
-
-    <input
-        id="gallerySort"
-        type="number"
-        value="1">
-
-    <button id="uploadButton">
-
-        📷画像アップロード
-
-    </button>
-
-    <input
-        id="galleryImage"
-        readonly
-        placeholder="画像URL">
-
-    <img
-        id="previewImage"
-        style="
-            max-width:300px;
-            display:block;
-            margin-top:15px;
-        ">
-
-    <button id="saveGallery">
-
-        保存
-
-    </button>
-
-</div>
-
-        </div>
 
         `;
 
@@ -253,19 +222,48 @@ function renderGallery(items){
 async function saveGallery(){
 
     const title =
-        document.getElementById("galleryTitle").value;
+        document
+            .getElementById("galleryTitle")
+            .value
+            .trim();
 
     const description =
-        document.getElementById("galleryDescription").value;
+        document
+            .getElementById("galleryDescription")
+            .value
+            .trim();
 
     const image_url =
-        document.getElementById("galleryImage").value;
+        document
+            .getElementById("galleryImage")
+            .value
+            .trim();
 
     const category =
-        document.getElementById("galleryCategory").value;
+        document
+            .getElementById("galleryCategory")
+            .value;
 
     const sort =
-        document.getElementById("gallerySort").value;
+        document
+            .getElementById("gallerySort")
+            .value;
+
+    if(title===""){
+
+        alert("タイトルを入力してください");
+
+        return;
+
+    }
+
+    if(image_url===""){
+
+        alert("画像をアップロードしてください");
+
+        return;
+
+    }
 
     const form = new FormData();
 
@@ -281,31 +279,67 @@ async function saveGallery(){
 
     form.append("sort",sort);
 
-    const response = await fetch(
+    try{
 
-        CONFIG.API_URL,
+        const response =
+            await fetch(
 
-        {
+                CONFIG.API_URL,
 
-            method:"POST",
+                {
 
-            body:form
+                    method:"POST",
+
+                    body:form
+
+                }
+
+            );
+
+        const result =
+            await response.json();
+
+        if(result.status==="success"){
+
+            alert("保存しました");
+
+            document
+                .getElementById("galleryForm")
+                .style.display="none";
+
+            document
+                .getElementById("galleryTitle")
+                .value="";
+
+            document
+                .getElementById("galleryDescription")
+                .value="";
+
+            document
+                .getElementById("galleryImage")
+                .value="";
+
+            document
+                .getElementById("previewImage")
+                .src="";
+
+            document
+                .getElementById("gallerySort")
+                .value="1";
+
+            loadGallery();
+
+        }else{
+
+            alert("保存に失敗しました");
 
         }
 
-    );
+    }catch(e){
 
-    const result = await response.json();
+        console.error(e);
 
-    if(result.status==="success"){
-
-        alert("保存しました");
-
-        loadGallery();
-
-    }else{
-
-        alert("保存に失敗しました");
+        alert("通信エラー");
 
     }
 
