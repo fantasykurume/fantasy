@@ -100,32 +100,26 @@ export async function initGalleryAdmin(){
     `;
 
     document
-        .getElementById("addGallery")
-        .addEventListener("click",()=>{
+    .getElementById("uploadButton")
+    .addEventListener("click",()=>{
+
+        console.log("upload button clicked");
+
+        openUpload(url=>{
+
+            console.log("uploaded:", url);
 
             document
-                .getElementById("galleryForm")
-                .style.display="block";
+                .getElementById("galleryImage")
+                .value=url;
+
+            document
+                .getElementById("previewImage")
+                .src=url;
 
         });
 
-    document
-        .getElementById("uploadButton")
-        .addEventListener("click",()=>{
-
-            openUpload(url=>{
-
-                document
-                    .getElementById("galleryImage")
-                    .value=url;
-
-                document
-                    .getElementById("previewImage")
-                    .src=url;
-
-            });
-
-        });
+    });
 
     document
         .getElementById("saveGallery")
