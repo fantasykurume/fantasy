@@ -140,11 +140,31 @@ function render() {
 
     const item = currentItems[currentIndex];
 
-    document.getElementById("modalImage").src =
-        item.image_url;
+
+    const img =
+        document.getElementById("modalImage");
+
+
+    img.style.opacity = "0";
+
+
+    img.onload = ()=>{
+
+        img.style.opacity="1";
+
+    };
+
+
+    img.src =
+        item.image_url.replace(
+            "/upload/",
+            "/upload/w_1000,q_auto,f_auto/"
+        );
+
 
     document.getElementById("modalTitle").textContent =
         item.title;
+
 
     document.getElementById("modalDescription").textContent =
         item.description || "";
