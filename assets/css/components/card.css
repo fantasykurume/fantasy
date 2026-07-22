@@ -98,3 +98,31 @@
     line-height:1.7;
 
 }
+
+.cast-photo{
+
+    max-height:0;
+    overflow:hidden;
+    transition:.5s;
+
+}
+
+
+.cast-photo.open{
+
+    max-height:600px;
+
+}
+
+
+.cast-name{
+
+    width:100%;
+    padding:20px;
+
+    background:none;
+    border:none;
+
+    text-align:left;
+
+}
