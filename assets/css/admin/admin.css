@@ -183,3 +183,23 @@ body{
     margin-bottom:15px;
 
 }
+
+/* =========================
+   Shop Form
+========================= */
+
+#shopDescription{
+
+    width:500px;
+
+    height:150px;
+
+    padding:10px;
+
+    font-size:15px;
+
+    line-height:1.6;
+
+    resize:vertical;
+
+}
