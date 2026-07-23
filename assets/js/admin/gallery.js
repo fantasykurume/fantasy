@@ -212,8 +212,9 @@ async function loadGallery(){
     const list =
         document.getElementById("galleryList");
 
-    list.innerHTML = "読み込み中...";
+    if(!list) return;
 
+    list.innerHTML = "読み込み中...";
     try{
 
         const response =
@@ -255,8 +256,9 @@ function renderGallery(items){
     const list =
         document.getElementById("galleryList");
 
-    list.innerHTML = "";
+    if(!list) return;
 
+    list.innerHTML = "";
     if(items.length===0){
 
         list.innerHTML = `
