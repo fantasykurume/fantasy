@@ -136,3 +136,5 @@ if(dashboard){
 
 
 initDashboardAdmin();
+
+});
