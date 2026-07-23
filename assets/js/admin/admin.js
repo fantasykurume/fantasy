@@ -7,26 +7,20 @@
 import { initGalleryAdmin } from "./gallery.js";
 import { initCastAdmin } from "./cast.js";
 import { initSystemAdmin } from "./system.js";
-
+import { initDashboardAdmin } from "./dashboard.js";
 
 
 const pages = {
 
-
+    dashboard:initDashboardAdmin,
+    
     gallery:initGalleryAdmin,
-
 
     cast:initCastAdmin,
 
-
     system:initSystemAdmin
 
-
 };
-
-
-
-
 
 document.addEventListener(
 "DOMContentLoaded",

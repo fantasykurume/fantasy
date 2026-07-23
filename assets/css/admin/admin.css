@@ -203,3 +203,47 @@ body{
     resize:vertical;
 
 }
+
+.dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+
+.dashboard-card{
+
+    background:#222;
+
+    padding:25px;
+
+    border-radius:10px;
+
+}
+
+
+.dashboard-card h3{
+
+    color:#d4af37;
+
+    margin-bottom:10px;
+
+}
+
+
+.dashboard-info{
+
+    margin-top:30px;
+
+    background:#222;
+
+    padding:25px;
+
+    border-radius:10px;
+
+}

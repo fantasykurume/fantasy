@@ -7,121 +7,103 @@
 export function initDashboardAdmin(){
 
 
-    document.querySelector(".content").innerHTML = `
+    document
+    .querySelector(".content")
+    .innerHTML = `
 
 
-    <h2>
-        Dashboard
-    </h2>
+        <h2>
+            Dashboard
+        </h2>
 
 
-    <div class="dashboard">
+
+        <div class="dashboard-grid">
 
 
-        <div class="dashboard-card">
+
+            <div class="dashboard-card">
+
+                <h3>
+                    🏢 店舗情報
+                </h3>
+
+                <p>
+                    店舗設定管理
+                </p>
+
+            </div>
+
+
+
+
+            <div class="dashboard-card">
+
+                <h3>
+                    📷 Gallery
+                </h3>
+
+                <p>
+                    画像管理
+                </p>
+
+            </div>
+
+
+
+
+            <div class="dashboard-card">
+
+                <h3>
+                    👩 Cast
+                </h3>
+
+                <p>
+                    キャスト管理
+                </p>
+
+            </div>
+
+
+
+
+            <div class="dashboard-card">
+
+                <h3>
+                    💰 System
+                </h3>
+
+                <p>
+                    料金管理
+                </p>
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+        <div class="dashboard-info">
+
 
             <h3>
                 Fantasy CMS
             </h3>
 
-            <p>
-                管理画面へようこそ
-            </p>
-
-        </div>
-
-
-
-        <div class="dashboard-card">
-
-            <h3>
-                管理項目
-            </h3>
 
             <p>
-                店舗情報・Gallery・Castなどを管理できます
+                店舗ホームページ管理システム
             </p>
+
 
         </div>
 
-
-
-        <div class="dashboard-card">
-
-            <h3>
-                API Status
-            </h3>
-
-            <p id="apiStatus">
-                確認中...
-            </p>
-
-        </div>
-
-
-    </div>
 
 
     `;
-
-
-    checkAPI();
-
-
-}
-
-
-
-
-async function checkAPI(){
-
-
-    const status =
-        document.getElementById(
-            "apiStatus"
-        );
-
-
-    try{
-
-
-        const response =
-            await fetch(
-                "https://fantasy-api.fantasykurume0820.workers.dev/"
-            );
-
-
-        const result =
-            await response.json();
-
-
-
-        if(result.status==="ok"){
-
-
-            status.innerHTML =
-            "🟢 API ONLINE";
-
-
-        }else{
-
-
-            status.innerHTML =
-            "🔴 API ERROR";
-
-
-        }
-
-
-
-    }catch(e){
-
-
-        status.innerHTML =
-        "🔴 通信エラー";
-
-
-    }
 
 
 }
