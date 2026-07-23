@@ -9,10 +9,13 @@ import { initCastAdmin } from "./cast.js";
 import { initSystemAdmin } from "./system.js";
 import { initDashboardAdmin } from "./dashboard.js";
 import { initNewsAdmin } from "./news.js";
+import { initShopAdmin } from "./shop.js";
 
 const pages = {
 
     dashboard:initDashboardAdmin,
+    
+    shop:initShopAdmin,
     
     gallery:initGalleryAdmin,
 
