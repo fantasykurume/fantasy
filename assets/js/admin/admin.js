@@ -4,12 +4,19 @@
 ========================================== */
 
 
+import { initShopAdmin } from "./shop.js";
 import { initGalleryAdmin } from "./gallery.js";
 import { initCastAdmin } from "./cast.js";
-
+import { initDashboardAdmin } from "./dashboard.js";
 
 
 const pages = {
+
+
+    dashboard:initDashboardAdmin,
+
+
+    shop:initShopAdmin,
 
 
     gallery:initGalleryAdmin,
@@ -19,6 +26,7 @@ const pages = {
 
 
 };
+
 
 
 
@@ -53,8 +61,10 @@ document.addEventListener(
                     active変更
                 */
 
+
                 menu.forEach(
-                    m=>m.classList.remove(
+                    m=>
+                    m.classList.remove(
                         "active"
                     )
                 );
@@ -69,6 +79,7 @@ document.addEventListener(
                 /*
                     ページ表示
                 */
+
 
                 if(pages[page]){
 
@@ -88,11 +99,17 @@ document.addEventListener(
 
 
 
+
     /*
         初期表示
+
+        最初はDashboardではなく
+        Gallery表示にしている
+        必要なら変更可能
     */
 
-    initGalleryAdmin();
+
+    initDashboardAdmin();
 
 
 

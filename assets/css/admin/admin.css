@@ -152,3 +152,34 @@ body{
     border:none;
 
 }
+
+.dashboard{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+
+    gap:20px;
+
+}
+
+
+.dashboard-card{
+
+    background:#222;
+
+    padding:25px;
+
+    border-radius:12px;
+
+}
+
+
+.dashboard-card h3{
+
+    color:#d4af37;
+
+    margin-bottom:15px;
+
+}

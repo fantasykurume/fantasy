@@ -1,105 +1,153 @@
-import { CONFIG } from "../config/config.js";
+/* ==========================================
+   Shop Admin
+========================================== */
 
-export async function initGalleryAdmin(){
+import { adminGet } from "./api.js";
+
+
+export async function initShopAdmin(){
+
 
     document.querySelector(".content").innerHTML = `
 
-        <h2>Gallery管理</h2>
 
-        <button id="addGallery">
+    <h2>店舗情報管理</h2>
 
-            ＋画像追加
 
-        </button>
+    <div id="shopForm">
 
-        <hr style="margin:20px 0;">
+        読み込み中...
 
-        <div id="galleryList">
+    </div>
 
-            読み込み中...
-
-        </div>
 
     `;
 
-    loadGallery();
+
+    loadShop();
+
 
 }
 
-async function loadGallery(){
 
-    const list = document.getElementById("galleryList");
+
+async function loadShop(){
+
+
+    const area =
+        document.getElementById(
+            "shopForm"
+        );
+
 
     try{
 
-        const response = await fetch(
 
-            `${CONFIG.API_URL}?action=gallery`
+        const result =
+            await adminGet("shop");
 
-        );
 
-        const result = await response.json();
 
         if(result.status!=="success"){
 
-            list.innerHTML="取得できません";
+            area.innerHTML =
+            "取得失敗";
 
             return;
 
         }
 
-        renderGallery(result.data);
+
+
+        const shop =
+            result.data[0];
+
+
+
+        area.innerHTML = `
+
+
+        <label>
+        店舗名
+        </label>
+
+        <br>
+
+        <input
+        id="shopName"
+        value="${shop.shop_name || ""}"
+        >
+
+
+        <br><br>
+
+
+        <label>
+        キャッチコピー
+        </label>
+
+        <br>
+
+        <input
+        id="shopCatch"
+        value="${shop.catch_copy || ""}"
+        >
+
+
+        <br><br>
+
+
+        <label>
+        説明
+        </label>
+
+        <br>
+
+        <textarea
+        id="shopDescription">
+
+        ${shop.description || ""}
+
+        </textarea>
+
+
+        <br><br>
+
+
+        <label>
+        電話番号
+        </label>
+
+        <br>
+
+        <input
+        id="shopPhone"
+        value="${shop.phone || ""}"
+        >
+
+
+        <br><br>
+
+
+        <button id="saveShop">
+
+            保存
+
+        </button>
+
+
+        `;
+
+
 
     }catch(e){
 
         console.error(e);
 
-        list.innerHTML="通信エラー";
+        area.innerHTML =
+        "通信エラー";
 
     }
 
-}
-
-function renderGallery(items){
-
-    const list=document.getElementById("galleryList");
-
-    list.innerHTML="";
-
-    items.forEach(item=>{
-
-        list.innerHTML+=`
-
-        <div class="gallery-row">
-
-            <img
-                src="${item.image_url}"
-                class="thumb">
-
-            <div class="gallery-info">
-
-                <h3>${item.title}</h3>
-
-                <p>${item.description}</p>
-
-            </div>
-
-            <button class="edit">
-
-                編集
-
-            </button>
-
-            <button class="delete">
-
-                削除
-
-            </button>
-
-        </div>
-
-        `;
-
-    });
 
 }

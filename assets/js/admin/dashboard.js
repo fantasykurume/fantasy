@@ -1,105 +1,127 @@
-import { CONFIG } from "../config/config.js";
+/* ==========================================
+   Fantasy CMS
+   Dashboard Admin
+========================================== */
 
-export async function initGalleryAdmin(){
+
+export function initDashboardAdmin(){
+
 
     document.querySelector(".content").innerHTML = `
 
-        <h2>Gallery管理</h2>
 
-        <button id="addGallery">
+    <h2>
+        Dashboard
+    </h2>
 
-            ＋画像追加
 
-        </button>
+    <div class="dashboard">
 
-        <hr style="margin:20px 0;">
 
-        <div id="galleryList">
+        <div class="dashboard-card">
 
-            読み込み中...
+            <h3>
+                Fantasy CMS
+            </h3>
+
+            <p>
+                管理画面へようこそ
+            </p>
 
         </div>
+
+
+
+        <div class="dashboard-card">
+
+            <h3>
+                管理項目
+            </h3>
+
+            <p>
+                店舗情報・Gallery・Castなどを管理できます
+            </p>
+
+        </div>
+
+
+
+        <div class="dashboard-card">
+
+            <h3>
+                API Status
+            </h3>
+
+            <p id="apiStatus">
+                確認中...
+            </p>
+
+        </div>
+
+
+    </div>
+
 
     `;
 
-    loadGallery();
+
+    checkAPI();
+
 
 }
 
-async function loadGallery(){
 
-    const list = document.getElementById("galleryList");
+
+
+async function checkAPI(){
+
+
+    const status =
+        document.getElementById(
+            "apiStatus"
+        );
+
 
     try{
 
-        const response = await fetch(
 
-            `${CONFIG.API_URL}?action=gallery`
+        const response =
+            await fetch(
+                "https://fantasy-api.fantasykurume0820.workers.dev/"
+            );
 
-        );
 
-        const result = await response.json();
+        const result =
+            await response.json();
 
-        if(result.status!=="success"){
 
-            list.innerHTML="取得できません";
 
-            return;
+        if(result.status==="ok"){
+
+
+            status.innerHTML =
+            "🟢 API ONLINE";
+
+
+        }else{
+
+
+            status.innerHTML =
+            "🔴 API ERROR";
+
 
         }
 
-        renderGallery(result.data);
+
 
     }catch(e){
 
-        console.error(e);
 
-        list.innerHTML="通信エラー";
+        status.innerHTML =
+        "🔴 通信エラー";
+
 
     }
 
-}
-
-function renderGallery(items){
-
-    const list=document.getElementById("galleryList");
-
-    list.innerHTML="";
-
-    items.forEach(item=>{
-
-        list.innerHTML+=`
-
-        <div class="gallery-row">
-
-            <img
-                src="${item.image_url}"
-                class="thumb">
-
-            <div class="gallery-info">
-
-                <h3>${item.title}</h3>
-
-                <p>${item.description}</p>
-
-            </div>
-
-            <button class="edit">
-
-                編集
-
-            </button>
-
-            <button class="delete">
-
-                削除
-
-            </button>
-
-        </div>
-
-        `;
-
-    });
 
 }
