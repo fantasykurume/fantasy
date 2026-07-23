@@ -1,67 +1,118 @@
 /* ==========================================
-   CAST
+   Fantasy CMS
+   Cast Luxury Accordion
 ========================================== */
+
+
+/* 全体 */
+
+#cast{
+
+    padding-top:120px;
+
+    padding-bottom:120px;
+
+}
+
 
 
 .cast-grid{
 
-    width:100%;
+    max-width:600px;
+
+    margin:0 auto;
 
 }
 
 
-.cast-card{
 
-    border-bottom:1px solid rgba(255,255,255,0.15);
+/* 1人分 */
+
+.cast-item{
+
+    border-bottom:
+
+    1px solid rgba(212,175,55,.25);
 
 }
 
 
-/* 名前ボタン */
+
+/* 名前 */
 
 .cast-name{
 
-    width:100%;
+    position:relative;
 
-    padding:22px 10px;
+    padding:30px 20px;
 
-    background:none;
-
-    border:none;
-
-    color:inherit;
-
-    font-size:1.2rem;
-
-    letter-spacing:0.15em;
-
-    text-align:left;
+    text-align:center;
 
     cursor:pointer;
 
-    position:relative;
+    color:var(--color-gold);
+
+    font-size:1.35rem;
+
+    letter-spacing:.35em;
+
+    transition:.4s;
 
 }
 
 
-/* 矢印 */
+
+.cast-name:hover{
+
+    opacity:.7;
+
+}
+
+
+
+/* VIEW表示 */
 
 .cast-name::after{
+
+    content:"VIEW PROFILE";
+
+    display:block;
+
+    margin-top:12px;
+
+    font-size:.65rem;
+
+    letter-spacing:.35em;
+
+    color:rgba(255,255,255,.55);
+
+}
+
+
+
+/* 開閉マーク */
+
+.cast-name::before{
 
     content:"＋";
 
     position:absolute;
 
-    right:10px;
+    right:20px;
 
-    font-size:1.3rem;
+    top:50%;
 
-    transition:.3s;
+    transform:translateY(-50%);
+
+    color:var(--color-gold);
+
+    font-size:1.2rem;
 
 }
 
 
-.cast-name.active::after{
+
+.cast-item.open .cast-name::before{
 
     content:"−";
 
@@ -69,7 +120,7 @@
 
 
 
-/* 写真 */
+/* 写真エリア */
 
 .cast-photo{
 
@@ -79,29 +130,55 @@
 
     opacity:0;
 
+    padding:0;
+
     transition:
 
-        max-height .6s ease,
+        max-height .8s ease,
 
-        opacity .5s ease;
+        opacity .6s ease;
 
 }
 
 
 
-/* 開いた状態 */
+/* 展開 */
 
-.cast-photo.open{
+.cast-item.open .cast-photo{
 
     max-height:800px;
 
     opacity:1;
 
+    padding-bottom:35px;
+
 }
 
 
 
-/* 画像 */
+/* PHOTO文字 */
+
+.cast-photo::before{
+
+    content:"PHOTO";
+
+    display:block;
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+    font-size:.7rem;
+
+    letter-spacing:.5em;
+
+    color:var(--color-gold);
+
+}
+
+
+
+/* 写真 */
 
 .cast-photo img{
 
@@ -109,26 +186,55 @@
 
     width:100%;
 
-    max-width:500px;
+    max-width:380px;
 
-    margin:10px auto 25px;
+    margin:0 auto;
 
-    border-radius:8px;
+
+    border-radius:4px;
+
+
+    box-shadow:
+
+    0 30px 60px rgba(0,0,0,.55);
+
+
+    cursor:pointer;
+
+
+    transition:.5s;
 
 }
 
 
 
-/* PC */
+.cast-photo img:hover{
 
-@media(min-width:768px){
+    transform:scale(1.02);
+
+}
+
+
+
+/* スマホ */
+
+@media(max-width:767px){
+
+
+    #cast{
+
+        padding-top:80px;
+
+        padding-bottom:80px;
+
+    }
 
 
     .cast-name{
 
-        font-size:1.3rem;
+        font-size:1.15rem;
 
-        padding:25px 20px;
+        padding:25px 15px;
 
     }
 

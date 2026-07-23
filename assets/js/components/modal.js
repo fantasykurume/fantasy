@@ -136,38 +136,46 @@ export function openModal(items, index = 0) {
 
 }
 
-function render() {
-
-    const item = currentItems[currentIndex];
+function render(){
 
 
-    const img =
+    const item =
+        currentItems[currentIndex];
+
+
+    const image =
         document.getElementById("modalImage");
 
 
-    img.style.opacity = "0";
+
+    image.src =
+        getModalImage(item.image_url);
 
 
-    img.onload = ()=>{
 
-        img.style.opacity="1";
-
-    };
-
-
-    img.src =
-        item.image_url.replace(
-            "/upload/",
-            "/upload/w_1000,q_auto,f_auto/"
-        );
+    document.getElementById("modalTitle")
+    .textContent =
+        item.title || item.name || "";
 
 
-    document.getElementById("modalTitle").textContent =
-        item.title;
 
+    document.getElementById("modalDescription")
+    .textContent =
+        item.description || item.message || "";
 
-    document.getElementById("modalDescription").textContent =
-        item.description || "";
+}
+
+function getModalImage(url){
+
+    if(!url) return "";
+
+    return url.replace(
+
+        "/upload/",
+
+        "/upload/w_1200,q_auto,f_auto/"
+
+    );
 
 }
 
@@ -206,3 +214,4 @@ export function closeModal() {
     document.body.style.overflow = "";
 
 }
+

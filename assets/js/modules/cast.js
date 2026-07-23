@@ -1,13 +1,54 @@
+/* ==========================================
+   Fantasy CMS
+   Cast Module
+========================================== */
+
 import { fetchAPI } from "../api/api.js";
+import { openModal } from "../components/modal.js";
 
 
 export async function initCast(){
+
 
     const result =
         await fetchAPI("cast");
 
 
-    if(result.status!=="success") return;
+    if(!result || result.status !== "success"){
+
+        console.error("Cast API Error");
+
+        return;
+
+    }
+
+
+
+    const items =
+        result.data
+
+        .filter(
+            item => item.status === "公開"
+        )
+
+        .sort(
+            (a,b)=>Number(a.sort)-Number(b.sort)
+        );
+
+
+
+    renderCast(items);
+
+
+}
+
+
+
+/* ==========================================
+   Cast表示
+========================================== */
+
+function renderCast(items){
 
 
     const grid =
@@ -17,86 +58,142 @@ export async function initCast(){
     if(!grid) return;
 
 
-    grid.innerHTML="";
 
-
-    result.data
-
-        .filter(item=>item.status==="公開")
-
-        .sort((a,b)=>a.sort-b.sort)
-
-        .forEach(item=>{
-
-
-            grid.innerHTML+=`
-
-            <article class="cast-card">
-
-
-                <button class="cast-name">
-
-                    ${item.name}
-
-                </button>
-
-
-                <div class="cast-photo">
-
-
-                    <img
-                        src="${item.image_url}"
-                        alt="${item.name}">
-
-
-                </div>
-
-
-            </article>
-
-            `;
-
-        });
+    grid.innerHTML = "";
 
 
 
-    const buttons =
-        document.querySelectorAll(".cast-name");
+    items.forEach((item,index)=>{
 
 
-    buttons.forEach(button=>{
+        const box =
+            document.createElement("div");
 
 
-        button.addEventListener(
+        box.className =
+            "cast-item";
+
+
+
+        box.innerHTML = `
+
+
+            <div class="cast-name">
+
+                ${item.name}
+
+            </div>
+
+
+
+            <div class="cast-photo">
+
+
+                <img
+
+               src="${getCastThumbnail(item.image_url)}"
+
+               alt="${item.name}"
+
+               loading="lazy">
+
+            </div>
+
+        `;
+
+        /*
+            名前クリック
+            開閉
+        */
+
+        const name =
+            box.querySelector(
+                ".cast-name"
+            );
+
+        name.addEventListener(
             "click",
             ()=>{
 
+                box.classList.toggle(
+                    "open"
+                );
 
-                const photo =
-                    button.nextElementSibling;
+            }
+        );
+
+        /*
+            写真クリック
+            Modal表示
+        */
+
+        const img =
+            box.querySelector(
+                ".cast-photo img"
+            );
 
 
-                button.addEventListener(
-    "click",
-    ()=>{
 
-        const photo =
-            button.nextElementSibling;
+        img.addEventListener(
+            "click",
+            (e)=>{
 
 
-        photo.classList.toggle("open");
+                e.stopPropagation();
 
-        button.classList.toggle("active");
 
-    }
-);
+
+                openModal(
+
+                    items,
+
+                    index
+
+                );
 
 
             }
         );
 
 
+
+        grid.appendChild(box);
+
+
+
     });
 
+
+}
+
+function getCastImage(url){
+
+
+    if(!url) return "";
+
+
+
+    return url.replace(
+
+        "/upload/",
+
+        "/upload/c_fill,w_700,h_900,g_face,q_auto,f_auto/"
+
+    );
+
+
+}
+
+function getCastThumbnail(url){
+
+    if(!url) return "";
+
+    return url.replace(
+
+        "/upload/",
+
+        "/upload/c_fill,w_700,h_900,g_face,q_auto,f_auto/"
+
+    );
 
 }
