@@ -3,178 +3,59 @@
    System Module
 ========================================== */
 
+/* ==========================================
+   初期化
+========================================== */
 
-import {
-    fetchAPI
-}
-from "../api/api.js";
+export function initSystem(items){
 
-
-
-/**
- * System 初期化
- */
-
-export async function initSystem(){
-
-
-    const result =
-
-        await fetchAPI(
-            "system"
-        );
-
-
-
-    if(
-        !result ||
-        result.status !== "success"
-    ){
-
-        console.error(
-            "System API Error"
-        );
-
+    if(!items){
+        console.error("System Data Error");
         return;
-
     }
 
-
-
-    const systems =
-
-        result.data
-
-        .filter(
-            item =>
-            item.status === "公開"
-        )
-
-        .sort(
-            (a,b)=>
-            Number(a.sort) -
-            Number(b.sort)
-        );
-
-
-
-    const keep =
-
-        systems.filter(
-            item =>
-            item.type === "keep"
-        );
-
-
-
-    const noKeep =
-
-        systems.filter(
-            item =>
-            item.type === "no_keep"
-        );
-
-
+    items = items
+        .filter(item=>item.status==="公開")
+        .sort((a,b)=>Number(a.sort)-Number(b.sort));
 
     renderSystem(
         "systemKeep",
-        keep
+        items.filter(item=>item.type==="keep")
     );
-
-
 
     renderSystem(
         "systemNoKeep",
-        noKeep
+        items.filter(item=>item.type==="no_keep")
     );
-
 
 }
 
+/* ==========================================
+   System表示
+========================================== */
 
+function renderSystem(target,items){
 
-/**
- * System表示
- */
+    const area = document.getElementById(target);
 
-function renderSystem(
-    target,
-    items
-){
-
-
-    const area =
-
-        document.getElementById(
-            target
-        );
-
-
-
-    if(!area){
-
-        return;
-
-    }
-
-
+    if(!area) return;
 
     area.innerHTML = "";
 
+    items.forEach(item=>{
 
+        const card = document.createElement("div");
 
-    items.forEach(
-        item=>{
+        card.className = "system-item";
 
+        card.innerHTML = `
+            <h4>${item.name}</h4>
+            <p class="price">${item.price}</p>
+            <p>${item.description || ""}</p>
+        `;
 
-            const card =
+        area.appendChild(card);
 
-                document.createElement(
-                    "div"
-                );
-
-
-
-            card.className =
-                "system-item";
-
-
-
-            card.innerHTML = `
-
-
-                <h4>
-
-                    ${item.name}
-
-                </h4>
-
-
-                <p class="price">
-
-                    ${item.price}
-
-                </p>
-
-
-                <p>
-
-                    ${item.description || ""}
-
-                </p>
-
-
-            `;
-
-
-
-            area.appendChild(
-                card
-            );
-
-
-        }
-    );
-
+    });
 
 }

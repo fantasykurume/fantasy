@@ -104,7 +104,7 @@ export async function initCastAdmin(){
         <input
         id="castSort"
         type="number"
-        value="1">
+        placeholder="自動">
 
 
 
@@ -207,29 +207,22 @@ function registerEvents(){
 /* ==========================================
    Form
 ========================================== */
-
-
 function showForm(){
-
 
     editId = null;
 
-
     resetForm();
 
+    const form = document.getElementById("castForm");
 
+    form.style.display = "block";
 
-    document
-    .getElementById("castForm")
-    .style.display="block";
-
+    form.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+    });
 
 }
-
-
-
-
-
 
 /* ==========================================
    Upload
@@ -855,7 +848,7 @@ function resetForm(){
 
     document
     .getElementById("castSort")
-    .value=1;
+    .value="";
 
 
 

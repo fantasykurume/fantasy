@@ -3,81 +3,61 @@
    Cast Module
 ========================================== */
 
-import { fetchAPI } from "../api/api.js";
-
-
 /* ==========================================
    初期化
 ========================================== */
 
-export async function initCast() {
+export function initCast(items){
 
-    const result = await fetchAPI("cast");
-
-    if (!result || result.status !== "success") {
-
-        console.error("Cast API Error");
-
+    if(!items){
+        console.error("Cast Data Error");
         return;
-
     }
 
-    const items = result.data
-
-        .filter(item => item.status === "公開")
-
-        .sort((a, b) => Number(a.sort || 999) - Number(b.sort || 999));
+    items = items
+        .filter(item=>item.status==="公開")
+        .sort((a,b)=>Number(a.sort||999)-Number(b.sort||999));
 
     renderCast(items);
 
 }
 
-
 /* ==========================================
    Cast表示
 ========================================== */
 
-function renderCast(items) {
+function renderCast(items){
 
     const grid = document.getElementById("castGrid");
 
-    if (!grid) return;
+    if(!grid) return;
 
     grid.innerHTML = "";
 
-    items.forEach(item => {
+    items.forEach(item=>{
 
         const box = document.createElement("article");
 
         box.className = "cast-item";
 
         box.innerHTML = `
-
-            <button
-                class="cast-name"
-                type="button">
-
+            <button class="cast-name" type="button">
                 ${item.name}
-
             </button>
 
             <div class="cast-photo">
-
                 <img
                     src="${getCastImage(item.image_url)}"
                     alt="${item.name}"
                     loading="lazy">
-
             </div>
-
         `;
 
         const button = box.querySelector(".cast-name");
 
-        button.addEventListener("click", () => {
+        button.addEventListener("click",()=>{
 
             box.classList.toggle("open");
-
             button.classList.toggle("active");
 
         });
@@ -88,21 +68,17 @@ function renderCast(items) {
 
 }
 
-
 /* ==========================================
    Cloudinary画像加工
 ========================================== */
 
-function getCastImage(url) {
+function getCastImage(url){
 
-    if (!url) return "";
+    if(!url) return "";
 
     return url.replace(
-
         "/upload/",
-
         "/upload/c_fill,w_700,h_900,g_face,q_auto,f_auto/"
-
     );
 
 }
