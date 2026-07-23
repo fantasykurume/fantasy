@@ -100,7 +100,6 @@ async function loadShop(){
         <br><br>
 
 
-
         <label>
         説明
         </label>
@@ -113,7 +112,18 @@ async function loadShop(){
 
         <br><br>
 
+        <label>
+        住所
+        </label>
 
+        <br>
+
+        <input
+        id="shopAddress"
+        value="${shop.address || ""}"
+        >
+
+        <br><br>
 
         <label>
         電話番号
@@ -243,7 +253,12 @@ async function saveShop(){
         .value
     );
 
-
+    form.append(
+        "address",
+        document
+        .getElementById("shopAddress")
+        .value
+    );
 
     form.append(
         "phone",
