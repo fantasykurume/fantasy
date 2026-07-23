@@ -14,6 +14,7 @@ const typeLabels={
     vip:"VIP"
 };
 
+
 export async function initSystemAdmin(){
 
 document.querySelector(".content").innerHTML=`
@@ -33,12 +34,10 @@ document.querySelector(".content").innerHTML=`
 <label>種類</label><br>
 
 <select id="systemType">
-
 <option value="keep">ボトルキープあり</option>
 <option value="no_keep">ボトルキープなし</option>
 <option value="option">追加料金</option>
 <option value="vip">VIP</option>
-
 </select>
 
 <br><br>
@@ -66,10 +65,8 @@ document.querySelector(".content").innerHTML=`
 <label>状態</label><br>
 
 <select id="systemStatus">
-
 <option value="公開">公開</option>
 <option value="非公開">非公開</option>
-
 </select>
 
 <br><br>
@@ -85,36 +82,57 @@ loadSystem();
 }
 
 
+
 function registerEvents(){
 
-addSystem.onclick=()=>{
+document
+.getElementById("addSystem")
+.onclick=()=>{
 
 editId=null;
 resetForm();
-systemForm.style.display="block";
+
+document
+.getElementById("systemForm")
+.style.display="block";
 
 };
 
-saveSystem.onclick=saveSystem;
+
+document
+.getElementById("saveSystem")
+.onclick=()=>{
+
+saveSystem();
+
+};
 
 }
+
 
 
 async function loadSystem(){
 
-const list=systemList;
+const list=
+document.getElementById("systemList");
 
 try{
 
-const res=await fetch(`${CONFIG.API_URL}?action=system`);
-const result=await res.json();
+const res=
+await fetch(`${CONFIG.API_URL}?action=system`);
+
+const result=
+await res.json();
 
 if(result.status!=="success"){
+
 list.innerHTML="取得失敗";
 return;
+
 }
 
 renderSystem(result.data);
+
 
 }catch(e){
 
@@ -129,19 +147,21 @@ list.innerHTML="通信エラー";
 
 function renderSystem(items){
 
-systemList.innerHTML="";
+const list=
+document.getElementById("systemList");
+
+list.innerHTML="";
+
 
 items.forEach(item=>{
 
-systemList.innerHTML+=`
+list.innerHTML+=`
 
 <div class="gallery-row">
 
 <div class="gallery-info">
 
-<h3>
-${typeLabels[item.type] || item.type}
-</h3>
+<h3>${typeLabels[item.type]||item.type}</h3>
 
 <p>${item.name}</p>
 
@@ -150,7 +170,7 @@ ${typeLabels[item.type] || item.type}
 </p>
 
 <small>
-${item.description || ""}
+${item.description||""}
 </small>
 
 </div>
@@ -178,7 +198,8 @@ registerRowEvents();
 
 function registerRowEvents(){
 
-document.querySelectorAll(".edit")
+document
+.querySelectorAll(".edit")
 .forEach(btn=>{
 
 btn.onclick=()=>editSystem(btn.dataset.id);
@@ -186,7 +207,8 @@ btn.onclick=()=>editSystem(btn.dataset.id);
 });
 
 
-document.querySelectorAll(".delete")
+document
+.querySelectorAll(".delete")
 .forEach(btn=>{
 
 btn.onclick=()=>deleteSystem(btn.dataset.id);
@@ -215,14 +237,17 @@ if(!item)return;
 
 editId=id;
 
-systemType.value=item.type;
-systemName.value=item.name;
-systemPrice.value=item.price;
-systemDescription.value=item.description;
-systemSort.value=item.sort;
-systemStatus.value=item.status;
+document.getElementById("systemType").value=item.type;
+document.getElementById("systemName").value=item.name;
+document.getElementById("systemPrice").value=item.price;
+document.getElementById("systemDescription").value=item.description;
+document.getElementById("systemSort").value=item.sort;
+document.getElementById("systemStatus").value=item.status;
 
-systemForm.style.display="block";
+
+document
+.getElementById("systemForm")
+.style.display="block";
 
 }
 
@@ -232,21 +257,50 @@ async function saveSystem(){
 
 const form=new FormData();
 
+
 form.append(
 "action",
 editId?"updateSystem":"saveSystem"
 );
 
+
 if(editId){
+
 form.append("id",editId);
+
 }
 
-form.append("type",systemType.value);
-form.append("name",systemName.value);
-form.append("price",systemPrice.value);
-form.append("description",systemDescription.value);
-form.append("sort",systemSort.value);
-form.append("status",systemStatus.value);
+
+form.append(
+"type",
+document.getElementById("systemType").value
+);
+
+form.append(
+"name",
+document.getElementById("systemName").value
+);
+
+form.append(
+"price",
+document.getElementById("systemPrice").value
+);
+
+form.append(
+"description",
+document.getElementById("systemDescription").value
+);
+
+form.append(
+"sort",
+document.getElementById("systemSort").value
+);
+
+form.append(
+"status",
+document.getElementById("systemStatus").value
+);
+
 
 
 const res=
@@ -319,11 +373,11 @@ loadSystem();
 
 function resetForm(){
 
-systemType.value="keep";
-systemName.value="";
-systemPrice.value="";
-systemDescription.value="";
-systemSort.value=1;
-systemStatus.value="公開";
+document.getElementById("systemType").value="keep";
+document.getElementById("systemName").value="";
+document.getElementById("systemPrice").value="";
+document.getElementById("systemDescription").value="";
+document.getElementById("systemSort").value=1;
+document.getElementById("systemStatus").value="公開";
 
 }
