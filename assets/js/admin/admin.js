@@ -4,29 +4,25 @@
 ========================================== */
 
 
-import { initShopAdmin } from "./shop.js";
 import { initGalleryAdmin } from "./gallery.js";
 import { initCastAdmin } from "./cast.js";
-import { initDashboardAdmin } from "./dashboard.js";
+import { initSystemAdmin } from "./system.js";
+
 
 
 const pages = {
 
 
-    dashboard:initDashboardAdmin,
-
-
-    shop:initShopAdmin,
-
-
     gallery:initGalleryAdmin,
 
 
-    cast:initCastAdmin
+    cast:initCastAdmin,
+
+
+    system:initSystemAdmin
 
 
 };
-
 
 
 
@@ -63,11 +59,15 @@ document.addEventListener(
 
 
                 menu.forEach(
-                    m=>
-                    m.classList.remove(
-                        "active"
-                    )
+                    m=>{
+
+                        m.classList.remove(
+                            "active"
+                        );
+
+                    }
                 );
+
 
 
                 item.classList.add(
@@ -87,6 +87,22 @@ document.addEventListener(
                     pages[page]();
 
 
+                }else{
+
+
+                    document
+                    .querySelector(".content")
+                    .innerHTML = `
+
+                        <h2>${item.innerText}</h2>
+
+                        <p>
+                            準備中です
+                        </p>
+
+                    `;
+
+
                 }
 
 
@@ -103,13 +119,25 @@ document.addEventListener(
     /*
         初期表示
 
-        最初はDashboardではなく
-        Gallery表示にしている
-        必要なら変更可能
+        Dashboard
     */
 
 
-    initDashboardAdmin();
+    const dashboard =
+        document.querySelector(
+            '[data-page="dashboard"]'
+        );
+
+
+    if(dashboard){
+
+
+        dashboard.classList.add(
+            "active"
+        );
+
+
+    }
 
 
 
