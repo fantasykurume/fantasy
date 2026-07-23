@@ -285,7 +285,7 @@ function renderCast(items){
 
 
             <img
-            src="${item.image_url}"
+            src="${getThumb(item.image_url)}"
             class="thumb">
 
 
@@ -303,6 +303,10 @@ function renderCast(items){
                 <p>
 
                 表示順:${item.sort}
+
+                <br>
+
+                状態:${item.status}
 
                 </p>
 
@@ -448,6 +452,11 @@ async function editCast(id){
 
 
 
+    document
+    .getElementById("castStatus")
+    .value=item.status;
+
+
     const img =
     document.getElementById("previewImage");
 
@@ -518,6 +527,11 @@ async function saveCast(){
         document.getElementById("castSort").value
     );
 
+
+    form.append(
+        "status",
+        document.getElementById("castStatus").value
+    );
 
 
     await fetch(
@@ -631,5 +645,16 @@ function resetForm(){
     .getElementById("castForm")
     .style.display="none";
 
+
+}
+
+function getThumb(url){
+
+    if(!url)return "";
+
+    return url.replace(
+        "/upload/",
+        "/upload/w_300,h_300,c_fill,g_face,q_auto,f_auto/"
+    );
 
 }

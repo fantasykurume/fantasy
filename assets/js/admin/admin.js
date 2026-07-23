@@ -1,14 +1,26 @@
+/* ==========================================
+   Fantasy CMS
+   Admin Controller
+========================================== */
+
+
 import { initGalleryAdmin } from "./gallery.js";
 import { initCastAdmin } from "./cast.js";
 
 
+
 const pages = {
+
 
     gallery:initGalleryAdmin,
 
+
     cast:initCastAdmin
 
+
 };
+
+
 
 
 
@@ -17,39 +29,71 @@ document.addEventListener(
 ()=>{
 
 
-const menu =
-document.querySelectorAll(
-".admin-menu li"
-);
+    const menu =
+        document.querySelectorAll(
+            ".admin-menu li"
+        );
 
 
 
-menu.forEach(item=>{
+    menu.forEach(item=>{
 
 
-item.addEventListener(
-"click",
-()=>{
+        item.addEventListener(
+            "click",
+            ()=>{
 
 
-const page =
-item.dataset.page;
+                const page =
+                    item.dataset.page;
 
 
 
-if(pages[page]){
+                /*
+                    active変更
+                */
 
-    pages[page]();
-
-}
-
-
-});
-
-});
+                menu.forEach(
+                    m=>m.classList.remove(
+                        "active"
+                    )
+                );
 
 
-initGalleryAdmin();
+                item.classList.add(
+                    "active"
+                );
+
+
+
+                /*
+                    ページ表示
+                */
+
+                if(pages[page]){
+
+
+                    pages[page]();
+
+
+                }
+
+
+
+            }
+        );
+
+
+    });
+
+
+
+    /*
+        初期表示
+    */
+
+    initGalleryAdmin();
+
 
 
 });
