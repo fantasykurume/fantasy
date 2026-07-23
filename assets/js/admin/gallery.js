@@ -2,6 +2,7 @@
    Gallery Admin
 ========================================== */
 
+import { CONFIG } from "../config/config.js";
 import { adminGet } from "./api.js";
 import { openUpload } from "./upload.js";
 
@@ -387,15 +388,8 @@ async function editGallery(id){
 
     try{
 
-        const response =
-            await fetch(
-
-                `${CONFIG.API_URL}?action=gallery`
-
-            );
-
         const result =
-            await response.json();
+            await adminGet("gallery");
 
         if(result.status!=="success"){
 
