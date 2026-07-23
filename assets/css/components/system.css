@@ -3,175 +3,96 @@
    System Component
 ========================================== */
 
-
-/* ==========================================
-   System Wrapper
-========================================== */
-
-.system-wrapper {
-
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:40px;
-
+.system-wrapper{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:40px;
 }
 
 
-
-/* ==========================================
-   System Card
-========================================== */
-
-.system-card {
-
-    background:var(--color-surface);
-
-
-    border:1px solid var(--color-border);
-
-
-    border-radius:var(--radius);
-
-
-    padding:40px;
-
-
-    box-shadow:var(--shadow);
-
-
-    position:relative;
-
+.system-card{
+background:var(--color-surface);
+border:1px solid var(--color-border);
+border-radius:var(--radius);
+padding:40px;
+box-shadow:var(--shadow);
+position:relative;
 }
 
 
-
-.system-card::before {
-
-    content:"";
-
-
-    position:absolute;
-
-
-    top:0;
-
-    left:0;
-
-
-    width:100%;
-
-
-    height:3px;
-
-
-    background:var(--color-gold);
-
+.system-card::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:3px;
+background:var(--color-gold);
 }
 
 
-
-.system-card h3 {
-
-    text-align:center;
-
-
-    color:var(--color-gold);
-
-
-    margin-bottom:30px;
-
-
-    font-size:1.3rem;
-
+.system-card h3{
+text-align:center;
+color:var(--color-gold);
+margin-bottom:30px;
+font-size:1.3rem;
 }
 
 
+/* System Item */
 
-/* ==========================================
-   System Row
-========================================== */
-
-.system-row {
-
-    display:flex;
-
-
-    justify-content:space-between;
-
-
-    align-items:center;
-
-
-    padding:18px 0;
-
-
-    border-bottom:
-
-        1px solid var(--color-border);
-
+.system-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 0;
+border-bottom:1px solid var(--color-border);
 }
 
 
-
-.system-row:last-child {
-
-    border-bottom:none;
-
+.system-item:last-child{
+border-bottom:none;
 }
 
 
-
-.system-row span {
-
-    color:var(--color-text-sub);
-
+.system-item h4{
+color:var(--color-text-sub);
+font-weight:normal;
 }
 
 
-
-.system-row strong {
-
-    color:var(--color-gold-light);
-
-
-    font-size:1.1rem;
-
+.system-item .price{
+color:var(--color-gold-light);
+font-size:1.1rem;
+font-weight:bold;
 }
 
 
+.system-item p:last-child{
+font-size:.9rem;
+color:var(--color-text-sub);
+margin-left:15px;
+}
 
-/* ==========================================
-   Responsive
-========================================== */
+
+/* Responsive */
 
 @media(max-width:768px){
 
-
-    .system-wrapper {
-
-        grid-template-columns:1fr;
-
-        gap:25px;
-
-    }
+.system-wrapper{
+grid-template-columns:1fr;
+gap:25px;
+}
 
 
-    .system-card {
-
-        padding:25px;
-
-    }
+.system-card{
+padding:25px;
+}
 
 
-    .system-row {
-
-        padding:15px 0;
-
-        font-size:.95rem;
-
-    }
-
+.system-item{
+padding:15px 0;
+font-size:.95rem;
+}
 
 }

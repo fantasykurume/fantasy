@@ -3,212 +3,171 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title id="pageTitle">Fantasy</title>
+<title id="pageTitle">Fantasy</title>
 
-    <meta
-        id="metaDescription"
-        name="description"
-        content="">
+<meta id="metaDescription" name="description" content="">
 
-    <!-- CSS -->
 
-    <link rel="stylesheet" href="assets/css/base/reset.css">
-    <link rel="stylesheet" href="assets/css/base/variables.css">
-    <link rel="stylesheet" href="assets/css/base/typography.css">
-    <link rel="stylesheet" href="assets/css/base/animations.css">
+<link rel="stylesheet" href="assets/css/base/reset.css">
+<link rel="stylesheet" href="assets/css/base/variables.css">
+<link rel="stylesheet" href="assets/css/base/typography.css">
+<link rel="stylesheet" href="assets/css/base/animations.css">
 
-    <link rel="stylesheet" href="assets/css/layout/header.css">
-    <link rel="stylesheet" href="assets/css/layout/navigation.css">
-    <link rel="stylesheet" href="assets/css/layout/hero.css">
-    <link rel="stylesheet" href="assets/css/layout/section.css">
-    <link rel="stylesheet" href="assets/css/layout/footer.css">
+<link rel="stylesheet" href="assets/css/layout/header.css">
+<link rel="stylesheet" href="assets/css/layout/navigation.css">
+<link rel="stylesheet" href="assets/css/layout/hero.css">
+<link rel="stylesheet" href="assets/css/layout/section.css">
+<link rel="stylesheet" href="assets/css/layout/footer.css">
 
-    <link rel="stylesheet" href="assets/css/components/button.css">
-    <link rel="stylesheet" href="assets/css/components/card.css">
-    <link rel="stylesheet" href="assets/css/components/modal.css">
-    <link rel="stylesheet" href="assets/css/components/system.css">
-    <link rel="stylesheet" href="assets/css/components/access.css">
-    <link rel="stylesheet" href="assets/css/components/cast.css">
+<link rel="stylesheet" href="assets/css/components/button.css">
+<link rel="stylesheet" href="assets/css/components/card.css">
+<link rel="stylesheet" href="assets/css/components/modal.css">
+<link rel="stylesheet" href="assets/css/components/system.css">
+<link rel="stylesheet" href="assets/css/components/access.css">
+<link rel="stylesheet" href="assets/css/components/cast.css">
 
-    <link rel="stylesheet" href="assets/css/pages/home.css">
+<link rel="stylesheet" href="assets/css/pages/home.css">
 
-    <link rel="stylesheet" href="assets/css/responsive/tablet.css">
-    <link rel="stylesheet" href="assets/css/responsive/mobile.css">
+<link rel="stylesheet" href="assets/css/responsive/tablet.css">
+<link rel="stylesheet" href="assets/css/responsive/mobile.css">
 
 </head>
 
-<!-- ===========================
-     Gallery Modal
-=========================== -->
 
 <body>
 
-<!-- ===========================
-     Header
-=========================== -->
 
 <header class="header">
 
-    <div class="logo">
+<div class="logo">
 
-        <span
-            class="logo-main"
-            id="shopName">
+<span class="logo-main" id="shopName">
+Fantasy
+</span>
 
-            Fantasy
+<span class="logo-sub">
+Luxury Lounge
+</span>
 
-        </span>
+</div>
 
-        <span class="logo-sub">
 
-            Luxury Lounge
+<nav class="nav">
 
-        </span>
+<ul>
 
-    </div>
+<li><a href="#about">ABOUT</a></li>
 
-    <nav class="nav">
+<li><a href="#gallery">GALLERY</a></li>
 
-        <ul>
+<li><a href="#cast">CAST</a></li>
 
-            <li><a href="#about">ABOUT</a></li>
+<li><a href="#system">SYSTEM</a></li>
 
-            <li><a href="#gallery">GALLERY</a></li>
+<li><a href="#news">NEWS</a></li>
 
-            <li><a href="#cast">CAST</a></li>
+<li><a href="#access">ACCESS</a></li>
 
-            <li><a href="#system">SYSTEM</a></li>
+</ul>
 
-            <li><a href="#news">NEWS</a></li>
+</nav>
 
-            <li><a href="#access">ACCESS</a></li>
 
-        </ul>
+<button id="menuButton" class="menu-button">
+☰
+</button>
 
-    </nav>
-
-    <button
-        id="menuButton"
-        class="menu-button"
-        aria-label="メニューを開く">
-
-        ☰
-
-    </button>
 
 </header>
 
+
+
 <main>
 
-<!-- ===========================
-     Hero
-=========================== -->
 
 <section class="hero">
 
-    <div
-        class="hero-slider"
-        id="heroSlider">
+<div class="hero-slider" id="heroSlider"></div>
 
-    </div>
+<div class="hero-overlay"></div>
 
-    <div class="hero-overlay"></div>
 
-    <div class="hero-content">
+<div class="hero-content">
 
-        <h1
-            class="hero-title"
-            id="heroTitle">
+<h1 class="hero-title" id="heroTitle">
+Fantasy
+</h1>
 
-            Fantasy
 
-        </h1>
+<p class="hero-text" id="heroCatch">
+特別な夜をあなたへ
+</p>
 
-        <p
-            class="hero-text"
-            id="heroCatch">
 
-            特別な夜をあなたへ
+<a href="#about" class="btn">
+店舗紹介
+</a>
 
-        </p>
 
-        <a
-            href="#about"
-            class="btn">
-
-            店舗紹介
-
-        </a>
-
-    </div>
+</div>
 
 </section>
 
-<!-- ===========================
-     ABOUT
-=========================== -->
 
-<section
-    id="about"
-    class="section">
 
-    <div class="container">
+<section id="about" class="section">
 
-        <h2>
+<div class="container">
 
-            ABOUT
+<h2>
+ABOUT
+</h2>
 
-        </h2>
+<p id="shopDescription"></p>
 
-        <p id="shopDescription"></p>
-
-    </div>
+</div>
 
 </section>
 
-<!-- ===========================
-     Gallery
-=========================== -->
 
-<section
-    id="gallery"
-    class="section">
 
-    <div class="container">
 
-        <h2>
+<section id="gallery" class="section">
 
-            GALLERY
+<div class="container">
 
-        </h2>
+<h2>
+GALLERY
+</h2>
 
-        <div
-            class="gallery-grid"
-            id="galleryGrid">
 
-        </div>
+<div class="gallery-grid" id="galleryGrid"></div>
 
-    </div>
+
+</div>
 
 </section>
 
-<!-- ===========================
-     Cast
-=========================== -->
+
+
+
 <section id="cast" class="section">
 
-    <div class="container">
+<div class="container">
 
-        <h2>CAST</h2>
+<h2>
+CAST
+</h2>
 
-        <div id="castGrid" class="cast-grid"></div>
 
-    </div>
+<div id="castGrid" class="cast-grid"></div>
+
+
+</div>
 
 </section>
 
@@ -216,83 +175,141 @@
      System
 =========================== -->
 
-<section
-    id="system"
-    class="section">
+<section id="system" class="section">
 
-    <div class="container">
+<div class="container">
 
-        <h2>
+<h2>
+SYSTEM
+</h2>
 
-            SYSTEM
 
-        </h2>
+<div class="system-wrapper">
 
-        <div class="system-wrapper">
 
-            <div class="system-wrapper system-area">
+<article class="system-card">
 
-        </div>
+<h3>
+ボトルキープあり
+</h3>
 
-    </div>
+<div id="systemKeep"></div>
+
+</article>
+
+
+
+<article class="system-card">
+
+<h3>
+ボトルキープなし
+</h3>
+
+<div id="systemNoKeep"></div>
+
+</article>
+
+
+
+<article class="system-card">
+
+<h3>
+追加料金
+</h3>
+
+<div id="systemOption"></div>
+
+</article>
+
+
+
+<article class="system-card">
+
+<h3>
+VIP
+</h3>
+
+<div id="systemVip"></div>
+
+</article>
+
+
+
+</div>
+
+</div>
 
 </section>
+
+
+
 
 <!-- ===========================
      News
 =========================== -->
 
-<section
-    id="news"
-    class="section">
+<section id="news" class="section">
 
-    <div class="container">
+<div class="container">
 
-        <h2>
+<h2>
+NEWS
+</h2>
 
-            NEWS
 
-        </h2>
+<div id="newsList"></div>
 
-        <div id="newsList"></div>
 
-    </div>
+</div>
 
 </section>
+
+
+
 
 <!-- ===========================
      Access
 =========================== -->
 
-<section
-    id="access"
-    class="section">
+<section id="access" class="section">
 
-    <div class="container">
+<div class="container">
 
-        <h2>
 
-            ACCESS
+<h2>
+ACCESS
+</h2>
 
-        </h2>
 
-        <div class="access-box">
 
-            <p id="shopAddress"></p>
+<div class="access-box">
 
-            <p id="shopPhone"></p>
 
-            <div id="snsLinks"></div>
+<p id="shopAddress"></p>
 
-        </div>
 
-        <div id="googleMap"></div>
+<p id="shopPhone"></p>
 
-    </div>
+
+<div id="snsLinks"></div>
+
+
+</div>
+
+
+
+<div id="googleMap"></div>
+
+
+</div>
 
 </section>
 
+
 </main>
+
+
+
 
 <!-- ===========================
      Footer
@@ -300,33 +317,40 @@
 
 <footer class="footer">
 
-    <div class="container">
 
-        <div
-            class="footer-logo"
-            id="footerShopName">
+<div class="container">
 
-            Fantasy
 
-        </div>
+<div class="footer-logo" id="footerShopName">
 
-        <p>
+Fantasy
 
-            ©
+</div>
 
-            <span id="copyrightYear"></span>
 
-            Fantasy CMS
 
-        </p>
+<p>
 
-    </div>
+©
+
+<span id="copyrightYear"></span>
+
+Fantasy CMS
+
+</p>
+
+
+
+</div>
+
 
 </footer>
 
-<!-- JavaScript -->
+
+
 
 <script type="module" src="assets/js/main.js"></script>
+
 
 </body>
 
