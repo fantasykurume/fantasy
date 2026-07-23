@@ -5,701 +5,325 @@
 
 import { CONFIG } from "../config/config.js";
 
+let editId=null;
 
-let editId = null;
-
-
+const typeLabels={
+    keep:"ボトルキープあり",
+    no_keep:"ボトルキープなし",
+    option:"追加料金",
+    vip:"VIP"
+};
 
 export async function initSystemAdmin(){
 
+document.querySelector(".content").innerHTML=`
 
-    document.querySelector(".content").innerHTML = `
+<h2>System管理</h2>
 
-        <h2>System管理</h2>
+<button id="addSystem">＋料金追加</button>
 
+<hr>
 
-        <button id="addSystem">
+<div id="systemList">読み込み中...</div>
 
-            ＋料金追加
+<div id="systemForm" style="display:none;margin-top:30px;">
 
-        </button>
+<h3>料金追加・編集</h3>
 
+<label>種類</label><br>
 
-        <hr style="margin:20px 0;">
+<select id="systemType">
 
+<option value="keep">ボトルキープあり</option>
+<option value="no_keep">ボトルキープなし</option>
+<option value="option">追加料金</option>
+<option value="vip">VIP</option>
 
-        <div id="systemList">
+</select>
 
-            読み込み中...
+<br><br>
 
-        </div>
+<label>項目名</label><br>
+<input id="systemName">
 
+<br><br>
 
+<label>料金</label><br>
+<input id="systemPrice">
 
-        <div
-        id="systemForm"
-        style="display:none;margin-top:30px;">
+<br><br>
 
+<label>説明</label><br>
+<input id="systemDescription">
 
-            <h3>
+<br><br>
 
-                料金追加・編集
+<label>表示順</label><br>
+<input id="systemSort" type="number" value="1">
 
-            </h3>
+<br><br>
 
+<label>状態</label><br>
 
+<select id="systemStatus">
 
-            <label>
-            種類
-            </label>
+<option value="公開">公開</option>
+<option value="非公開">非公開</option>
 
-            <br>
+</select>
 
+<br><br>
 
-            <select id="systemType">
+<button id="saveSystem">保存</button>
 
-                <option value="keep">
-                    ボトルキープあり
-                </option>
+</div>
+`;
 
-
-                <option value="no_keep">
-                    ボトルキープなし
-                </option>
-
-
-            </select>
-
-
-            <br><br>
-
-
-
-            <label>
-            項目名
-            </label>
-
-            <br>
-
-
-            <input
-            id="systemName"
-            >
-
-
-            <br><br>
-
-
-
-            <label>
-            料金
-            </label>
-
-            <br>
-
-
-            <input
-            id="systemPrice"
-            >
-
-
-            <br><br>
-
-
-
-            <label>
-            説明
-            </label>
-
-            <br>
-
-
-            <input
-            id="systemDescription"
-            >
-
-
-            <br><br>
-
-
-
-            <label>
-            表示順
-            </label>
-
-            <br>
-
-
-            <input
-            id="systemSort"
-            type="number"
-            value="1"
-            >
-
-
-            <br><br>
-
-
-
-            <label>
-            状態
-            </label>
-
-            <br>
-
-
-            <select id="systemStatus">
-
-
-                <option value="公開">
-                    公開
-                </option>
-
-
-                <option value="非公開">
-                    非公開
-                </option>
-
-
-            </select>
-
-
-            <br><br>
-
-
-            <button id="saveSystem">
-
-                保存
-
-            </button>
-
-
-        </div>
-
-
-    `;
-
-
-
-    registerEvents();
-
-    loadSystem();
-
+registerEvents();
+loadSystem();
 
 }
-
-
-
 
 
 function registerEvents(){
 
+addSystem.onclick=()=>{
 
-    document
-    .getElementById("addSystem")
-    .onclick=()=>{
+editId=null;
+resetForm();
+systemForm.style.display="block";
 
+};
 
-        editId=null;
-
-        resetForm();
-
-
-        document
-        .getElementById("systemForm")
-        .style.display="block";
-
-
-    };
-
-
-    document
-    .getElementById("saveSystem")
-    .onclick=saveSystem;
-
+saveSystem.onclick=saveSystem;
 
 }
-
-
-
-
-
 
 
 async function loadSystem(){
 
+const list=systemList;
 
-    const list =
-    document.getElementById("systemList");
+try{
 
+const res=await fetch(`${CONFIG.API_URL}?action=system`);
+const result=await res.json();
 
-    try{
+if(result.status!=="success"){
+list.innerHTML="取得失敗";
+return;
+}
 
+renderSystem(result.data);
 
-        const response =
-        await fetch(
+}catch(e){
 
-            `${CONFIG.API_URL}?action=system`
-
-        );
-
-
-        const result =
-        await response.json();
-
-
-
-        if(result.status!=="success"){
-
-            list.innerHTML=
-            "取得失敗";
-
-            return;
-
-        }
-
-
-
-        renderSystem(result.data);
-
-
-
-    }catch(e){
-
-
-        console.error(e);
-
-
-        list.innerHTML=
-        "通信エラー";
-
-
-    }
-
+console.error(e);
+list.innerHTML="通信エラー";
 
 }
 
-
-
+}
 
 
 
 function renderSystem(items){
 
+systemList.innerHTML="";
 
-    const list =
-    document.getElementById("systemList");
+items.forEach(item=>{
 
+systemList.innerHTML+=`
 
-    list.innerHTML="";
+<div class="gallery-row">
 
+<div class="gallery-info">
 
+<h3>
+${typeLabels[item.type] || item.type}
+</h3>
 
-    items.forEach(item=>{
+<p>${item.name}</p>
 
+<p>
+¥${Number(item.price).toLocaleString()}
+</p>
 
-        list.innerHTML += `
+<small>
+${item.description || ""}
+</small>
 
+</div>
 
-        <div class="gallery-row">
+<button class="edit" data-id="${item.id}">
+編集
+</button>
 
+<button class="delete" data-id="${item.id}">
+削除
+</button>
 
-            <div class="gallery-info">
+</div>
 
+`;
 
-                <h3>
-
-                ${
-                    item.type==="keep"
-                    ?
-                    "ボトルキープあり"
-                    :
-                    "ボトルキープなし"
-                }
-
-                </h3>
-
-
-                <p>
-                ${item.name}
-                </p>
-
-
-                <p>
-                ¥${Number(item.price).toLocaleString()}
-                </p>
+});
 
 
-                <small>
-                ${item.description}
-                </small>
-
-
-            </div>
-
-
-
-            <button
-            class="edit"
-            data-id="${item.id}">
-
-                編集
-
-            </button>
-
-
-
-            <button
-            class="delete"
-            data-id="${item.id}">
-
-                削除
-
-            </button>
-
-
-        </div>
-
-
-        `;
-
-
-    });
-
-
-
-    registerRowEvents();
-
+registerRowEvents();
 
 }
-
-
-
-
 
 
 
 function registerRowEvents(){
 
+document.querySelectorAll(".edit")
+.forEach(btn=>{
 
-    document
-    .querySelectorAll(".edit")
-    .forEach(btn=>{
+btn.onclick=()=>editSystem(btn.dataset.id);
 
-
-        btn.onclick=()=>{
-
-            editSystem(btn.dataset.id);
-
-        };
+});
 
 
-    });
+document.querySelectorAll(".delete")
+.forEach(btn=>{
 
+btn.onclick=()=>deleteSystem(btn.dataset.id);
 
-
-    document
-    .querySelectorAll(".delete")
-    .forEach(btn=>{
-
-
-        btn.onclick=()=>{
-
-            deleteSystem(btn.dataset.id);
-
-        };
-
-
-    });
-
+});
 
 }
-
-
-
-
-
 
 
 
 async function editSystem(id){
 
+const res=
+await fetch(`${CONFIG.API_URL}?action=system`);
 
-    const response =
-    await fetch(
+const result=
+await res.json();
 
-        `${CONFIG.API_URL}?action=system`
+const item=
+result.data.find(
+x=>Number(x.id)===Number(id)
+);
 
-    );
-
-
-    const result =
-    await response.json();
-
-
-
-    const item =
-    result.data.find(
-
-        x=>Number(x.id)===Number(id)
-
-    );
+if(!item)return;
 
 
+editId=id;
 
-    if(!item)return;
+systemType.value=item.type;
+systemName.value=item.name;
+systemPrice.value=item.price;
+systemDescription.value=item.description;
+systemSort.value=item.sort;
+systemStatus.value=item.status;
 
-
-
-    editId=id;
-
-
-
-    document
-    .getElementById("systemType")
-    .value=item.type;
-
-
-    document
-    .getElementById("systemName")
-    .value=item.name;
-
-
-    document
-    .getElementById("systemPrice")
-    .value=item.price;
-
-
-    document
-    .getElementById("systemDescription")
-    .value=item.description;
-
-
-    document
-    .getElementById("systemSort")
-    .value=item.sort;
-
-
-    document
-    .getElementById("systemStatus")
-    .value=item.status;
-
-
-
-    document
-    .getElementById("systemForm")
-    .style.display="block";
-
+systemForm.style.display="block";
 
 }
-
-
-
-
-
 
 
 
 async function saveSystem(){
 
+const form=new FormData();
 
-    const form =
-    new FormData();
+form.append(
+"action",
+editId?"updateSystem":"saveSystem"
+);
 
+if(editId){
+form.append("id",editId);
+}
 
-
-    form.append(
-
-        "action",
-
-        editId
-        ?
-        "updateSystem"
-        :
-        "saveSystem"
-
-    );
-
-
-
-    if(editId){
-
-        form.append(
-            "id",
-            editId
-        );
-
-    }
+form.append("type",systemType.value);
+form.append("name",systemName.value);
+form.append("price",systemPrice.value);
+form.append("description",systemDescription.value);
+form.append("sort",systemSort.value);
+form.append("status",systemStatus.value);
 
 
-
-    form.append(
-        "type",
-        systemType.value
-    );
-
-
-    form.append(
-        "name",
-        systemName.value
-    );
+const res=
+await fetch(
+CONFIG.API_URL,
+{
+method:"POST",
+body:form
+}
+);
 
 
-    form.append(
-        "price",
-        systemPrice.value
-    );
+const result=
+await res.json();
 
 
-    form.append(
-        "description",
-        systemDescription.value
-    );
+if(result.status==="success"){
 
+alert("保存しました");
 
-    form.append(
-        "sort",
-        systemSort.value
-    );
+resetForm();
 
+loadSystem();
 
-    form.append(
-        "status",
-        systemStatus.value
-    );
+}else{
 
-
-
-
-    const response =
-    await fetch(
-
-        CONFIG.API_URL,
-
-        {
-
-            method:"POST",
-
-            body:form
-
-        }
-
-    );
-
-
-
-    const result =
-    await response.json();
-
-
-
-    if(result.status==="success"){
-
-
-        alert("保存しました");
-
-
-        resetForm();
-
-
-        loadSystem();
-
-
-    }else{
-
-
-        alert(result.message);
-
-
-    }
-
+alert(result.message);
 
 }
 
-
-
-
-
+}
 
 
 
 async function deleteSystem(id){
 
-
-    if(!confirm("削除しますか？"))
-    return;
-
+if(!confirm("削除しますか？"))
+return;
 
 
-    const form =
-    new FormData();
+const form=new FormData();
+
+form.append("action","deleteSystem");
+form.append("id",id);
 
 
-    form.append(
-        "action",
-        "deleteSystem"
-    );
+const res=
+await fetch(
+CONFIG.API_URL,
+{
+method:"POST",
+body:form
+}
+);
 
 
-    form.append(
-        "id",
-        id
-    );
+const result=
+await res.json();
 
 
+if(result.status==="success"){
 
-    const response =
-    await fetch(
+loadSystem();
 
-        CONFIG.API_URL,
-
-        {
-
-            method:"POST",
-
-            body:form
-
-        }
-
-    );
-
-
-
-    const result =
-    await response.json();
-
-
-
-    if(result.status==="success"){
-
-        loadSystem();
-
-    }
-
+}
 
 }
 
 
 
-
-
-
-
-
 function resetForm(){
 
-
-    systemType.value="keep";
-
-    systemName.value="";
-
-    systemPrice.value="";
-
-    systemDescription.value="";
-
-    systemSort.value=1;
-
-    systemStatus.value="公開";
-
+systemType.value="keep";
+systemName.value="";
+systemPrice.value="";
+systemDescription.value="";
+systemSort.value=1;
+systemStatus.value="公開";
 
 }
