@@ -8,7 +8,7 @@ import { initGalleryAdmin } from "./gallery.js";
 import { initCastAdmin } from "./cast.js";
 import { initSystemAdmin } from "./system.js";
 import { initDashboardAdmin } from "./dashboard.js";
-
+import { initNewsAdmin } from "./news.js";
 
 const pages = {
 
@@ -18,7 +18,10 @@ const pages = {
 
     cast:initCastAdmin,
 
+    news:initNewsAdmin,
+
     system:initSystemAdmin
+
 
 };
 
@@ -110,29 +113,26 @@ document.addEventListener(
 
 
 
-    /*
-        初期表示
+/*
+    初期表示
 
-        Dashboard
-    */
-
-
-    const dashboard =
-        document.querySelector(
-            '[data-page="dashboard"]'
-        );
+    Dashboard
+*/
 
 
-    if(dashboard){
+const dashboard =
+    document.querySelector(
+        '[data-page="dashboard"]'
+    );
 
 
-        dashboard.classList.add(
-            "active"
-        );
+if(dashboard){
+
+    dashboard.classList.add(
+        "active"
+    );
+
+}
 
 
-    }
-
-
-
-});
+initDashboardAdmin();
