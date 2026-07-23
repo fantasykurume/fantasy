@@ -4,7 +4,9 @@
 ========================================== */
 
 
-/* 全体 */
+/* ==========================
+   Section
+========================== */
 
 #cast{
 
@@ -16,6 +18,10 @@
 
 
 
+/* ==========================
+   Layout
+========================== */
+
 .cast-grid{
 
     max-width:600px;
@@ -26,25 +32,35 @@
 
 
 
-/* 1人分 */
+/* ==========================
+   Item
+========================== */
 
 .cast-item{
 
     border-bottom:
 
-    1px solid rgba(212,175,55,.25);
+        1px solid rgba(212,175,55,.25);
 
 }
 
 
 
-/* 名前 */
+/* ==========================
+   Name
+========================== */
 
 .cast-name{
+
+    width:100%;
 
     position:relative;
 
     padding:30px 20px;
+
+    background:none;
+
+    border:none;
 
     text-align:center;
 
@@ -56,7 +72,11 @@
 
     letter-spacing:.35em;
 
-    transition:.4s;
+    transition:
+
+        color .35s ease,
+
+        opacity .35s ease;
 
 }
 
@@ -64,13 +84,25 @@
 
 .cast-name:hover{
 
-    opacity:.7;
+    opacity:.75;
 
 }
 
 
 
-/* VIEW表示 */
+/* 開いた時 */
+
+.cast-item.open .cast-name{
+
+    color:#f5e39a;
+
+}
+
+
+
+/* ==========================
+   VIEW PROFILE
+========================== */
 
 .cast-name::after{
 
@@ -90,11 +122,13 @@
 
 
 
-/* 開閉マーク */
+/* ==========================
+   Plus / Minus
+========================== */
 
 .cast-name::before{
 
-    content:"＋";
+    content:"+";
 
     position:absolute;
 
@@ -106,7 +140,9 @@
 
     color:var(--color-gold);
 
-    font-size:1.2rem;
+    font-size:1.25rem;
+
+    transition:.3s;
 
 }
 
@@ -120,7 +156,9 @@
 
 
 
-/* 写真エリア */
+/* ==========================
+   Photo Area
+========================== */
 
 .cast-photo{
 
@@ -130,25 +168,33 @@
 
     opacity:0;
 
+    transform:translateY(-12px);
+
     padding:0;
 
     transition:
 
         max-height .8s ease,
 
-        opacity .6s ease;
+        opacity .6s ease,
+
+        transform .5s ease;
 
 }
 
 
 
-/* 展開 */
+/* ==========================
+   Open
+========================== */
 
 .cast-item.open .cast-photo{
 
-    max-height:800px;
+    max-height:900px;
 
     opacity:1;
+
+    transform:translateY(0);
 
     padding-bottom:35px;
 
@@ -156,7 +202,9 @@
 
 
 
-/* PHOTO文字 */
+/* ==========================
+   PHOTO
+========================== */
 
 .cast-photo::before{
 
@@ -178,7 +226,9 @@
 
 
 
-/* 写真 */
+/* ==========================
+   Image
+========================== */
 
 .cast-photo img{
 
@@ -188,38 +238,61 @@
 
     max-width:380px;
 
+    aspect-ratio:3 / 4;
+
+    object-fit:cover;
+
     margin:0 auto;
 
-
-    border-radius:4px;
-
+    border-radius:6px;
 
     box-shadow:
 
-    0 30px 60px rgba(0,0,0,.55);
+        0 30px 60px rgba(0,0,0,.55);
 
+    transition:
 
-    cursor:pointer;
+        transform .35s ease,
 
-
-    transition:.5s;
+        filter .35s ease;
 
 }
 
 
+
+/* Hover */
 
 .cast-photo img:hover{
 
-    transform:scale(1.02);
+    transform:scale(1.01);
+
+    filter:brightness(1.05);
 
 }
 
 
 
-/* スマホ */
+/* ==========================
+   Tablet
+========================== */
+
+@media(max-width:991px){
+
+    .cast-grid{
+
+        max-width:520px;
+
+    }
+
+}
+
+
+
+/* ==========================
+   Mobile
+========================== */
 
 @media(max-width:767px){
-
 
     #cast{
 
@@ -229,6 +302,11 @@
 
     }
 
+    .cast-grid{
+
+        max-width:100%;
+
+    }
 
     .cast-name{
 
@@ -236,7 +314,20 @@
 
         padding:25px 15px;
 
+        letter-spacing:.25em;
+
     }
 
+    .cast-name::before{
+
+        right:12px;
+
+    }
+
+    .cast-photo img{
+
+        max-width:320px;
+
+    }
 
 }

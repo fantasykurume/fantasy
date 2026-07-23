@@ -4,17 +4,17 @@
 ========================================== */
 
 import { fetchAPI } from "../api/api.js";
-import { openModal } from "../components/modal.js";
 
 
-export async function initCast(){
+/* ==========================================
+   初期化
+========================================== */
 
+export async function initCast() {
 
-    const result =
-        await fetchAPI("cast");
+    const result = await fetchAPI("cast");
 
-
-    if(!result || result.status !== "success"){
+    if (!result || result.status !== "success") {
 
         console.error("Cast API Error");
 
@@ -22,171 +22,80 @@ export async function initCast(){
 
     }
 
+    const items = result.data
 
+        .filter(item => item.status === "公開")
 
-    const items =
-        result.data
-
-        .filter(
-            item => item.status === "公開"
-        )
-
-        .sort(
-            (a,b)=>Number(a.sort)-Number(b.sort)
-        );
-
-
+        .sort((a, b) => Number(a.sort || 999) - Number(b.sort || 999));
 
     renderCast(items);
 
-
 }
-
 
 
 /* ==========================================
    Cast表示
 ========================================== */
 
-function renderCast(items){
+function renderCast(items) {
 
+    const grid = document.getElementById("castGrid");
 
-    const grid =
-        document.getElementById("castGrid");
-
-
-    if(!grid) return;
-
-
+    if (!grid) return;
 
     grid.innerHTML = "";
 
+    items.forEach(item => {
 
+        const box = document.createElement("article");
 
-    items.forEach((item,index)=>{
-
-
-        const box =
-            document.createElement("div");
-
-
-        box.className =
-            "cast-item";
-
-
+        box.className = "cast-item";
 
         box.innerHTML = `
 
-
-            <div class="cast-name">
+            <button
+                class="cast-name"
+                type="button">
 
                 ${item.name}
 
-            </div>
-
-
+            </button>
 
             <div class="cast-photo">
 
-
                 <img
-
-               src="${getCastThumbnail(item.image_url)}"
-
-               alt="${item.name}"
-
-               loading="lazy">
+                    src="${getCastImage(item.image_url)}"
+                    alt="${item.name}"
+                    loading="lazy">
 
             </div>
 
         `;
 
-        /*
-            名前クリック
-            開閉
-        */
+        const button = box.querySelector(".cast-name");
 
-        const name =
-            box.querySelector(
-                ".cast-name"
-            );
+        button.addEventListener("click", () => {
 
-        name.addEventListener(
-            "click",
-            ()=>{
+            box.classList.toggle("open");
 
-                box.classList.toggle(
-                    "open"
-                );
+            button.classList.toggle("active");
 
-            }
-        );
-
-        /*
-            写真クリック
-            Modal表示
-        */
-
-        const img =
-            box.querySelector(
-                ".cast-photo img"
-            );
-
-
-
-        img.addEventListener(
-            "click",
-            (e)=>{
-
-
-                e.stopPropagation();
-
-
-
-                openModal(
-
-                    items,
-
-                    index
-
-                );
-
-
-            }
-        );
-
-
+        });
 
         grid.appendChild(box);
 
-
-
     });
 
-
 }
 
-function getCastImage(url){
 
+/* ==========================================
+   Cloudinary画像加工
+========================================== */
 
-    if(!url) return "";
+function getCastImage(url) {
 
-
-
-    return url.replace(
-
-        "/upload/",
-
-        "/upload/c_fill,w_700,h_900,g_face,q_auto,f_auto/"
-
-    );
-
-
-}
-
-function getCastThumbnail(url){
-
-    if(!url) return "";
+    if (!url) return "";
 
     return url.replace(
 

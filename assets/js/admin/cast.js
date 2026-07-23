@@ -46,10 +46,9 @@ export async function initCastAdmin(){
 
 
         <h3>
-
-        CAST追加・編集
-
+            CAST追加・編集
         </h3>
+
 
 
         <input
@@ -57,17 +56,21 @@ export async function initCastAdmin(){
         placeholder="名前">
 
 
+
         <br><br>
+
 
 
         <button id="uploadButton">
 
-        📷画像アップロード
+            📷画像アップロード
 
         </button>
 
 
+
         <br><br>
+
 
 
         <input
@@ -76,7 +79,9 @@ export async function initCastAdmin(){
         placeholder="画像URL">
 
 
+
         <br><br>
+
 
 
         <img
@@ -87,10 +92,13 @@ export async function initCastAdmin(){
         ">
 
 
+
         <br><br>
 
 
+
         表示順
+
 
 
         <input
@@ -99,23 +107,34 @@ export async function initCastAdmin(){
         value="1">
 
 
+
         <br><br>
 
 
+
+        公開状態
+
+
+
         <select id="castStatus">
+
 
             <option value="公開">
                 公開
             </option>
 
+
             <option value="非公開">
                 非公開
             </option>
 
+
         </select>
 
 
+
         <br><br>
+
 
 
         <button id="saveCast">
@@ -123,6 +142,7 @@ export async function initCastAdmin(){
             保存
 
         </button>
+
 
 
     </div>
@@ -137,13 +157,17 @@ export async function initCastAdmin(){
 
     loadCast();
 
+
 }
+
+
 
 
 
 /* ==========================================
    Events
 ========================================== */
+
 
 function registerEvents(){
 
@@ -178,17 +202,21 @@ function registerEvents(){
 
 
 
+
+
 /* ==========================================
    Form
 ========================================== */
 
+
 function showForm(){
 
 
-    editId=null;
+    editId = null;
 
 
     resetForm();
+
 
 
     document
@@ -200,9 +228,13 @@ function showForm(){
 
 
 
+
+
+
 /* ==========================================
    Upload
 ========================================== */
+
 
 function uploadImage(){
 
@@ -217,10 +249,15 @@ function uploadImage(){
 
 
         const img =
-        document.getElementById("previewImage");
+        document.getElementById(
+            "previewImage"
+        );
 
 
-        img.src=url;
+
+        img.src =
+        getThumb(url);
+
 
 
         img.style.display="block";
@@ -233,18 +270,20 @@ function uploadImage(){
 
 
 
+
+
+
 /* ==========================================
    Load
 ========================================== */
+
 
 async function loadCast(){
 
 
     const response =
     await fetch(
-
         `${CONFIG.API_URL}?action=cast`
-
     );
 
 
@@ -253,10 +292,24 @@ async function loadCast(){
 
 
 
-    renderCast(result.data || []);
+    if(result.status!=="success"){
+
+        return;
+
+    }
+
+
+
+    renderCast(
+        result.data || []
+    );
 
 
 }
+
+
+
+
 
 
 
@@ -264,28 +317,45 @@ async function loadCast(){
    Render
 ========================================== */
 
+
 function renderCast(items){
 
 
     const list =
-    document.getElementById("castList");
+    document.getElementById(
+        "castList"
+    );
+
 
 
     list.innerHTML="";
 
 
 
-    items.forEach(item=>{
+    items
+
+    .sort(
+        (a,b)=>
+        Number(a.sort || 999)
+        -
+        Number(b.sort || 999)
+    )
+
+    .forEach(item=>{
+
 
 
         list.innerHTML += `
+
 
 
         <div class="gallery-row">
 
 
             <img
+
             src="${getThumb(item.image_url)}"
+
             class="thumb">
 
 
@@ -316,7 +386,9 @@ function renderCast(items){
 
 
             <button
+
             class="edit"
+
             data-id="${item.id}">
 
                 編集
@@ -326,7 +398,9 @@ function renderCast(items){
 
 
             <button
+
             class="delete"
+
             data-id="${item.id}">
 
                 削除
@@ -352,9 +426,45 @@ function renderCast(items){
 
 
 
+
+
+
+
+
+/* ==========================================
+   Thumbnail
+========================================== */
+
+
+function getThumb(url){
+
+
+    if(!url)
+    return "";
+
+
+
+    return url.replace(
+
+        "/upload/",
+
+        "/upload/w_300,h_300,c_fill,g_face,q_auto,f_auto/"
+
+    );
+
+
+}
+
+
+
+
+
+
+
 /* ==========================================
    Row Events
 ========================================== */
+
 
 function registerRowEvents(){
 
@@ -366,12 +476,15 @@ function registerRowEvents(){
 
         btn.onclick=()=>{
 
-            editCast(btn.dataset.id);
+            editCast(
+                btn.dataset.id
+            );
 
         };
 
 
     });
+
 
 
 
@@ -382,7 +495,9 @@ function registerRowEvents(){
 
         btn.onclick=()=>{
 
-            deleteCast(btn.dataset.id);
+            deleteCast(
+                btn.dataset.id
+            );
 
         };
 
@@ -394,19 +509,23 @@ function registerRowEvents(){
 
 
 
+
+
+
+
 /* ==========================================
    Edit
 ========================================== */
+
 
 async function editCast(id){
 
 
     const response =
     await fetch(
-
         `${CONFIG.API_URL}?action=cast`
-
     );
+
 
 
     const result =
@@ -421,11 +540,13 @@ async function editCast(id){
 
 
 
-    if(!item)return;
+    if(!item)
+    return;
 
 
 
     editId=id;
+
 
 
     document
@@ -457,11 +578,17 @@ async function editCast(id){
     .value=item.status;
 
 
+
     const img =
-    document.getElementById("previewImage");
+    document.getElementById(
+        "previewImage"
+    );
 
 
-    img.src=item.image_url;
+
+    img.src =
+    getThumb(item.image_url);
+
 
 
     img.style.display="block";
@@ -471,11 +598,18 @@ async function editCast(id){
 
 
 
+
+
+
+
+
 /* ==========================================
    Save
 ========================================== */
 
+
 async function saveCast(){
+
 
 
     const form =
@@ -483,7 +617,9 @@ async function saveCast(){
 
 
 
+
     if(editId){
+
 
         form.append(
             "action",
@@ -495,6 +631,7 @@ async function saveCast(){
             "id",
             editId
         );
+
 
 
     }else{
@@ -510,30 +647,50 @@ async function saveCast(){
 
 
 
+
+
+
     form.append(
         "name",
-        document.getElementById("castName").value
+        document
+        .getElementById("castName")
+        .value.trim()
     );
+
 
 
     form.append(
         "image_url",
-        document.getElementById("castImage").value
+        document
+        .getElementById("castImage")
+        .value
     );
+
 
 
     form.append(
         "sort",
-        document.getElementById("castSort").value
+        document
+        .getElementById("castSort")
+        .value
     );
+
 
 
     form.append(
         "status",
-        document.getElementById("castStatus").value
+        document
+        .getElementById("castStatus")
+        .value
     );
 
 
+
+
+
+
+
+    const response =
     await fetch(
 
         CONFIG.API_URL,
@@ -547,16 +704,45 @@ async function saveCast(){
 
 
 
-    alert("保存しました");
 
 
-    resetForm();
+    const result =
+    await response.json();
 
 
-    loadCast();
+
+
+
+    if(result.status==="success"){
+
+
+        alert("保存しました");
+
+
+        resetForm();
+
+
+        loadCast();
+
+
+
+    }else{
+
+
+        alert(
+            result.message
+        );
+
+
+    }
+
 
 
 }
+
+
+
+
 
 
 
@@ -564,11 +750,18 @@ async function saveCast(){
    Delete
 ========================================== */
 
+
 async function deleteCast(id){
 
 
-    if(!confirm("削除しますか？"))
+
+    if(
+        !confirm(
+            "削除しますか？"
+        )
+    )
     return;
+
 
 
 
@@ -583,6 +776,7 @@ async function deleteCast(id){
     );
 
 
+
     form.append(
         "id",
         id
@@ -590,6 +784,8 @@ async function deleteCast(id){
 
 
 
+
+    const response =
     await fetch(
 
         CONFIG.API_URL,
@@ -603,10 +799,33 @@ async function deleteCast(id){
 
 
 
-    loadCast();
+    const result =
+    await response.json();
+
+
+
+
+    if(result.status==="success"){
+
+
+        loadCast();
+
+
+    }else{
+
+
+        alert(
+            result.message
+        );
+
+
+    }
 
 
 }
+
+
+
 
 
 
@@ -614,7 +833,12 @@ async function deleteCast(id){
    Reset
 ========================================== */
 
+
 function resetForm(){
+
+
+    editId=null;
+
 
 
     document
@@ -622,9 +846,11 @@ function resetForm(){
     .value="";
 
 
+
     document
     .getElementById("castImage")
     .value="";
+
 
 
     document
@@ -632,8 +858,18 @@ function resetForm(){
     .value=1;
 
 
+
+    document
+    .getElementById("castStatus")
+    .value="公開";
+
+
+
     const img =
-    document.getElementById("previewImage");
+    document.getElementById(
+        "previewImage"
+    );
+
 
 
     img.src="";
@@ -641,20 +877,10 @@ function resetForm(){
     img.style.display="none";
 
 
+
     document
     .getElementById("castForm")
     .style.display="none";
 
-
-}
-
-function getThumb(url){
-
-    if(!url)return "";
-
-    return url.replace(
-        "/upload/",
-        "/upload/w_300,h_300,c_fill,g_face,q_auto,f_auto/"
-    );
 
 }
