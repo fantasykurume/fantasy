@@ -33,7 +33,6 @@ export function initSystem(items){
 /* ==========================================
    System表示
 ========================================== */
-
 function renderSystem(target,items){
 
     const area = document.getElementById(target);
@@ -50,7 +49,9 @@ function renderSystem(target,items){
 
         card.innerHTML = `
             <h4>${item.name}</h4>
-            <p class="price">${item.price}</p>
+            <p class="price">
+                ¥${Number(item.price).toLocaleString()}
+            </p>
             <p>${item.description || ""}</p>
         `;
 
