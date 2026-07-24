@@ -2,32 +2,52 @@
    Fantasy CMS
    Shop Admin
 ========================================== */
-import { CONFIG } from "../config/config.js";
+
 import { adminGet,adminPostForm } from "./api.js";
 import { openUpload } from "./upload.js";
 
+
 export async function initShopAdmin(){
+
 document.getElementById("currentPage").innerText="店舗情報管理";
-document.getElementById("pageContent").innerHTML = `
+
+document.getElementById("pageContent").innerHTML=`
+
 <h2>店舗情報管理</h2>
-<div id="shopForm">読み込み中...</div>
+
+<div id="shopForm">
+読み込み中...
+</div>
+
 `;
+
 loadShop();
+
 }
 
+
+
 async function loadShop(){
+
 const area=document.getElementById("shopForm");
+
 
 try{
 
 const result=await adminGet("shop");
 
+
 if(result.status!=="success"){
+
 area.innerHTML="取得失敗";
+
 return;
+
 }
 
+
 const shop=result.data[0];
+
 
 area.innerHTML=`
 
@@ -36,52 +56,64 @@ area.innerHTML=`
 
 <br><br>
 
-<label>ロゴ画像URL</label><br>
-<input id="logoUrl" value="${shop.logo_url||""}">
+
+<label>ロゴ画像</label><br>
+<input id="logoUrl" value="${shop.logo_url||""}" readonly>
+<button id="uploadLogo">📷</button>
 
 <br><br>
+
 
 <label>キャッチコピー</label><br>
 <input id="shopCatch" value="${shop.catch_copy||""}">
 
 <br><br>
 
+
 <label>説明</label><br>
 <textarea id="shopDescription">${shop.description||""}</textarea>
 
 <br><br>
+
 
 <label>住所</label><br>
 <input id="shopAddress" value="${shop.address||""}">
 
 <br><br>
 
+
 <label>電話番号</label><br>
 <input id="shopPhone" value="${shop.phone||""}">
 
 <br><br>
+
 
 <label>営業時間</label><br>
 <input id="shopHours" value="${shop.business_hours||""}">
 
 <br><br>
 
+
 <label>定休日</label><br>
 <input id="shopHoliday" value="${shop.holiday||""}">
 
 <br><br>
 
-<label>Instagram URL</label><br>
+
+<label>Instagram</label><br>
 <input id="instagram" value="${shop.instagram||""}">
 
 <br><br>
 
-<label>LINE URL</label><br>
+
+<label>LINE</label><br>
 <input id="line" value="${shop.line||""}">
 
 <br><br>
 
+
 <h3>Hero画像</h3>
+
 
 <label>Hero画像1</label><br>
 <input id="hero1" value="${shop.hero_image_1||""}" readonly>
@@ -89,11 +121,13 @@ area.innerHTML=`
 
 <br><br>
 
+
 <label>Hero画像2</label><br>
 <input id="hero2" value="${shop.hero_image_2||""}" readonly>
 <button id="uploadHero2">📷</button>
 
 <br><br>
+
 
 <label>Hero画像3</label><br>
 <input id="hero3" value="${shop.hero_image_3||""}" readonly>
@@ -101,18 +135,22 @@ area.innerHTML=`
 
 <br><br>
 
+
 <label>Google Map URL</label><br>
 <input id="mapUrl" value="${shop.map_url||""}">
 
 <br><br>
 
-<label>Meta Description</label><br>
+
+<label>SEO説明文</label><br>
 <textarea id="metaDescription">${shop.meta_description||""}</textarea>
 
 <br><br>
 
+
 <label>公開状態</label><br>
-<select id="shopStatus">
+
+<select id="status">
 
 <option value="公開" ${shop.status==="公開"?"selected":""}>
 公開
@@ -127,41 +165,67 @@ area.innerHTML=`
 
 <br><br>
 
+
 <button id="saveShop">
 保存
 </button>
 
 `;
-document.getElementById("uploadHero1").onclick=()=>uploadHero("hero1");
-document.getElementById("uploadHero2").onclick=()=>uploadHero("hero2");
-document.getElementById("uploadHero3").onclick=()=>uploadHero("hero3");
+
+
+
+document.getElementById("uploadLogo").onclick=()=>uploadImage("logoUrl");
+
+document.getElementById("uploadHero1").onclick=()=>uploadImage("hero1");
+
+document.getElementById("uploadHero2").onclick=()=>uploadImage("hero2");
+
+document.getElementById("uploadHero3").onclick=()=>uploadImage("hero3");
+
+
 document.getElementById("saveShop").onclick=saveShop;
+
+
 
 }catch(e){
 
 console.error(e);
+
 area.innerHTML="通信エラー";
 
 }
+
 }
 
-function uploadHero(id){
+
+
+function uploadImage(id){
 
 openUpload(url=>{
+
 document.getElementById(id).value=url;
+
 });
 
 }
 
+
+
+
+
 async function saveShop(){
+
 
 const form=new FormData();
 
+
 form.append("action","updateShop");
 
-[
-"shopName",
+
+const ids=[
+
 "logoUrl",
+"shopName",
 "shopCatch",
 "shopDescription",
 "shopAddress",
@@ -175,30 +239,96 @@ form.append("action","updateShop");
 "hero3",
 "mapUrl",
 "metaDescription",
-"shopStatus"
-]
-.forEach(id=>{
+"status"
+
+];
+
+
+ids.forEach(id=>{
+
 const el=document.getElementById(id);
-if(el) form.append(id,el.value);
+
+if(el){
+
+form.append(id,el.value);
+
+}
+
 });
 
-/* Workerへ送る名前修正 */
 
-form.append("shop_name",document.getElementById("shopName").value);
-form.append("catch_copy",document.getElementById("shopCatch").value);
-form.append("description",document.getElementById("shopDescription").value);
-form.append("address",document.getElementById("shopAddress").value);
-form.append("phone",document.getElementById("shopPhone").value);
-form.append("business_hours",document.getElementById("shopHours").value);
-form.append("holiday",document.getElementById("shopHoliday").value);
-form.append("hero_image_1",document.getElementById("hero1").value);
-form.append("hero_image_2",document.getElementById("hero2").value);
-form.append("hero_image_3",document.getElementById("hero3").value);
-form.append("map_url",document.getElementById("mapUrl").value);
+
+form.append("logo_url",
+document.getElementById("logoUrl").value);
+
+
+form.append("shop_name",
+document.getElementById("shopName").value);
+
+
+form.append("catch_copy",
+document.getElementById("shopCatch").value);
+
+
+form.append("description",
+document.getElementById("shopDescription").value);
+
+
+form.append("address",
+document.getElementById("shopAddress").value);
+
+
+form.append("phone",
+document.getElementById("shopPhone").value);
+
+
+form.append("business_hours",
+document.getElementById("shopHours").value);
+
+
+form.append("holiday",
+document.getElementById("shopHoliday").value);
+
+
+form.append("instagram",
+document.getElementById("instagram").value);
+
+
+form.append("line",
+document.getElementById("line").value);
+
+
+form.append("hero_image_1",
+document.getElementById("hero1").value);
+
+
+form.append("hero_image_2",
+document.getElementById("hero2").value);
+
+
+form.append("hero_image_3",
+document.getElementById("hero3").value);
+
+
+form.append("map_url",
+document.getElementById("mapUrl").value);
+
+
+form.append("meta_description",
+document.getElementById("metaDescription").value);
+
+
+form.append("status",
+document.getElementById("status").value);
+
+
 
 try{
 
+
 const result=await adminPostForm(form);
+
+
 
 if(result.status==="success"){
 
@@ -210,12 +340,14 @@ alert(result.message||"保存失敗");
 
 }
 
+
 }catch(e){
 
 console.error(e);
+
 alert("通信エラー");
 
 }
 
-}
 
+}
