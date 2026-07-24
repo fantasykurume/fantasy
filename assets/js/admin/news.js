@@ -8,8 +8,8 @@ import { adminGet,adminPostForm } from "./api.js";
 
 export async function initNewsAdmin(){
 
-
-    document.querySelector(".content").innerHTML = `
+    document.getElementById("currentPage").innerText="News管理";
+    document.getElementById("pageContent").innerHTML = `
 
 
         <h2>News管理</h2>

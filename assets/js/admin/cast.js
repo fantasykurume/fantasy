@@ -17,8 +17,8 @@ let editId = null;
 
 export async function initCastAdmin(){
 
-
-    document.querySelector(".content").innerHTML = `
+    document.getElementById("currentPage").innerText="Cast管理";
+    document.getElementById("pageContent").innerHTML = `
 
 
     <h2>CAST管理</h2>

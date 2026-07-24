@@ -26,6 +26,26 @@ import { initDashboardAdmin } from "./dashboard.js";
 import { initNewsAdmin } from "./news.js";
 import { initShopAdmin } from "./shop.js";
 
+const adminName=
+localStorage.getItem("admin_name")||"";
+
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+const nameBox=
+document.getElementById("adminName");
+
+if(nameBox){
+
+nameBox.innerText=
+"管理者："+adminName;
+
+}
+
+});
+
 const pages = {
 
     dashboard:initDashboardAdmin,
@@ -66,7 +86,31 @@ document.addEventListener(
                 const page =
                     item.dataset.page;
 
+        /* 現在ページ表示追加 */
 
+        const title =
+        document.getElementById(
+        "currentPage"
+        );
+
+        if(title){
+
+        const labels={
+
+        dashboard:"📊 Dashboard",
+        shop:"🏢 店舗情報",
+        gallery:"📷 Gallery",
+        cast:"👩 Cast",
+        news:"📰 News",
+        system:"💰 System",
+        settings:"⚙ Settings"
+
+        };
+
+        title.innerText =
+        labels[page] || page;
+
+        }
 
                 /*
                     active変更

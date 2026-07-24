@@ -18,7 +18,8 @@ let editId = null;
 
 export async function initGalleryAdmin(){
 
-    document.querySelector(".content").innerHTML = `
+    document.getElementById("currentPage").innerText="Gallery管理";
+    document.getElementById("pageContent").innerHTML = `
 
         <h2>Gallery管理</h2>
 

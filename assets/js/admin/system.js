@@ -17,7 +17,8 @@ vip:"VIP"
 
 export async function initSystemAdmin(){
 
-document.querySelector(".content").innerHTML=`
+document.getElementById("currentPage").innerText="料金管理";
+document.getElementById("pageContent").innerHTML = `
 
 <h2>System管理</h2>
 

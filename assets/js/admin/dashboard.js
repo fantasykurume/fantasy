@@ -8,7 +8,8 @@ import { adminGet } from "./api.js";
 
 export function initDashboardAdmin(){
 
-document.querySelector(".content").innerHTML=`
+document.getElementById("currentPage").innerText="Dashboard";
+document.getElementById("pageContent").innerHTML = `
 
 <h2>Dashboard</h2>
 
