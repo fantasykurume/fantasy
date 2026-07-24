@@ -3,10 +3,7 @@
    Admin Auth
 ========================================== */
 
-
-const ADMIN_ID = "fantasy";
-
-const ADMIN_PASSWORD = "0820";
+import { CONFIG } from "../config/config.js";
 
 
 document.addEventListener(
@@ -15,49 +12,93 @@ document.addEventListener(
 
 
 const loginButton =
-document.getElementById(
-"loginButton"
-);
-
+document.getElementById("loginButton");
 
 
 if(!loginButton) return;
 
 
+loginButton.onclick=async()=>{
 
-loginButton.onclick=()=>{
 
-
-const id =
-document.getElementById(
-"loginId"
-).value.trim();
-
+const username =
+document.getElementById("loginId")
+.value.trim();
 
 
 const password =
-document.getElementById(
-"loginPassword"
-).value.trim();
-
+document.getElementById("loginPassword")
+.value.trim();
 
 
 const message =
-document.getElementById(
-"loginMessage"
+document.getElementById("loginMessage");
+
+
+
+try{
+
+
+const form =
+new FormData();
+
+
+form.append(
+"action",
+"loginAdmin"
+);
+
+
+form.append(
+"username",
+username
+);
+
+
+form.append(
+"password",
+password
 );
 
 
 
+const response =
+await fetch(
+CONFIG.API_URL,
+{
+method:"POST",
+body:form
+}
+);
+
+
+
+const result =
+await response.json();
+
+
+
 if(
-id===ADMIN_ID &&
-password===ADMIN_PASSWORD
+result.status==="success" &&
+result.data.login
 ){
 
 
 localStorage.setItem(
 "fantasy_admin",
 "true"
+);
+
+
+localStorage.setItem(
+"admin_name",
+result.data.name
+);
+
+
+localStorage.setItem(
+"admin_role",
+result.data.role
 );
 
 
@@ -69,7 +110,7 @@ location.href="admin.html";
 }else{
 
 
-message.innerText=
+message.innerText =
 "IDまたはパスワードが違います";
 
 
@@ -77,8 +118,21 @@ message.innerText=
 
 
 
-};
+}catch(e){
 
+
+console.error(e);
+
+
+message.innerText =
+"通信エラー";
+
+
+}
+
+
+
+};
 
 
 });
