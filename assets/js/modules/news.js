@@ -5,6 +5,7 @@
 
 import { CONFIG } from "../config/config.js";
 
+
 /* ==========================================
    初期化
 ========================================== */
@@ -25,6 +26,7 @@ export function initNews(items){
 
 }
 
+
 /* ==========================================
    News表示
 ========================================== */
@@ -37,13 +39,16 @@ function renderNews(items){
 
     list.innerHTML = "";
 
+
     items.forEach(item=>{
 
         const article = document.createElement("article");
 
         article.className = "news-card";
 
+
         article.innerHTML = `
+
             ${item.image_url ? `
                 <img
                     src="${item.image_url}"
@@ -51,15 +56,62 @@ function renderNews(items){
                     loading="lazy">
             ` : ""}
 
+
             <div class="news-content">
-                <time>${item.date}</time>
-                <h3>${item.title}</h3>
-                <p>${item.description || ""}</p>
+
+                <time>
+                    ${formatDate(item.date)}
+                </time>
+
+
+                <h3>
+                    ${item.title}
+                </h3>
+
+
+                <p>
+                    ${item.description || ""}
+                </p>
+
             </div>
+
         `;
+
 
         list.appendChild(article);
 
+
     });
+
+}
+
+
+/* ==========================================
+   日付整形
+========================================== */
+
+function formatDate(date){
+
+    if(!date){
+        return "";
+    }
+
+
+    const d = new Date(date);
+
+
+    if(isNaN(d)){
+        return date;
+    }
+
+
+    return (
+        d.getFullYear()
+        +"年"
+        +(d.getMonth()+1)
+        +"月"
+        +d.getDate()
+        +"日"
+    );
 
 }
