@@ -1,5 +1,20 @@
 /* ==========================================
    Fantasy CMS
+   Admin Auth Check
+========================================== */
+
+if(
+    localStorage.getItem("fantasy_admin")
+    !==
+    "true"
+){
+
+    location.href="login.html";
+
+}
+
+/* ==========================================
+   Fantasy CMS
    Admin Controller
 ========================================== */
 
@@ -139,5 +154,42 @@ if(dashboard){
 
 
 initDashboardAdmin();
+
+});
+
+/* ==========================================
+   Logout
+========================================== */
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+
+const logout =
+document.getElementById(
+"logoutButton"
+);
+
+
+if(logout){
+
+
+logout.onclick=()=>{
+
+
+localStorage.removeItem(
+"fantasy_admin"
+);
+
+
+location.href="login.html";
+
+
+};
+
+
+}
+
 
 });
