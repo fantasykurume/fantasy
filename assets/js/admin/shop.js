@@ -175,25 +175,3 @@ alert("通信エラー");
 
 }
 
-try{
-
-const result=await adminPostForm(form);
-
-if(result.status==="success"){
-
-alert("保存しました");
-
-}else{
-
-alert(result.message||"保存失敗");
-
-}
-
-}catch(e){
-
-console.error(e);
-alert("通信エラー");
-
-}
-
-}
