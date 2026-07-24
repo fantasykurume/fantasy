@@ -4,6 +4,7 @@
 ========================================== */
 
 import { CONFIG } from "../config/config.js";
+import { adminGet } from "./api.js";
 
 export function initDashboardAdmin(){
 
@@ -53,19 +54,13 @@ document.querySelector(".content").innerHTML=`
 
 loadDashboard();
 
-
-document
-.querySelectorAll(".dashboard-card")
-.forEach(card=>{
+document.querySelectorAll(".dashboard-card").forEach(card=>{
 
 card.onclick=()=>{
 
 const page=card.dataset.page;
 
-const menu=
-document.querySelector(
-`.admin-menu li[data-page="${page}"]`
-);
+const menu=document.querySelector(`.admin-menu li[data-page="${page}"]`);
 
 if(menu){
 menu.click();
@@ -77,64 +72,29 @@ menu.click();
 
 }
 
-
-
 async function loadDashboard(){
 
 try{
 
-const response=
-await fetch(
-`${CONFIG.API_URL}?action=dashboard`
-);
-
-const result=
-await response.json();
-
+const result=await adminGet("dashboard");
 
 if(result.status!=="success"){
 throw new Error();
 }
 
-
 const data=result.data;
 
+const gallery=document.getElementById("dashboardGallery");
+if(gallery) gallery.innerText=`${data.gallery}件`;
 
-const gallery=
-document.getElementById("dashboardGallery");
+const cast=document.getElementById("dashboardCast");
+if(cast) cast.innerText=`${data.cast}名`;
 
-if(gallery){
-gallery.innerText=
-`${data.gallery}件`;
-}
+const news=document.getElementById("dashboardNews");
+if(news) news.innerText=`${data.news}件`;
 
-
-const cast=
-document.getElementById("dashboardCast");
-
-if(cast){
-cast.innerText=
-`${data.cast}名`;
-}
-
-
-const news=
-document.getElementById("dashboardNews");
-
-if(news){
-news.innerText=
-`${data.news}件`;
-}
-
-
-const system=
-document.getElementById("dashboardSystem");
-
-if(system){
-system.innerText=
-`${data.system}件`;
-}
-
+const system=document.getElementById("dashboardSystem");
+if(system) system.innerText=`${data.system}件`;
 
 }catch(e){
 

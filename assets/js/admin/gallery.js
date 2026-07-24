@@ -3,7 +3,7 @@
 ========================================== */
 
 import { CONFIG } from "../config/config.js";
-import { adminGet } from "./api.js";
+import { adminGet, adminPostForm } from "./api.js";
 import { openUpload } from "./upload.js";
 
 /* ==========================================
@@ -463,99 +463,63 @@ async function editGallery(id){
 
 async function saveGallery(){
 
-    const title =
-        document.getElementById("galleryTitle").value.trim();
+const title=document.getElementById("galleryTitle").value.trim();
+const description=document.getElementById("galleryDescription").value.trim();
+const image_url=document.getElementById("galleryImage").value.trim();
+const category=document.getElementById("galleryCategory").value;
+const sort=document.getElementById("gallerySort").value;
 
-    const description =
-        document.getElementById("galleryDescription").value.trim();
+if(title===""){
+alert("タイトルを入力してください");
+return;
+}
 
-    const image_url =
-        document.getElementById("galleryImage").value.trim();
+if(image_url===""){
+alert("画像をアップロードしてください");
+return;
+}
 
-    const category =
-        document.getElementById("galleryCategory").value;
+const form=new FormData();
 
-    const sort =
-        document.getElementById("gallerySort").value;
+if(editId){
+form.append("action","updateGallery");
+form.append("id",editId);
+}else{
+form.append("action","saveGallery");
+}
 
-    if(title===""){
+form.append("title",title);
+form.append("description",description);
+form.append("image_url",image_url);
+form.append("category",category);
+form.append("sort",sort);
 
-        alert("タイトルを入力してください");
+try{
 
-        return;
+const result=
+await adminPostForm(form);
 
-    }
+if(result.status==="success"){
 
-    if(image_url===""){
+alert("保存しました");
 
-        alert("画像をアップロードしてください");
+resetForm();
 
-        return;
+loadGallery();
 
-    }
+}else{
 
-    const form =
-        new FormData();
+alert(result.message);
 
-    if(editId){
+}
 
-        form.append("action","updateGallery");
+}catch(error){
 
-        form.append("id",editId);
+console.error(error);
 
-    }else{
+alert("通信エラー");
 
-        form.append("action","saveGallery");
-
-    }
-
-    form.append("title",title);
-    form.append("description",description);
-    form.append("image_url",image_url);
-    form.append("category",category);
-    form.append("sort",sort);
-
-    try{
-
-        const response =
-            await fetch(
-
-                CONFIG.API_URL,
-
-                {
-
-                    method:"POST",
-
-                    body:form
-
-                }
-
-            );
-
-        const result =
-            await response.json();
-
-        if(result.status==="success"){
-
-            alert("保存しました");
-
-            resetForm();
-
-            loadGallery();
-
-        }else{
-
-            alert(result.message);
-
-        }
-
-    }catch(error){
-
-        console.error(error);
-
-        alert("通信エラー");
-
-    }
+}
 
 }
 
@@ -606,58 +570,36 @@ function resetForm(){
 
 async function deleteGallery(id){
 
-    if(!confirm("この画像を削除しますか？")){
+if(!confirm("この画像を削除しますか？")){
+return;
+}
 
-        return;
+const form=new FormData();
 
-    }
+form.append("action","deleteGallery");
+form.append("id",id);
 
-    const form = new FormData();
+try{
 
-    form.append("action","deleteGallery");
+const result=
+await adminPostForm(form);
 
-    form.append("id",id);
+if(result.status==="success"){
 
-    try{
+loadGallery();
 
-        const response =
-            await fetch(
+}else{
 
-                CONFIG.API_URL,
-
-                {
-
-                    method:"POST",
-
-                    body:form
-
-                }
-
-            );
-
-        const result =
-            await response.json();
-
-        if(result.status==="success"){
-
-            loadGallery();
-
-        }else{
-
-            alert(result.message);
-
-        }
-
-    }catch(error){
-
-        console.error(error);
-
-        alert("通信エラー");
-
-    }
+alert(result.message);
 
 }
 
-/* ==========================================
-   終了
-========================================== */
+}catch(error){
+
+console.error(error);
+
+alert("通信エラー");
+
+}
+
+}

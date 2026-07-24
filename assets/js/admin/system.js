@@ -4,16 +4,16 @@
 ========================================== */
 
 import { CONFIG } from "../config/config.js";
+import { adminGet,adminPostForm } from "./api.js";
 
 let editId=null;
 
 const typeLabels={
-    keep:"ボトルキープあり",
-    no_keep:"ボトルキープなし",
-    option:"追加料金",
-    vip:"VIP"
+keep:"ボトルキープあり",
+no_keep:"ボトルキープなし",
+option:"追加料金",
+vip:"VIP"
 };
-
 
 export async function initSystemAdmin(){
 
@@ -74,6 +74,7 @@ document.querySelector(".content").innerHTML=`
 <button id="saveSystem">保存</button>
 
 </div>
+
 `;
 
 registerEvents();
@@ -81,58 +82,34 @@ loadSystem();
 
 }
 
-
-
 function registerEvents(){
 
-document
-.getElementById("addSystem")
-.onclick=()=>{
-
+document.getElementById("addSystem").onclick=()=>{
 editId=null;
 resetForm();
-
-document
-.getElementById("systemForm")
-.style.display="block";
-
+document.getElementById("systemForm").style.display="block";
 };
 
-
-document
-.getElementById("saveSystem")
-.onclick=()=>{
-
+document.getElementById("saveSystem").onclick=()=>{
 saveSystem();
-
 };
 
 }
-
-
 
 async function loadSystem(){
 
-const list=
-document.getElementById("systemList");
+const list=document.getElementById("systemList");
 
 try{
 
-const res=
-await fetch(`${CONFIG.API_URL}?action=system`);
-
-const result=
-await res.json();
+const result=await adminGet("system");
 
 if(result.status!=="success"){
-
 list.innerHTML="取得失敗";
 return;
-
 }
 
 renderSystem(result.data);
-
 
 }catch(e){
 
@@ -143,15 +120,11 @@ list.innerHTML="通信エラー";
 
 }
 
-
-
 function renderSystem(items){
 
-const list=
-document.getElementById("systemList");
+const list=document.getElementById("systemList");
 
 list.innerHTML="";
-
 
 items.forEach(item=>{
 
@@ -165,23 +138,15 @@ list.innerHTML+=`
 
 <p>${item.name}</p>
 
-<p>
-¥${Number(item.price).toLocaleString()}
-</p>
+<p>¥${Number(item.price).toLocaleString()}</p>
 
-<small>
-${item.description||""}
-</small>
+<small>${item.description||""}</small>
 
 </div>
 
-<button class="edit" data-id="${item.id}">
-編集
-</button>
+<button class="edit" data-id="${item.id}">編集</button>
 
-<button class="delete" data-id="${item.id}">
-削除
-</button>
+<button class="delete" data-id="${item.id}">削除</button>
 
 </div>
 
@@ -189,51 +154,31 @@ ${item.description||""}
 
 });
 
-
 registerRowEvents();
 
 }
 
-
-
 function registerRowEvents(){
 
-document
-.querySelectorAll(".edit")
-.forEach(btn=>{
-
+document.querySelectorAll(".edit").forEach(btn=>{
 btn.onclick=()=>editSystem(btn.dataset.id);
-
 });
 
-
-document
-.querySelectorAll(".delete")
-.forEach(btn=>{
-
+document.querySelectorAll(".delete").forEach(btn=>{
 btn.onclick=()=>deleteSystem(btn.dataset.id);
-
 });
 
 }
 
-
-
 async function editSystem(id){
 
-const res=
-await fetch(`${CONFIG.API_URL}?action=system`);
+const result=await adminGet("system");
 
-const result=
-await res.json();
+if(result.status!=="success") return;
 
-const item=
-result.data.find(
-x=>Number(x.id)===Number(id)
-);
+const item=result.data.find(x=>Number(x.id)===Number(id));
 
-if(!item)return;
-
+if(!item) return;
 
 editId=id;
 
@@ -244,85 +189,34 @@ document.getElementById("systemDescription").value=item.description;
 document.getElementById("systemSort").value=item.sort;
 document.getElementById("systemStatus").value=item.status;
 
-
-document
-.getElementById("systemForm")
-.style.display="block";
+document.getElementById("systemForm").style.display="block";
 
 }
-
-
 
 async function saveSystem(){
 
 const form=new FormData();
 
-
-form.append(
-"action",
-editId?"updateSystem":"saveSystem"
-);
-
+form.append("action",editId?"updateSystem":"saveSystem");
 
 if(editId){
-
 form.append("id",editId);
-
 }
 
+form.append("type",document.getElementById("systemType").value);
+form.append("name",document.getElementById("systemName").value);
+form.append("price",document.getElementById("systemPrice").value);
+form.append("description",document.getElementById("systemDescription").value);
+form.append("sort",document.getElementById("systemSort").value);
+form.append("status",document.getElementById("systemStatus").value);
 
-form.append(
-"type",
-document.getElementById("systemType").value
-);
-
-form.append(
-"name",
-document.getElementById("systemName").value
-);
-
-form.append(
-"price",
-document.getElementById("systemPrice").value
-);
-
-form.append(
-"description",
-document.getElementById("systemDescription").value
-);
-
-form.append(
-"sort",
-document.getElementById("systemSort").value
-);
-
-form.append(
-"status",
-document.getElementById("systemStatus").value
-);
-
-
-
-const res=
-await fetch(
-CONFIG.API_URL,
-{
-method:"POST",
-body:form
-}
-);
-
-
-const result=
-await res.json();
-
+const result=await adminPostForm(form);
 
 if(result.status==="success"){
 
 alert("保存しました");
 
 resetForm();
-
 loadSystem();
 
 }else{
@@ -333,43 +227,28 @@ alert(result.message);
 
 }
 
-
-
 async function deleteSystem(id){
 
-if(!confirm("削除しますか？"))
-return;
-
+if(!confirm("削除しますか？")) return;
 
 const form=new FormData();
 
 form.append("action","deleteSystem");
 form.append("id",id);
 
-
-const res=
-await fetch(
-CONFIG.API_URL,
-{
-method:"POST",
-body:form
-}
-);
-
-
-const result=
-await res.json();
-
+const result=await adminPostForm(form);
 
 if(result.status==="success"){
 
 loadSystem();
 
-}
+}else{
+
+alert(result.message||"削除失敗");
 
 }
 
-
+}
 
 function resetForm(){
 
@@ -381,3 +260,4 @@ document.getElementById("systemSort").value=1;
 document.getElementById("systemStatus").value="公開";
 
 }
+

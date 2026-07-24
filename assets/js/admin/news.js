@@ -4,7 +4,7 @@
 ========================================== */
 
 import { CONFIG } from "../config/config.js";
-
+import { adminGet,adminPostForm } from "./api.js";
 
 export async function initNewsAdmin(){
 
@@ -63,14 +63,8 @@ async function loadNews(){
     try{
 
 
-        const res =
-        await fetch(
-            `${CONFIG.API_URL}?action=news`
-        );
-
-
-        const result =
-        await res.json();
+       const result=
+       await adminGet("news");
 
 
 
@@ -352,11 +346,11 @@ async function saveNews(){
 
 
 
-    const params =
-    new URLSearchParams();
+    const form=
+    new FormData();
 
 
-    params.append(
+    form.append(
         "action",
         id
         ?
@@ -415,25 +409,8 @@ async function saveNews(){
 
 
 
-    const res =
-    await fetch(
-
-        CONFIG.API_URL,
-
-        {
-
-            method:"POST",
-
-            body:params
-
-        }
-
-    );
-
-
-
-    const result =
-    await res.json();
+    const result=
+    await adminPostForm(form);
 
 
 
@@ -462,11 +439,6 @@ async function saveNews(){
 }
 
 
-
-
-
-
-
 async function deleteNews(id){
 
 
@@ -475,42 +447,14 @@ async function deleteNews(id){
 
 
 
-    const params =
-    new URLSearchParams();
+    const form=
+    new FormData();
 
+    form.append("action","deleteNews");
+    form.append("id",id);
 
-    params.append(
-        "action",
-        "deleteNews"
-    );
-
-
-    params.append(
-        "id",
-        id
-    );
-
-
-
-    const res =
-    await fetch(
-
-        CONFIG.API_URL,
-
-        {
-
-            method:"POST",
-
-            body:params
-
-        }
-
-    );
-
-
-
-    const result =
-    await res.json();
+    const result=
+    await adminPostForm(form);
 
 
 

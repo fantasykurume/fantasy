@@ -3,6 +3,7 @@
 ========================================== */
 
 import { CONFIG } from "../config/config.js";
+import { adminGet,adminPostForm } from "./api.js";
 import { openUpload } from "./upload.js";
 
 
@@ -274,14 +275,8 @@ function uploadImage(){
 async function loadCast(){
 
 
-    const response =
-    await fetch(
-        `${CONFIG.API_URL}?action=cast`
-    );
-
-
-    const result =
-    await response.json();
+    const result=
+    await adminGet("cast");
 
 
 
@@ -299,12 +294,6 @@ async function loadCast(){
 
 
 }
-
-
-
-
-
-
 
 /* ==========================================
    Render
@@ -514,15 +503,8 @@ function registerRowEvents(){
 async function editCast(id){
 
 
-    const response =
-    await fetch(
-        `${CONFIG.API_URL}?action=cast`
-    );
-
-
-
-    const result =
-    await response.json();
+    const result=
+      await adminGet("cast");
 
 
 
@@ -678,32 +660,8 @@ async function saveCast(){
     );
 
 
-
-
-
-
-
-    const response =
-    await fetch(
-
-        CONFIG.API_URL,
-
-        {
-            method:"POST",
-            body:form
-        }
-
-    );
-
-
-
-
-
-    const result =
-    await response.json();
-
-
-
+    const result=
+await adminPostForm(form);
 
 
     if(result.status==="success"){
@@ -755,9 +713,6 @@ async function deleteCast(id){
     )
     return;
 
-
-
-
     const form =
     new FormData();
 
@@ -775,28 +730,8 @@ async function deleteCast(id){
         id
     );
 
-
-
-
-    const response =
-    await fetch(
-
-        CONFIG.API_URL,
-
-        {
-            method:"POST",
-            body:form
-        }
-
-    );
-
-
-
-    const result =
-    await response.json();
-
-
-
+    const result=
+      await adminPostForm(form);
 
     if(result.status==="success"){
 
