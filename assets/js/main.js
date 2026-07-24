@@ -38,4 +38,31 @@ document.addEventListener("DOMContentLoaded", async()=>{
     initAccess(shop);
     initCast(data.cast);
 
+    document.getElementById("shopName").innerText =
+shop.shop_name || "Fantasy";
+
+
+document.getElementById("footerShopName").innerText =
+shop.shop_name || "Fantasy";
+
+
+document.getElementById("shopDescription").innerText =
+shop.description || "";
+
+
+document.getElementById("shopHours").innerText =
+"営業時間："+(shop.business_hours || "");
+
+
+document.getElementById("shopHoliday").innerText =
+"定休日："+(shop.holiday || "");
+
+
+document.title =
+shop.shop_name || "Fantasy";
+
+
+document.getElementById("metaDescription").content =
+shop.meta_description || "";
+   
 });
