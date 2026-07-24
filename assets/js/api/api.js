@@ -1,39 +1,81 @@
 /* ==========================================
    Fantasy CMS
-   API
+   Admin API
 ========================================== */
 
 import { CONFIG } from "../config/config.js";
 
-let cache = null;
 
-/* 全データ取得（キャッシュ付き） */
-export async function fetchAll(force=false){
+// GET
+export async function adminGet(action){
 
-    if(cache && !force) return cache;
+    const token =
+    localStorage.getItem("admin_token")||"";
 
-    const response = await fetch(
-        `${CONFIG.API_URL}?action=all&t=${Date.now()}`
+
+    const response=
+    await fetch(
+        `${CONFIG.API_URL}?action=${action}&token=${token}&t=${Date.now()}`,
+        {
+            headers:{
+                "x-admin-token":token
+            }
+        }
     );
 
-    cache = await response.json();
-
-    return cache;
-
-}
-
-/* 個別取得（管理画面用など） */
-export async function fetchAPI(action){
-
-    const response = await fetch(
-        `${CONFIG.API_URL}?action=${action}&t=${Date.now()}`
-    );
 
     return await response.json();
 
 }
 
-/* キャッシュクリア */
-export function clearCache(){
-    cache = null;
+
+// POST(JSON)
+export async function adminPost(data){
+
+    const response=
+    await fetch(
+        CONFIG.API_URL,
+        {
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json",
+
+                "x-admin-token":
+                localStorage.getItem("admin_token")||""
+            },
+
+            body:JSON.stringify(data)
+
+        }
+    );
+
+
+    return await response.json();
+
+}
+
+
+// POST(FormData)
+export async function adminPostForm(form){
+
+    const response=
+    await fetch(
+        CONFIG.API_URL,
+        {
+            method:"POST",
+
+            headers:{
+                "x-admin-token":
+                localStorage.getItem("admin_token")||""
+            },
+
+            body:form
+
+        }
+    );
+
+
+    return await response.json();
+
 }
