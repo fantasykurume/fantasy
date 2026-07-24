@@ -57,6 +57,8 @@ document.getElementById("shopHours").innerText =
 document.getElementById("shopHoliday").innerText =
 "定休日："+(shop.holiday || "");
 
+document.getElementById("shopCatchSub").innerText =
+shop.catch_copy || "";
 
 document.title =
 shop.shop_name || "Fantasy";
