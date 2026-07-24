@@ -360,53 +360,52 @@ async function saveNews(){
     );
 
 
-    params.append(
-        "id",
-        id
-    );
+    form.append(
+    "id",
+    id
+);
 
 
-    params.append(
-        "date",
-        document.getElementById("newsDate").value
-    );
+form.append(
+    "date",
+    document.getElementById("newsDate").value
+);
 
 
-    params.append(
-        "title",
-        document.getElementById("newsTitle").value
-    );
+form.append(
+    "title",
+    document.getElementById("newsTitle").value
+);
 
 
-    params.append(
-        "description",
-        document.getElementById("newsDescription").value
-    );
+form.append(
+    "description",
+    document.getElementById("newsDescription").value
+);
 
 
-    params.append(
-        "content",
-        document.getElementById("newsContent").value
-    );
+form.append(
+    "content",
+    document.getElementById("newsContent").value
+);
 
 
-    params.append(
-        "image_url",
-        document.getElementById("newsImage").value
-    );
+form.append(
+    "image_url",
+    document.getElementById("newsImage").value
+);
 
 
-    params.append(
-        "sort",
-        document.getElementById("newsSort").value
-    );
+form.append(
+    "sort",
+    document.getElementById("newsSort").value
+);
 
 
-    params.append(
-        "status",
-        document.getElementById("newsStatus").value
-    );
-
+form.append(
+    "status",
+    document.getElementById("newsStatus").value
+);
 
 
     const result=
