@@ -36,6 +36,11 @@ area.innerHTML=`
 
 <br><br>
 
+<label>ロゴ画像URL</label><br>
+<input id="logoUrl" value="${shop.logo_url||""}">
+
+<br><br>
+
 <label>キャッチコピー</label><br>
 <input id="shopCatch" value="${shop.catch_copy||""}">
 
@@ -66,6 +71,16 @@ area.innerHTML=`
 
 <br><br>
 
+<label>Instagram URL</label><br>
+<input id="instagram" value="${shop.instagram||""}">
+
+<br><br>
+
+<label>LINE URL</label><br>
+<input id="line" value="${shop.line||""}">
+
+<br><br>
+
 <h3>Hero画像</h3>
 
 <label>Hero画像1</label><br>
@@ -91,10 +106,32 @@ area.innerHTML=`
 
 <br><br>
 
-<button id="saveShop">保存</button>
+<label>Meta Description</label><br>
+<textarea id="metaDescription">${shop.meta_description||""}</textarea>
+
+<br><br>
+
+<label>公開状態</label><br>
+<select id="shopStatus">
+
+<option value="公開" ${shop.status==="公開"?"selected":""}>
+公開
+</option>
+
+<option value="非公開" ${shop.status==="非公開"?"selected":""}>
+非公開
+</option>
+
+</select>
+
+
+<br><br>
+
+<button id="saveShop">
+保存
+</button>
 
 `;
-
 document.getElementById("uploadHero1").onclick=()=>uploadHero("hero1");
 document.getElementById("uploadHero2").onclick=()=>uploadHero("hero2");
 document.getElementById("uploadHero3").onclick=()=>uploadHero("hero3");
@@ -124,17 +161,23 @@ form.append("action","updateShop");
 
 [
 "shopName",
+"logoUrl",
 "shopCatch",
 "shopDescription",
 "shopAddress",
 "shopPhone",
 "shopHours",
 "shopHoliday",
+"instagram",
+"line",
 "hero1",
 "hero2",
 "hero3",
-"mapUrl"
-].forEach(id=>{
+"mapUrl",
+"metaDescription",
+"shopStatus"
+]
+.forEach(id=>{
 const el=document.getElementById(id);
 if(el) form.append(id,el.value);
 });
