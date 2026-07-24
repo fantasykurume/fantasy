@@ -165,31 +165,35 @@ document.addEventListener(
 "DOMContentLoaded",
 ()=>{
 
-
-const logout =
+const logoutButton=
 document.getElementById(
 "logoutButton"
 );
 
+if(!logoutButton)return;
 
-if(logout){
+logoutButton.onclick=()=>{
 
-
-logout.onclick=()=>{
-
+if(!confirm("ログアウトしますか？")){
+return;
+}
 
 localStorage.removeItem(
 "fantasy_admin"
 );
 
+localStorage.removeItem(
+"admin_name"
+);
 
-location.href="login.html";
+localStorage.removeItem(
+"admin_role"
+);
 
+location.replace(
+"login.html"
+);
 
 };
-
-
-}
-
 
 });

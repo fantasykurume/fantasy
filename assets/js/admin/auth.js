@@ -89,19 +89,20 @@ localStorage.setItem(
 "true"
 );
 
-
 localStorage.setItem(
 "admin_name",
 result.data.name
 );
-
 
 localStorage.setItem(
 "admin_role",
 result.data.role
 );
 
-
+localStorage.setItem(
+"admin_token",
+result.data.token
+);
 
 location.href="admin.html";
 

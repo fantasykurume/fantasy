@@ -1,92 +1,52 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fantasy CMS</title>
 
-<link rel="stylesheet"
-      href="assets/css/admin/admin.css">
-
+<link rel="stylesheet" href="assets/css/admin/admin.css">
 </head>
 
 <body>
 
 <div class="admin">
 
-    <aside class="sidebar">
+<aside class="sidebar">
 
-    <h1>Fantasy CMS</h1>
+<h1>Fantasy CMS</h1>
 
-    <button id="logoutButton">
-    ログアウト
-    </button>
+<button id="logoutButton" class="logout-btn">
+ログアウト
+</button>
 
-    <ul class="admin-menu">
+<ul class="admin-menu">
 
+<li data-page="dashboard" class="active">📊 Dashboard</li>
+<li data-page="shop">🏢 店舗情報</li>
+<li data-page="gallery">📷 Gallery</li>
+<li data-page="cast">👩 Cast</li>
+<li data-page="news">📰 News</li>
+<li data-page="system">💰 System</li>
+<li data-page="settings">⚙ Settings</li>
 
-        <li data-page="dashboard">
-            📊 Dashboard
-        </li>
-
-
-        <li data-page="shop">
-            🏢 店舗情報
-        </li>
-
-
-        <li data-page="gallery">
-            📷 Gallery
-        </li>
-
-
-        <li data-page="cast">
-            👩 Cast
-        </li>
-
-
-        <li data-page="news">
-            📰 News
-        </li>
-
-
-        <li data-page="system">
-            💰 System
-        </li>
-
-
-        <li data-page="settings">
-            ⚙ Settings
-        </li>
-
-
-    </ul>
-
+</ul>
 
 </aside>
 
-    <main class="content">
+<main class="content">
 
-        <h2>Dashboard</h2>
+<h2>Dashboard</h2>
 
-        <p>
+<p>Fantasy CMSへようこそ</p>
 
-            Fantasy CMSへようこそ
-
-        </p>
-
-    </main>
+</main>
 
 </div>
 
+<script type="module" src="assets/js/admin/auth-check.js"></script>
 <script type="module" src="assets/js/admin/admin.js"></script>
 <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
 
 </body>
-
-</html> 
+</html>
