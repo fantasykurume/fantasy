@@ -1,47 +1,112 @@
 /* ==========================================
    Fantasy CMS
-   Modal
+   Common Modal
 ========================================== */
 
-export function openModal(title,content){
+let currentModal=null;
+
+/* ==========================================
+   Open
+========================================== */
+
+export function openModal(options={}){
 
     closeModal();
 
-    const modal=document.createElement("div");
+    const {
 
-    modal.id="modalOverlay";
+        title="",
 
-    modal.innerHTML=`
+        body="",
 
-    <div class="modal">
+        width="520px",
 
-        <div class="modal-header">
+        buttons=[],
 
-            <h3>${title}</h3>
+        onOpen=null,
 
-            <button id="modalCloseBtn">&times;</button>
+        onClose=null
+
+    }=options;
+
+    const overlay=document.createElement("div");
+
+    overlay.id="modalOverlay";
+
+    overlay.innerHTML=`
+
+        <div
+            class="modalWindow"
+            style="max-width:${width};">
+
+            <div class="modalHeader">
+
+                <h3>${title}</h3>
+
+                <button
+                    id="modalClose"
+                    class="modalClose">
+
+                    &times;
+
+                </button>
+
+            </div>
+
+            <div
+                class="modalBody">
+
+                ${body}
+
+            </div>
+
+            <div
+                class="modalFooter">
+
+            </div>
 
         </div>
-
-        <div class="modal-body">
-
-            ${content}
-
-        </div>
-
-    </div>
 
     `;
 
-    document.body.appendChild(modal);
+    document.body.appendChild(overlay);
 
-    document
-        .getElementById("modalCloseBtn")
+    currentModal={
+
+        element:overlay,
+
+        onClose
+
+    };
+
+    const footer=
+        overlay.querySelector(".modalFooter");
+
+    buttons.forEach(button=>{
+
+        const btn=
+            document.createElement("button");
+
+        btn.type="button";
+
+        btn.textContent=button.text;
+
+        btn.className=
+            button.class||"";
+
+        btn.onclick=button.click;
+
+        footer.appendChild(btn);
+
+    });
+
+    overlay
+        .querySelector("#modalClose")
         .onclick=closeModal;
 
-    modal.onclick=(e)=>{
+    overlay.onclick=(e)=>{
 
-        if(e.target.id==="modalOverlay"){
+        if(e.target===overlay){
 
             closeModal();
 
@@ -49,17 +114,34 @@ export function openModal(title,content){
 
     };
 
+    if(typeof onOpen==="function"){
+
+        onOpen();
+
+    }
+
 }
+
+/* ==========================================
+   Close
+========================================== */
 
 export function closeModal(){
 
-    const modal=
-        document.getElementById("modalOverlay");
+    if(!currentModal){
 
-    if(modal){
-
-        modal.remove();
+        return;
 
     }
+
+    if(typeof currentModal.onClose==="function"){
+
+        currentModal.onClose();
+
+    }
+
+    currentModal.element.remove();
+
+    currentModal=null;
 
 }
