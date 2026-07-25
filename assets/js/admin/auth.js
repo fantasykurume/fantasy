@@ -104,6 +104,11 @@ localStorage.setItem(
 result.data.token
 );
 
+localStorage.setItem(
+"must_change_password",
+result.data.must_change_password
+);
+   
 location.href="admin.html";
 
 
