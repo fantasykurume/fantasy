@@ -5,6 +5,7 @@
 
 export const CONFIG = {
 
+    VERSION:"1.0.0",
     // Cloudflare Worker API
     API_URL:
     "https://fantasy-api.fantasykurume0820.workers.dev",
