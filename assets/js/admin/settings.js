@@ -197,18 +197,18 @@ String(user.must_change_password)==="true"
 :
 `
 
+${
+String(user.must_change_password)==="true"
+?
+""
+:
+`
 <div class="form-group">
-
-<label>
-現在のパスワード
-</label>
-
-
-<input 
-type="password"
-id="currentPassword">
-
+<label>現在のパスワード</label>
+<input type="password" id="currentPassword">
 </div>
+`
+}
 
 `
 }
