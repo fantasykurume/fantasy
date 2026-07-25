@@ -276,6 +276,10 @@ localStorage.removeItem(
 "admin_token"
 );
 
+localStorage.removeItem(
+"must_change_password"
+);
+   
 location.replace(
 "login.html"
 );
