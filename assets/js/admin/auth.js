@@ -109,7 +109,21 @@ localStorage.setItem(
 result.data.must_change_password
 );
    
-location.href="admin.html";
+if(
+String(result.data.must_change_password)
+==="true"
+){
+
+location.href=
+"admin.html?page=changePassword";
+
+
+}else{
+
+location.href=
+"admin.html";
+
+}
 
 
 
