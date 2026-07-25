@@ -1374,7 +1374,7 @@ await adminPost({
 action:
 "changePassword",
 
-newpassword:password
+newPassword:password
 
 });
 
