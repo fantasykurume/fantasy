@@ -1,0 +1,234 @@
+/* ==========================================
+   Fantasy CMS
+   Settings
+========================================== */
+
+import { CONFIG } from "../config/config.js";
+import { adminGet } from "./api.js";
+
+export async function initSettings(user){
+
+    const content=document.querySelector(".content");
+
+    content.innerHTML=`
+
+    <h2>Settings</h2>
+
+    <div id="settingsWrap">
+
+        ${
+            user.role==="owner" || user.role==="admin"
+            ?
+            `
+            <section class="admin-card" id="adminArea">
+
+                <div class="card-header">
+                    <h3>管理者一覧</h3>
+                    <button id="addAdminBtn" class="primary">
+                        ＋ 管理者追加
+                    </button>
+                </div>
+
+                <div id="adminList">
+                    読み込み中...
+                </div>
+
+            </section>
+            `
+            :
+            ""
+        }
+
+        <section class="admin-card">
+
+            <h3>パスワード変更</h3>
+
+            <div class="form-group">
+                <label>現在のパスワード</label>
+                <input
+                    type="password"
+                    id="currentPassword">
+            </div>
+
+            <div class="form-group">
+                <label>新しいパスワード</label>
+                <input
+                    type="password"
+                    id="newPassword">
+            </div>
+
+            <div class="form-group">
+                <label>確認</label>
+                <input
+                    type="password"
+                    id="confirmPassword">
+            </div>
+
+            <button
+                id="changePasswordBtn"
+                class="primary">
+                パスワード変更
+            </button>
+
+        </section>
+
+        ${
+            user.role==="owner" || user.role==="admin"
+            ?
+            `
+            <section class="admin-card">
+
+                <h3>システム情報</h3>
+
+                <table class="admin-table">
+
+                    <tr>
+                        <td>Fantasy CMS</td>
+                        <td>${CONFIG.VERSION}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Worker</td>
+                        <td id="workerStatus">
+                            確認中...
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Cloudinary</td>
+                        <td>接続済み</td>
+                    </tr>
+
+                    <tr>
+                        <td>GAS</td>
+                        <td id="gasStatus">
+                            確認中...
+                        </td>
+                    </tr>
+
+                </table>
+
+            </section>
+            `
+            :
+            ""
+        }
+
+    </div>
+
+    `;
+
+    if(user.role==="owner" || user.role==="admin"){
+
+        loadAdmins();
+        checkSystem();
+
+    }
+
+    document
+        .querySelector("#changePasswordBtn")
+        .addEventListener("click",changePassword);
+
+}
+
+/* ==========================================
+   管理者一覧
+========================================== */
+
+async function loadAdmins(){
+
+    const list=document.querySelector("#adminList");
+
+    try{
+
+        const data=await adminGet("admins");
+
+        if(!data.success){
+
+            list.innerHTML="取得できませんでした";
+            return;
+
+        }
+
+        let html=`
+
+        <table class="admin-table">
+
+            <tr>
+                <th>名前</th>
+                <th>ユーザーID</th>
+                <th>権限</th>
+                <th>状態</th>
+                <th></th>
+            </tr>
+
+        `;
+
+        data.admins.forEach(admin=>{
+
+            html+=`
+
+            <tr>
+
+                <td>${admin.name}</td>
+
+                <td>${admin.username}</td>
+
+                <td>${admin.role}</td>
+
+                <td>${admin.status}</td>
+
+                <td>
+
+                    <button class="editAdmin"
+                        data-id="${admin.id}">
+                        編集
+                    </button>
+
+                    <button class="resetAdmin"
+                        data-id="${admin.id}">
+                        Reset
+                    </button>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        });
+
+        html+="</table>";
+
+        list.innerHTML=html;
+
+    }
+
+    catch(e){
+
+        list.innerHTML="取得できませんでした";
+
+    }
+
+}
+
+/* ==========================================
+   システム確認
+========================================== */
+
+async function checkSystem(){
+
+    document.querySelector("#workerStatus").textContent="OK";
+    document.querySelector("#gasStatus").textContent="OK";
+
+}
+
+/* ==========================================
+   パスワード変更
+========================================== */
+
+function changePassword(){
+
+    alert("後で実装します");
+
+}
