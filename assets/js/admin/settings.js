@@ -10,17 +10,19 @@ import { openModal, closeModal } from "./modal.js";
 
 export async function initSettings(user){
 
+const title =
+document.getElementById("currentPage");
 
-const content =
-document.querySelector(".content");
+if(title){
+    title.innerText="Settings";
+}
+   
+const pageContent =
+document.getElementById("pageContent");
 
 
-
-content.innerHTML = `
-
-
+pageContent.innerHTML = `
 <h2>Settings</h2>
-
 
 
 <div class="tabMenu">
