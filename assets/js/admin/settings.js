@@ -5,6 +5,8 @@
 
 import { CONFIG } from "../config/config.js";
 import { adminGet } from "./api.js";
+import { openModal, closeModal } from "./modal.js";
+import { adminPost } from "./api.js";
 
 export async function initSettings(user){
 
