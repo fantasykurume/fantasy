@@ -1368,25 +1368,15 @@ return;
 
 }
 
-
-console.log({
- action:"changePassword",
- password:password
-});
-
 const result =
 await adminPost({
 
 action:
 "changePassword",
 
-password:password
+newpassword:password
 
 });
-
-
-
-
 
 if(
 result.status==="success"
