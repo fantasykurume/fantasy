@@ -236,3 +236,72 @@ cursor:pointer;
 margin-left:5px;
 
 }
+
+/* =========================
+   Settings Dark Theme Fix
+========================= */
+
+.admin-card,
+.modalWindow{
+
+    background:#222;
+    color:#fff;
+
+}
+
+
+.admin-card h3,
+.modalHeader h3{
+
+    color:#d4af37;
+
+}
+
+
+.admin-table th{
+
+    background:#333;
+    color:#fff;
+
+}
+
+
+.admin-table td{
+
+    color:#fff;
+
+}
+
+
+.form-group label{
+
+    color:#fff;
+
+}
+
+
+.form-group input,
+.form-group select{
+
+    background:#111;
+    color:#fff;
+    border:1px solid #555;
+
+}
+
+
+.form-group input:focus,
+.form-group select:focus{
+
+    outline:none;
+    border-color:#d4af37;
+
+}
+
+
+.primary{
+
+    background:#d4af37;
+    color:#111;
+
+}
