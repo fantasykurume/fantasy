@@ -17,9 +17,15 @@ content.innerHTML=`
 
 <div class="tabMenu">
 
-${user.role==="owner"||user.role==="admin"?`<button class="tab active" data-tab="admins">管理者</button>`:""}
+${user.role==="owner"||user.role==="admin"?`<button class="tab ${
+String(user.must_change_password)==="true"
+?
+""
+:
+"active"
+}" data-tab="admins">管理者</button>`:""}
 
-<button class="tab ${user.role==="staff"?"active":""}" data-tab="account">アカウント</button>
+<button class="tab ${user.role==="staff"?"active":""}" data-tab="account"><button class="tab ${user.role==="staff"?"active":""}" data-tab="account">アカウント</button>
 
 ${user.role==="owner"||user.role==="admin"?`
 <button class="tab" data-tab="system">システム</button>
@@ -30,7 +36,13 @@ ${user.role==="owner"||user.role==="admin"?`
 
 ${user.role==="owner"||user.role==="admin"?`
 
-<div class="tabContent active" id="admins">
+<div class="tabContent ${
+String(user.must_change_password)==="true"
+?
+""
+:
+"active"
+}" id="admins">
 
 <div class="toolbar">
 <button id="addAdminBtn" class="primary">＋ 管理者追加</button>
@@ -42,7 +54,14 @@ ${user.role==="owner"||user.role==="admin"?`
 
 `:""}
 
-<div class="tabContent ${user.role==="staff"?"active":""}" id="account">
+<div class="tabContent ${
+(user.role==="staff" ||
+String(user.must_change_password)==="true")
+?
+"active"
+:
+""
+}" id="account">
 
 <div class="admin-card">
 
