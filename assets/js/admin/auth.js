@@ -89,34 +89,39 @@ localStorage.setItem(
 "true"
 );
 
+
 localStorage.setItem(
 "admin_name",
 result.data.name
 );
+
 
 localStorage.setItem(
 "admin_role",
 result.data.role
 );
 
+
 localStorage.setItem(
 "admin_token",
 result.data.token
 );
 
+
 localStorage.setItem(
 "must_change_password",
+String(
 result.data.must_change_password
+)
 );
-   
-if(
-String(result.data.must_change_password)
-==="true"
-){
+
+
 
 location.href=
-"admin.html?page=changePassword";
+"admin.html";
 
+
+}
 
 }else{
 
