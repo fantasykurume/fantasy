@@ -195,9 +195,26 @@ html+="</table>";
 area.innerHTML=html;
 
 document.querySelectorAll(".editAdmin").forEach(btn=>{
-btn.onclick=()=>{alert("編集は次で実装します");};
-});
 
+btn.onclick=()=>{
+
+const id=
+Number(btn.dataset.id);
+
+const admin=
+result.admins.find(
+item=>Number(item.id)===id
+);
+
+if(!admin){
+return;
+}
+
+openEditAdminModal(admin);
+
+};
+
+});
 }catch(error){
 
 console.error(error);
@@ -359,6 +376,155 @@ alert("変更しました");
 document.querySelector("#currentPassword").value="";
 document.querySelector("#newPassword").value="";
 document.querySelector("#confirmPassword").value="";
+
+}else{
+
+alert(result.message);
+
+}
+
+}
+
+/* ==========================================
+   管理者編集
+========================================== */
+
+function openEditAdminModal(admin){
+
+const loginRole=
+localStorage.getItem("admin_role")||"staff";
+
+openModal({
+
+title:"管理者編集",
+
+width:"520px",
+
+body:`
+
+<div class="form-group">
+
+<label>ユーザーID</label>
+
+<input value="${admin.username}" disabled>
+
+</div>
+
+
+<div class="form-group">
+
+<label>名前</label>
+
+<input id="editAdminName" value="${admin.name}">
+
+</div>
+
+
+<div class="form-group">
+
+<label>権限</label>
+
+<select id="editAdminRole">
+
+<option value="admin" ${admin.role==="admin"?"selected":""}>
+admin
+</option>
+
+<option value="staff" ${admin.role==="staff"?"selected":""}>
+staff
+</option>
+
+${loginRole==="owner"?
+`
+<option value="owner" ${admin.role==="owner"?"selected":""}>
+owner
+</option>
+`
+:""}
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>状態</label>
+
+<select id="editAdminStatus">
+
+<option value="active" ${admin.status==="active"?"selected":""}>
+active
+</option>
+
+<option value="inactive" ${admin.status==="inactive"?"selected":""}>
+inactive
+</option>
+
+</select>
+
+</div>
+
+`,
+
+buttons:[
+
+{
+text:"キャンセル",
+click:closeModal
+},
+
+{
+text:"保存",
+class:"primary",
+click:()=>updateAdminData(admin.id)
+}
+
+]
+
+});
+
+}
+
+/* ==========================================
+   管理者更新
+========================================== */
+
+async function updateAdminData(id){
+
+const name=
+document.querySelector("#editAdminName").value.trim();
+
+const role=
+document.querySelector("#editAdminRole").value;
+
+const status=
+document.querySelector("#editAdminStatus").value;
+
+
+const result=
+await adminPost({
+
+action:"updateAdmin",
+
+id,
+
+name,
+
+role,
+
+status
+
+});
+
+
+if(result.success){
+
+alert("更新しました");
+
+closeModal();
+
+loadAdmins();
 
 }else{
 
