@@ -243,6 +243,10 @@ localStorage.removeItem(
 "admin_role"
 );
 
+localStorage.removeItem(
+"admin_token"
+);
+
 location.replace(
 "login.html"
 );
