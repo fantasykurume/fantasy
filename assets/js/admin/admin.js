@@ -25,6 +25,7 @@ import { initSystemAdmin } from "./system.js";
 import { initDashboardAdmin } from "./dashboard.js";
 import { initNewsAdmin } from "./news.js";
 import { initShopAdmin } from "./shop.js";
+import { initSettings } from "./settings.js";
 
 const adminName=
 localStorage.getItem("admin_name")||"";
@@ -49,20 +50,28 @@ nameBox.innerText=
 const pages = {
 
     dashboard:initDashboardAdmin,
-    
+
     shop:initShopAdmin,
-    
+
     gallery:initGalleryAdmin,
 
     cast:initCastAdmin,
 
     news:initNewsAdmin,
 
-    system:initSystemAdmin
+    system:initSystemAdmin,
 
+    settings:()=>{
+
+        initSettings({
+
+            role:localStorage.getItem("admin_role")
+
+        });
+
+    }
 
 };
-
 document.addEventListener(
 "DOMContentLoaded",
 ()=>{
