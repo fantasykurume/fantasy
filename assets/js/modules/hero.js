@@ -25,14 +25,23 @@ export function initHero(shop){
 
 function renderHeroText(shop){
 
-    const title = document.getElementById("heroTitle");
-    const catchCopy = document.getElementById("heroCatch");
+    const title=document.getElementById("heroTitle");
+    const catchCopy=document.getElementById("heroCatch");
+    const subTitle=document.getElementById("shopSubTitle");
 
-    if(title) title.textContent = shop.shop_name || "";
-    if(catchCopy) catchCopy.textContent = shop.catch_copy || "";
+    if(title){
+        title.textContent=shop.shop_name||"";
+    }
+
+    if(catchCopy){
+        catchCopy.textContent=shop.catch_copy||"";
+    }
+
+    if(subTitle){
+        subTitle.textContent=shop.logo_sub||"";
+    }
 
 }
-
 /* Hero画像 */
 
 function renderHeroImages(shop){
