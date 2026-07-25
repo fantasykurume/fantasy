@@ -1294,19 +1294,16 @@ document
 
 
 
-const password =
-document
-.querySelector("#newPassword")
-.value
-.trim();
+const passwordInput=document.querySelector("#newPassword");
+const confirmInput=document.querySelector("#confirmPassword");
 
+if(!passwordInput || !confirmInput){
+    alert("入力欄が見つかりません");
+    return;
+}
 
-
-const confirm =
-document
-.querySelector("#confirmPassword")
-.value
-.trim();
+const password=passwordInput.value.trim();
+const confirm=confirmInput.value.trim();
 
 
 
