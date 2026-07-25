@@ -1,45 +1,108 @@
 /* ==========================================
-   Modal
+   Common Modal
 ========================================== */
 
 #modalOverlay{
+
     position:fixed;
     inset:0;
+
     background:rgba(0,0,0,.45);
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
+
     z-index:9999;
-}
 
-.modal{
-    width:90%;
-    max-width:520px;
-    background:#fff;
-    border-radius:10px;
-    overflow:hidden;
-    box-shadow:0 10px 30px rgba(0,0,0,.2);
-}
-
-.modal-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 20px;
-    border-bottom:1px solid #eee;
-}
-
-.modal-header h3{
-    margin:0;
-}
-
-#modalCloseBtn{
-    background:none;
-    border:none;
-    font-size:24px;
-    cursor:pointer;
-}
-
-.modal-body{
     padding:20px;
+
+}
+
+.modalWindow{
+
+    width:100%;
+
+    background:#fff;
+
+    border-radius:10px;
+
+    overflow:hidden;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.25);
+
+}
+
+.modalHeader{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:15px 20px;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.modalHeader h3{
+
+    margin:0;
+
+}
+
+.modalClose{
+
+    border:none;
+
+    background:none;
+
+    cursor:pointer;
+
+    font-size:28px;
+
+}
+
+.modalBody{
+
+    padding:20px;
+
+    max-height:70vh;
+
+    overflow:auto;
+
+}
+
+.modalFooter{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:10px;
+
+    padding:15px 20px;
+
+    border-top:1px solid #eee;
+
+}
+
+.modalFooter button{
+
+    min-width:100px;
+
+}
+
+@media(max-width:768px){
+
+    .modalBody{
+
+        max-height:60vh;
+
+    }
+
 }
