@@ -28,9 +28,14 @@ export async function adminGet(action){
 
 }
 
-
-// POST(JSON)
+// POST
 export async function adminPost(data){
+
+    const form=new FormData();
+
+    Object.keys(data).forEach(key=>{
+        form.append(key,data[key]);
+    });
 
     const response=
     await fetch(
@@ -39,22 +44,18 @@ export async function adminPost(data){
             method:"POST",
 
             headers:{
-                "Content-Type":"application/json",
-
                 "x-admin-token":
                 localStorage.getItem("admin_token")||""
             },
 
-            body:JSON.stringify(data)
+            body:form
 
         }
     );
 
-
     return await response.json();
 
 }
-
 
 // POST(FormData)
 export async function adminPostForm(form){
