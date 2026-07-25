@@ -63,13 +63,17 @@ const pages = {
 
     settings:()=>{
 
-        initSettings({
+    initSettings({
 
-            role:localStorage.getItem("admin_role")
+        role:
+        localStorage.getItem("admin_role"),
 
-        });
+        must_change_password:
+        localStorage.getItem("must_change_password")
 
-    }
+    });
+
+}
 
 };
 document.addEventListener(
@@ -205,7 +209,36 @@ if(dashboard){
 
 }
 
+const mustChange =
+localStorage.getItem(
+"must_change_password"
+);
 
+
+
+if(
+mustChange==="true"
+){
+
+const settings =
+document.querySelector(
+'[data-page="settings"]'
+);
+
+
+if(settings){
+
+settings.click();
+
+}
+
+}
+else{
+
+initDashboardAdmin();
+
+}
+   
 initDashboardAdmin();
 
 });
