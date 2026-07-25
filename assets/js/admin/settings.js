@@ -4,212 +4,141 @@
 ========================================== */
 
 import { CONFIG } from "../config/config.js";
-import { adminGet } from "./api.js";
-import { openModal, closeModal } from "./modal.js";
-import { adminPost } from "./api.js";
+import { adminGet,adminPost } from "./api.js";
+import { openModal,closeModal } from "./modal.js";
 
 export async function initSettings(user){
 
-    document.querySelector(".content").innerHTML=`
+const content=document.querySelector(".content");
 
-    <h2>Settings</h2>
+content.innerHTML=`
 
-    <div class="tabMenu">
+<h2>Settings</h2>
 
-        ${
-            user.role==="owner" || user.role==="admin"
-            ?
-            `<button class="tab active" data-tab="admins">管理者</button>`
-            :""
-        }
+<div class="tabMenu">
 
-        <button class="tab ${user.role==="staff"?"active":""}" data-tab="account">
-            アカウント
-        </button>
+${user.role==="owner"||user.role==="admin"?`<button class="tab active" data-tab="admins">管理者</button>`:""}
 
-        ${
-            user.role==="owner" || user.role==="admin"
-            ?
-            `
-            <button class="tab" data-tab="system">
-                システム
-            </button>
+<button class="tab ${user.role==="staff"?"active":""}" data-tab="account">アカウント</button>
 
-            <button class="tab" data-tab="seo">
-                SEO
-            </button>
-            `
-            :""
-        }
+${user.role==="owner"||user.role==="admin"?`
+<button class="tab" data-tab="system">システム</button>
+<button class="tab" data-tab="seo">SEO</button>
+`:""}
 
-    </div>
+</div>
 
-    ${
-        user.role==="owner" || user.role==="admin"
-        ?
-        `
-        <div class="tabContent active" id="admins">
+${user.role==="owner"||user.role==="admin"?`
 
-            <div class="toolbar">
+<div class="tabContent active" id="admins">
 
-                <button
-                    id="addAdminBtn"
-                    class="primary">
-                    ＋ 管理者追加
-                </button>
+<div class="toolbar">
+<button id="addAdminBtn" class="primary">＋ 管理者追加</button>
+</div>
 
-            </div>
+<div id="adminList">読込み中...</div>
 
-            <div id="adminList">
-                読み込み中...
-            </div>
+</div>
 
-        </div>
-        `
-        :""
-    }
+`:""}
 
-    <div
-        class="tabContent ${user.role==="staff"?"active":""}"
-        id="account">
+<div class="tabContent ${user.role==="staff"?"active":""}" id="account">
 
-        <div class="admin-card">
+<div class="admin-card">
 
-            <h3>パスワード変更</h3>
+<h3>パスワード変更</h3>
 
-            <div class="form-group">
-                <label>現在のパスワード</label>
-                <input
-                    type="password"
-                    id="currentPassword">
-            </div>
+<div class="form-group">
+<label>現在のパスワード</label>
+<input type="password" id="currentPassword">
+</div>
 
-            <div class="form-group">
-                <label>新しいパスワード</label>
-                <input
-                    type="password"
-                    id="newPassword">
-            </div>
+<div class="form-group">
+<label>新しいパスワード</label>
+<input type="password" id="newPassword">
+</div>
 
-            <div class="form-group">
-                <label>確認</label>
-                <input
-                    type="password"
-                    id="confirmPassword">
-            </div>
+<div class="form-group">
+<label>確認</label>
+<input type="password" id="confirmPassword">
+</div>
 
-            <button
-                id="changePasswordBtn"
-                class="primary">
-                パスワード変更
-            </button>
+<button id="changePasswordBtn" class="primary">パスワード変更</button>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
-    ${
-        user.role==="owner" || user.role==="admin"
-        ?
-        `
-        <div class="tabContent" id="system">
+${user.role==="owner"||user.role==="admin"?`
 
-            <div class="admin-card">
+<div class="tabContent" id="system">
 
-                <h3>システム情報</h3>
+<div class="admin-card">
 
-                <table class="admin-table">
+<h3>システム情報</h3>
 
-                    <tr>
-                        <th>項目</th>
-                        <th>状態</th>
-                    </tr>
+<table class="admin-table">
 
-                    <tr>
-                        <td>Fantasy CMS</td>
-                        <td>${CONFIG.VERSION}</td>
-                    </tr>
+<tr><th>項目</th><th>状態</th></tr>
+<tr><td>Fantasy CMS</td><td>${CONFIG.VERSION}</td></tr>
+<tr><td>Worker</td><td id="workerStatus">確認中...</td></tr>
+<tr><td>GAS</td><td id="gasStatus">確認中...</td></tr>
+<tr><td>Cloudinary</td><td>接続済み</td></tr>
 
-                    <tr>
-                        <td>Worker</td>
-                        <td id="workerStatus">確認中...</td>
-                    </tr>
+</table>
 
-                    <tr>
-                        <td>GAS</td>
-                        <td id="gasStatus">確認中...</td>
-                    </tr>
+</div>
 
-                    <tr>
-                        <td>Cloudinary</td>
-                        <td>接続済み</td>
-                    </tr>
+</div>
 
-                </table>
+<div class="tabContent" id="seo">
 
-            </div>
+<div class="admin-card">
 
-        </div>
+<h3>SEO</h3>
 
-        <div class="tabContent" id="seo">
+<p>準備中</p>
 
-            <div class="admin-card">
+</div>
 
-                <h3>SEO</h3>
+</div>
 
-                <p>準備中</p>
+`:""}
 
-            </div>
+`;
 
-        </div>
-        `
-        :""
-    }
+initTabs();
 
-    `;
+if(user.role==="owner"||user.role==="admin"){
+loadAdmins();
+checkSystem();
+const btn=document.querySelector("#addAdminBtn");
+if(btn)btn.onclick=openAddAdminModal;
+}
 
-    initTabs();
-
-    if(user.role==="owner" || user.role==="admin"){
-        loadAdmins();
-        checkSystem();
-    }
-
-    document
-        .querySelector("#changePasswordBtn")
-        .addEventListener("click",changePassword);
+document.querySelector("#changePasswordBtn").onclick=changePassword;
 
 }
 
 /* ==========================================
-   タブ切替
+   タブ
 ========================================== */
 
 function initTabs(){
 
-    document
-        .querySelectorAll(".tab")
-        .forEach(button=>{
+document.querySelectorAll(".tab").forEach(tab=>{
 
-            button.onclick=()=>{
+tab.onclick=()=>{
 
-                document
-                    .querySelectorAll(".tab")
-                    .forEach(tab=>tab.classList.remove("active"));
+document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+document.querySelectorAll(".tabContent").forEach(t=>t.classList.remove("active"));
 
-                document
-                    .querySelectorAll(".tabContent")
-                    .forEach(tab=>tab.classList.remove("active"));
+tab.classList.add("active");
+document.getElementById(tab.dataset.tab).classList.add("active");
 
-                button.classList.add("active");
+};
 
-                document
-                    .getElementById(button.dataset.tab)
-                    .classList.add("active");
-
-            };
-
-        });
+});
 
 }
 
@@ -219,74 +148,153 @@ function initTabs(){
 
 async function loadAdmins(){
 
-    const area=document.querySelector("#adminList");
+const area=document.querySelector("#adminList");
 
-    area.innerHTML="読込み中...";
+area.innerHTML="読込み中...";
 
-    try{
+try{
 
-        const result=await adminGet("admins");
+const result=await adminGet("admins");
 
-        if(!result.success){
+if(!result.success){
 
-            area.innerHTML=result.message;
-            return;
+area.innerHTML=result.message;
+return;
 
-        }
+}
 
-        let html=`
+let html=`
+<table class="admin-table">
+<tr>
+<th>名前</th>
+<th>ID</th>
+<th>権限</th>
+<th>状態</th>
+<th>操作</th>
+</tr>
+`;
 
-        <table class="admin-table">
+result.admins.forEach(admin=>{
 
-            <tr>
-                <th>名前</th>
-                <th>ID</th>
-                <th>権限</th>
-                <th>状態</th>
-                <th>操作</th>
-            </tr>
+html+=`
+<tr>
+<td>${admin.name}</td>
+<td>${admin.username}</td>
+<td>${admin.role}</td>
+<td>${admin.status}</td>
+<td>
+<button class="editAdmin" data-id="${admin.id}">編集</button>
+</td>
+</tr>
+`;
 
-        `;
+});
 
-        result.admins.forEach(admin=>{
+html+="</table>";
 
-            html+=`
+area.innerHTML=html;
 
-            <tr>
+document.querySelectorAll(".editAdmin").forEach(btn=>{
+btn.onclick=()=>{alert("編集は次で実装します");};
+});
 
-                <td>${admin.name}</td>
+}catch(error){
 
-                <td>${admin.username}</td>
+console.error(error);
+area.innerHTML="読込みに失敗しました";
 
-                <td>${admin.role}</td>
+}
 
-                <td>${admin.status}</td>
+}
 
-                <td>
+/* ==========================================
+   管理者追加
+========================================== */
 
-                    <button
-                        class="editAdmin"
-                        data-id="${admin.id}">
-                        編集
-                    </button>
+function openAddAdminModal(){
 
-                </td>
+const loginRole=localStorage.getItem("admin_role")||"staff";
 
-            </tr>
+openModal({
 
-            `;
+title:"管理者追加",
 
-        });
+width:"520px",
 
-        html+=`</table>`;
+body:`
 
-        area.innerHTML=html;
+<div class="form-group">
+<label>ユーザーID</label>
+<input type="text" id="adminUsername">
+</div>
 
-    }catch(e){
+<div class="form-group">
+<label>名前</label>
+<input type="text" id="adminNameInput">
+</div>
 
-        area.innerHTML="取得できませんでした。";
+<div class="form-group">
+<label>権限</label>
+<select id="adminRole">
+${loginRole==="owner"?`<option value="owner">owner</option>`:""}
+<option value="admin">admin</option>
+<option value="staff" selected>staff</option>
+</select>
+</div>
 
-    }
+<div class="form-group">
+<label>状態</label>
+<select id="adminStatus">
+<option value="active" selected>active</option>
+<option value="inactive">inactive</option>
+</select>
+</div>
+
+<p>初期パスワード：<strong>Fantasy@123</strong></p>
+
+`,
+
+buttons:[
+{text:"キャンセル",click:closeModal},
+{text:"保存",class:"primary",click:saveAdmin}
+]
+
+});
+
+}
+
+/* ==========================================
+   保存
+========================================== */
+
+async function saveAdmin(){
+
+const username=document.querySelector("#adminUsername").value.trim();
+const name=document.querySelector("#adminNameInput").value.trim();
+const role=document.querySelector("#adminRole").value;
+const status=document.querySelector("#adminStatus").value;
+
+if(!username){alert("ユーザーIDを入力してください");return;}
+if(!name){alert("名前を入力してください");return;}
+
+const result=await adminPost({
+action:"saveAdmin",
+username,
+name,
+role,
+status
+});
+
+if(result.status!=="success"){
+alert(result.message||"保存できませんでした");
+return;
+}
+
+alert("管理者を追加しました");
+
+closeModal();
+
+loadAdmins();
 
 }
 
@@ -294,10 +302,33 @@ async function loadAdmins(){
    システム確認
 ========================================== */
 
-function checkSystem(){
+async function checkSystem(){
 
-    document.querySelector("#workerStatus").textContent="OK";
-    document.querySelector("#gasStatus").textContent="OK";
+try{
+
+const worker=document.querySelector("#workerStatus");
+const gas=document.querySelector("#gasStatus");
+
+const result=await adminGet("dashboard");
+
+if(result.status==="success"){
+
+worker.textContent="正常";
+gas.textContent="正常";
+
+}else{
+
+worker.textContent="異常";
+gas.textContent="異常";
+
+}
+
+}catch(error){
+
+document.querySelector("#workerStatus").textContent="異常";
+document.querySelector("#gasStatus").textContent="異常";
+
+}
 
 }
 
@@ -305,8 +336,34 @@ function checkSystem(){
    パスワード変更
 ========================================== */
 
-function changePassword(){
+async function changePassword(){
 
-    alert("実装予定");
+const current=document.querySelector("#currentPassword").value.trim();
+const password=document.querySelector("#newPassword").value.trim();
+const confirm=document.querySelector("#confirmPassword").value.trim();
+
+if(!current){alert("現在のパスワードを入力してください");return;}
+if(!password){alert("新しいパスワードを入力してください");return;}
+if(password!==confirm){alert("確認用パスワードが一致しません");return;}
+
+const result=await adminPost({
+action:"changePassword",
+currentPassword:current,
+newPassword:password
+});
+
+if(result.status==="success"){
+
+alert("変更しました");
+
+document.querySelector("#currentPassword").value="";
+document.querySelector("#newPassword").value="";
+document.querySelector("#confirmPassword").value="";
+
+}else{
+
+alert(result.message);
+
+}
 
 }
