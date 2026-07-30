@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async()=>{
         console.error("API Error");
         return;
     }
-
+    applySEO(data.seo);
     const shop = data.shop[0];
     initShop(shop);
     initHero(shop);
