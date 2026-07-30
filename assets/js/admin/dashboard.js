@@ -11,8 +11,6 @@ export function initDashboardAdmin(){
 document.getElementById("currentPage").innerText="Dashboard";
 document.getElementById("pageContent").innerHTML = `
 
-<h2>Dashboard</h2>
-
 <div class="dashboard-grid">
 
 <div class="dashboard-card" data-page="gallery">
