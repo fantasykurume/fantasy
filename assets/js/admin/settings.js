@@ -1797,7 +1797,9 @@ document.getElementById("seoRobots").value=seo.robots||"index";
 document.getElementById("seoVerify").value=seo.google_verify||"";
 document.getElementById("seoGa").value=seo.ga4_id||"";
 document.getElementById("seoClarity").value=seo.clarity_id||"";
-
+document.getElementById("uploadOgImage").onclick=()=>{uploadSEOImage("seoOgImage");};
+document.getElementById("uploadFavicon").onclick=()=>{uploadSEOImage("seoFavicon");};
+document.getElementById("saveSeo").onclick=saveSEO;
 }
 
 /* ==========================================
@@ -1838,6 +1840,7 @@ clarity_id:document.getElementById("seoClarity").value
 
 });
 
+
 if(result.status==="success"){
 
 alert("保存しました");
@@ -1849,5 +1852,3 @@ alert(result.message||"保存失敗");
 }
 
 }
-
-} 
