@@ -6,7 +6,7 @@
 import { CONFIG } from "../config/config.js";
 import { adminGet, adminPost } from "./api.js";
 import { openModal, closeModal } from "./modal.js";
-
+import { openUpload } from "./upload.js";
 
 export async function initSettings(user){
 
@@ -1768,3 +1768,85 @@ result.message ||
 
 }
 
+/* ==========================================
+   SEO取得
+========================================== */
+
+async function loadSEO(){
+
+const result=await adminGet("seo");
+
+if(result.status!=="success"){
+
+alert(result.message||"SEO取得失敗");
+return;
+
+}
+
+document.getElementById("seoSiteTitle").value=result.site_title||"";
+document.getElementById("seoDescription").value=result.meta_description||"";
+document.getElementById("seoCanonical").value=result.canonical||"";
+document.getElementById("seoOgTitle").value=result.og_title||"";
+document.getElementById("seoOgDescription").value=result.og_description||"";
+document.getElementById("seoOgImage").value=result.og_image||"";
+document.getElementById("seoFavicon").value=result.favicon||"";
+document.getElementById("seoRobots").value=result.robots||"index";
+document.getElementById("seoVerify").value=result.google_verify||"";
+document.getElementById("seoGa").value=result.ga4_id||"";
+document.getElementById("seoClarity").value=result.clarity_id||"";
+
+document.getElementById("uploadOgImage").onclick=()=>uploadSEOImage("seoOgImage");
+document.getElementById("uploadFavicon").onclick=()=>uploadSEOImage("seoFavicon");
+document.getElementById("saveSeo").onclick=saveSEO;
+
+}
+
+/* ==========================================
+   SEO画像アップロード
+========================================== */
+
+function uploadSEOImage(id){
+
+openUpload(url=>{
+
+document.getElementById(id).value=url;
+
+});
+
+}
+
+/* ==========================================
+   SEO保存
+========================================== */
+
+async function saveSEO(){
+
+const result=await adminPost({
+
+action:"updateSEO",
+
+site_title:document.getElementById("seoSiteTitle").value,
+meta_description:document.getElementById("seoDescription").value,
+canonical:document.getElementById("seoCanonical").value,
+og_title:document.getElementById("seoOgTitle").value,
+og_description:document.getElementById("seoOgDescription").value,
+og_image:document.getElementById("seoOgImage").value,
+favicon:document.getElementById("seoFavicon").value,
+robots:document.getElementById("seoRobots").value,
+google_verify:document.getElementById("seoVerify").value,
+ga4_id:document.getElementById("seoGa").value,
+clarity_id:document.getElementById("seoClarity").value
+
+});
+
+if(result.status==="success"){
+
+alert("保存しました");
+
+}else{
+
+alert(result.message||"保存失敗");
+
+}
+
+}
