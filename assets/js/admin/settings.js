@@ -379,34 +379,81 @@ Cloudinary
 
 
 
-<!-- ======================
-     SEO
-====================== -->
+/* ======================
+   SEO
+====================== */
 
-
-<div 
-class="tabContent"
-id="seo">
-
+<div class="tabContent" id="seo">
 
 <div class="admin-card">
 
+<h3>SEO設定</h3>
 
-<h3>
-SEO
-</h3>
+<label>サイトタイトル</label><br>
+<input id="seoSiteTitle">
 
+<br><br>
 
-<p>
-準備中
-</p>
+<label>Meta Description</label><br>
+<textarea id="seoDescription"></textarea>
 
+<br><br>
+
+<label>Canonical URL</label><br>
+<input id="seoCanonical">
+
+<br><br>
+
+<label>OGPタイトル</label><br>
+<input id="seoOgTitle">
+
+<br><br>
+
+<label>OGP説明</label><br>
+<textarea id="seoOgDescription"></textarea>
+
+<br><br>
+
+<label>OGP画像</label><br>
+<input id="seoOgImage" readonly>
+<button id="uploadOgImage">📷</button>
+
+<br><br>
+
+<label>Favicon</label><br>
+<input id="seoFavicon" readonly>
+<button id="uploadFavicon">📷</button>
+
+<br><br>
+
+<label>Robots</label><br>
+<select id="seoRobots">
+<option value="index">公開(index)</option>
+<option value="noindex">検索除外(noindex)</option>
+</select>
+
+<br><br>
+
+<label>Google Search Console</label><br>
+<input id="seoVerify">
+
+<br><br>
+
+<label>GA4 測定ID</label><br>
+<input id="seoGa">
+
+<br><br>
+
+<label>Microsoft Clarity</label><br>
+<input id="seoClarity">
+
+<br><br>
+
+<button id="saveSeo" class="primary">保存</button>
 
 </div>
 
-
 </div>
-
 
 `
 :
@@ -414,60 +461,30 @@ SEO
 
 }
 
-
-
 `;
-
-
 
 initTabs();
 
-
-
-
-
-if(
-user.role==="owner" ||
-user.role==="admin"
-){
+if(user.role==="owner"||user.role==="admin"){
 
 loadAdmins();
 
 checkSystem();
 
+loadSEO();
 
-const btn =
-document.querySelector(
-"#addAdminBtn"
-);
-
+const btn=document.querySelector("#addAdminBtn");
 
 if(btn){
-
-btn.onclick =
-openAddAdminModal;
-
+btn.onclick=openAddAdminModal;
 }
 
 }
 
-
-
-const changeBtn =
-document.querySelector(
-"#changePasswordBtn"
-);
-
+const changeBtn=document.querySelector("#changePasswordBtn");
 
 if(changeBtn){
-
-changeBtn.onclick =
-changePassword;
-
-}
-
-
-
+changeBtn.onclick=changePassword;
 }
 
 /* ==========================================
