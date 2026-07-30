@@ -15,6 +15,7 @@ import { initNews } from "./modules/news.js";
 import { initSystem } from "./modules/system.js";
 import { initAccess } from "./modules/access.js";
 import { initCast } from "./modules/cast.js";
+import { applySEO } from "./modules/seo.js";
 
 document.addEventListener("DOMContentLoaded", async()=>{
 
