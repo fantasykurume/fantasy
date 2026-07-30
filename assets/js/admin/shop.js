@@ -13,8 +13,6 @@ document.getElementById("currentPage").innerText="店舗情報管理";
 
 document.getElementById("pageContent").innerHTML=`
 
-<h2>店舗情報管理</h2>
-
 <div id="shopForm">
 読み込み中...
 </div>
