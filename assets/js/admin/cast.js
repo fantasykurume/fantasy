@@ -20,10 +20,6 @@ export async function initCastAdmin(){
     document.getElementById("currentPage").innerText="Cast管理";
     document.getElementById("pageContent").innerHTML = `
 
-
-    <h2>CAST管理</h2>
-
-
     <button id="addCast">
 
         ＋CAST追加
