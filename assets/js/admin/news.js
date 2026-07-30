@@ -11,10 +11,6 @@ export async function initNewsAdmin(){
     document.getElementById("currentPage").innerText="News管理";
     document.getElementById("pageContent").innerHTML = `
 
-
-        <h2>News管理</h2>
-
-
         <button id="addNews">
             ＋新規追加
         </button>
