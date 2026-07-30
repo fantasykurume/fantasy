@@ -3,10 +3,6 @@
    Access Module
 ========================================== */
 
-/* ==========================================
-   初期化
-========================================== */
-
 export function initAccess(shop){
 
     if(!shop){
@@ -17,10 +13,6 @@ export function initAccess(shop){
     renderAccess(shop);
 
 }
-
-/* ==========================================
-   Access表示
-========================================== */
 
 function renderAccess(shop){
 
@@ -40,39 +32,61 @@ function renderAccess(shop){
     }
 
     if(hours){
-        hours.textContent="営業時間："+(shop.business_hours||"");
+        hours.textContent="営業時間：" + (shop.business_hours||"");
     }
 
     if(holiday){
-        holiday.textContent="定休日："+(shop.holiday||"");
+        holiday.textContent="定休日：" + (shop.holiday||"");
     }
+
+    /* SNS */
 
     if(sns){
 
-        sns.innerHTML=`
-            <a href="${shop.instagram||"#"}" target="_blank">
-                Instagram
-            </a>
+        let html="";
 
-            <a href="${shop.line||"#"}" target="_blank">
-                LINE
-            </a>
-        `;
+        if(shop.instagram){
+            html+=`
+                <a href="${shop.instagram}" target="_blank" rel="noopener">
+                    Instagram
+                </a>
+            `;
+        }
+
+        if(shop.line){
+            html+=`
+                <a href="${shop.line}" target="_blank" rel="noopener">
+                    LINE
+                </a>
+            `;
+        }
+
+        sns.innerHTML=html;
 
     }
 
-    if(map && shop.map_url){
+    /* Google Map */
 
-        map.innerHTML=`
-            <iframe
-                src="${shop.map_url}"
-                width="100%"
-                height="400"
-                style="border:0;border-radius:12px;"
-                loading="lazy"
-                allowfullscreen>
-            </iframe>
-        `;
+    if(map){
+
+        if(shop.map_url){
+
+            map.innerHTML=`
+                <iframe
+                    src="${shop.map_url}"
+                    width="100%"
+                    height="400"
+                    style="border:0;border-radius:12px;"
+                    loading="lazy"
+                    allowfullscreen>
+                </iframe>
+            `;
+
+        }else{
+
+            map.innerHTML="";
+
+        }
 
     }
 
