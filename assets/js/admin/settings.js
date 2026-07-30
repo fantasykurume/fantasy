@@ -1783,21 +1783,20 @@ return;
 
 }
 
-document.getElementById("seoSiteTitle").value=result.site_title||"";
-document.getElementById("seoDescription").value=result.meta_description||"";
-document.getElementById("seoCanonical").value=result.canonical||"";
-document.getElementById("seoOgTitle").value=result.og_title||"";
-document.getElementById("seoOgDescription").value=result.og_description||"";
-document.getElementById("seoOgImage").value=result.og_image||"";
-document.getElementById("seoFavicon").value=result.favicon||"";
-document.getElementById("seoRobots").value=result.robots||"index";
-document.getElementById("seoVerify").value=result.google_verify||"";
-document.getElementById("seoGa").value=result.ga4_id||"";
-document.getElementById("seoClarity").value=result.clarity_id||"";
+const seo=result.data||{};
 
-document.getElementById("uploadOgImage").onclick=()=>uploadSEOImage("seoOgImage");
-document.getElementById("uploadFavicon").onclick=()=>uploadSEOImage("seoFavicon");
-document.getElementById("saveSeo").onclick=saveSEO;
+
+document.getElementById("seoSiteTitle").value=seo.site_title||"";
+document.getElementById("seoDescription").value=seo.meta_description||"";
+document.getElementById("seoCanonical").value=seo.canonical||"";
+document.getElementById("seoOgTitle").value=seo.og_title||"";
+document.getElementById("seoOgDescription").value=seo.og_description||"";
+document.getElementById("seoOgImage").value=seo.og_image||"";
+document.getElementById("seoFavicon").value=seo.favicon||"";
+document.getElementById("seoRobots").value=seo.robots||"index";
+document.getElementById("seoVerify").value=seo.google_verify||"";
+document.getElementById("seoGa").value=seo.ga4_id||"";
+document.getElementById("seoClarity").value=seo.clarity_id||"";
 
 }
 
