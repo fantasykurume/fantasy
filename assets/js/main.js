@@ -17,38 +17,149 @@ import { initAccess } from "./modules/access.js";
 import { initCast } from "./modules/cast.js";
 import { applySEO } from "./modules/seo.js";
 
-document.addEventListener("DOMContentLoaded", async()=>{
+
+document.addEventListener(
+"DOMContentLoaded",
+async()=>{
+
 
     initMenu();
+
     initScroll();
+
     initModal();
 
-    const data = await fetchAll();
 
-    if(!data || data.status!=="success"){
-        console.error("API Error");
+
+    const data =
+    await fetchAll();
+
+
+
+    if(
+        !data ||
+        data.status!=="success"
+    ){
+
+        console.error(
+            "API Error"
+        );
+
         return;
+
     }
-    applySEO(data.seo);
-    const shop = data.shop[0];
-    initShop(shop);
-    initHero(shop);
-    initGallery(data.gallery);
-    initNews(data.news);
-    initSystem(data.system);
-    initAccess(shop);
-    initCast(data.cast);
 
-document.getElementById("shopName").innerText =
-shop.shop_name || "Fantasy";
 
-document.getElementById("footerShopName").innerText =
-shop.shop_name || "Fantasy";
 
-document.title =
-shop.shop_name || "Fantasy";
+    /*
+    ==============================
+       SEO反映
+    ==============================
+    */
 
-document.getElementById("metaDescription").content =
-shop.meta_description || "";
-   
+    applySEO(
+        data.seo
+    );
+
+
+
+    const shop =
+    data.shop?.[0];
+
+
+
+    if(!shop){
+
+        console.error(
+            "Shop Data Missing"
+        );
+
+        return;
+
+    }
+
+
+
+    /*
+    ==============================
+       各モジュール初期化
+    ==============================
+    */
+
+
+    initShop(
+        shop
+    );
+
+
+    initHero(
+        shop
+    );
+
+
+    initGallery(
+        data.gallery
+    );
+
+
+    initNews(
+        data.news
+    );
+
+
+    initSystem(
+        data.system
+    );
+
+
+    initAccess(
+        shop
+    );
+
+
+    initCast(
+        data.cast
+    );
+
+
+
+    /*
+    ==============================
+       店舗名表示
+    ==============================
+    */
+
+
+    const shopName =
+    document.getElementById(
+        "shopName"
+    );
+
+
+    if(shopName){
+
+        shopName.innerText =
+        shop.shop_name ||
+        "Fantasy";
+
+    }
+
+
+
+    const footerShopName =
+    document.getElementById(
+        "footerShopName"
+    );
+
+
+    if(footerShopName){
+
+        footerShopName.innerText =
+        shop.shop_name ||
+        "Fantasy";
+
+    }
+
+
+
 });
