@@ -21,8 +21,6 @@ export async function initGalleryAdmin(){
     document.getElementById("currentPage").innerText="Gallery管理";
     document.getElementById("pageContent").innerHTML = `
 
-        <h2>Gallery管理</h2>
-
         <button id="addGallery">
 
             ＋画像追加
